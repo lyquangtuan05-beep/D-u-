@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dấu Đỏ Mystery Game</title>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#070606">
+<meta property="og:title" content="Dấu Đỏ – Mystery Game">
+<meta property="og:description" content="Những vụ án bí ẩn mang hồn Việt, chơi ngay trên trình duyệt.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>document.documentElement.className='js'</script>
+<meta name="description" content="Dấu Đỏ – Mystery Game: những vụ án bí ẩn mang hồn Việt, chơi ngay trên trình duyệt. Mở kho hồ sơ để chọn vụ án.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap">
+<style>
+/* Bố cục: ba màn hình trong một trang (giới thiệu, kho hồ sơ, chi tiết hồ sơ), chuyển bằng địa chỉ sau dấu #. Con dấu sáp là điểm nhấn duy nhất. */
+:root {
+  --ink: #070606;
+  --ink-2: #120e0d;
+  --paper: #d8cdb9;
+  --paper-dim: #a69c8b;
+  --seal: #8a0303;
+  --seal-bright: #d24a3f;
+  --line: rgba(216, 205, 185, 0.2);
+  --paper-bg: #d8cdb9;
+  --paper-ink: #1b1613;
+  --display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --body: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Courier Prime', 'Courier New', monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(ellipse at 70% 0%, rgba(138, 3, 3, 0.22), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .85 0 0 0 0 .8 0 0 0 0 .7 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.7;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--seal-bright); outline-offset: 3px; }
+.wrap { max-width: 1080px; margin-inline: auto; }
+.mono { font-family: var(--mono); letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.78rem; }
+
+/* Thanh đầu trang */
+.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-block: 22px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--mono); font-weight: 700; letter-spacing: 0.22em; font-size: 0.95rem; }
+.brand i { width: 12px; height: 12px; border-radius: 50%; background: var(--seal-bright); display: inline-block; }
+.nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.nav a { text-decoration: none; color: var(--paper-dim); padding-block: 2px; border-bottom: 1.5px solid transparent; }
+.nav a:hover { color: var(--paper); }
+.nav a[aria-current="page"] { color: var(--paper); border-bottom-color: var(--seal-bright); }
+
+/* Chung */
+.eyebrow { color: var(--seal-bright); margin: 0 0 18px; }
+h1 { font-family: var(--display); font-weight: 900; font-size: clamp(2.7rem, 8.4vw, 5.6rem); line-height: 1.02; margin: 0 0 24px; text-wrap: balance; letter-spacing: -0.01em; }
+h1 em { color: var(--seal-bright); font-style: italic; }
+h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.9rem, 5vw, 3rem); line-height: 1.12; margin: 0 0 20px; text-wrap: balance; }
+h2.page-title { font-weight: 900; font-size: clamp(2.2rem, 6.5vw, 4rem); }
+.lead { font-size: 1.12rem; color: var(--paper); max-width: 34rem; margin: 0 0 30px; font-weight: 300; }
+.intro { max-width: 40rem; color: var(--paper-dim); margin: 0 0 40px; font-weight: 300; }
+section { padding-block: clamp(44px, 7vw, 84px); border-top: 1px solid var(--line); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-block; padding: 14px 26px; text-decoration: none; font-family: var(--mono); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.86rem; border: 1.5px solid var(--seal-bright); border-radius: 2px; transition: background 0.2s, color 0.2s; background: none; color: inherit; cursor: pointer; line-height: 1.7; }
+.btn.solid { background: var(--seal); border-color: var(--seal); color: #f3e9d6; }
+.btn.solid:hover { background: #a30505; }
+.btn.ghost:hover { background: rgba(210, 74, 63, 0.14); }
+.back { display: inline-block; margin: 28px 0 0; text-decoration: none; color: var(--paper-dim); }
+.back:hover { color: var(--paper); }
+
+/* Giới thiệu */
+.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 32px 48px; align-items: center; padding-block: clamp(40px, 8vw, 96px); }
+.seal-wrap { justify-self: center; width: min(100%, 400px); padding: 10px; overflow: clip; }
+.seal { width: 100%; height: auto; display: block; transform: rotate(-5deg); animation: stamp 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.1) both; }
+@keyframes stamp { from { opacity: 0; transform: rotate(-12deg) scale(1.35); } to { opacity: 1; transform: rotate(-5deg) scale(1); } }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 0; padding: 0; list-style: none; }
+.pillars li { border-top: 2px solid var(--seal-bright); padding-top: 16px; }
+.pillars h3 { font-family: var(--display); font-size: 1.4rem; margin: 0 0 8px; line-height: 1.25; }
+.pillars p { margin: 0; color: var(--paper-dim); font-weight: 300; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 0; padding: 0; list-style: none; counter-reset: s; }
+.steps li { counter-increment: s; border-top: 1px solid var(--line); padding-top: 16px; }
+.steps li::before { content: "Bước " counter(s); font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--seal-bright); display: block; margin-bottom: 6px; }
+.steps h3 { font-family: var(--display); font-size: 1.4rem; margin: 0 0 8px; }
+.steps p { margin: 0; color: var(--paper-dim); font-weight: 300; }
+.vault-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; }
+.vault-cta h2 { margin: 0; }
+
+/* Kho hồ sơ */
+.page-head { padding-block: clamp(36px, 6vw, 72px) 28px; }
+.vault { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px 28px; padding-block: 24px clamp(44px, 7vw, 84px); }
+.folder { position: relative; display: block; text-decoration: none; background: #d8cdb9; color: var(--paper-ink); padding: 28px 22px 22px; margin-top: 22px; box-shadow: 0 16px 34px rgba(0, 0, 0, 0.55); transition: transform 0.2s; min-height: 250px; }
+.folder::before { content: attr(data-no); position: absolute; top: -22px; left: 18px; background: #c2b69f; color: var(--paper-ink); font-family: var(--mono); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.14em; padding: 4px 16px 2px; }
+.folder:hover { transform: translateY(-5px) rotate(-0.6deg); }
+.folder .state { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; display: flex; justify-content: space-between; gap: 12px; border-bottom: 1.5px solid var(--paper-ink); padding-bottom: 8px; margin-bottom: 18px; }
+.folder h3 { font-family: var(--display); font-weight: 900; font-size: 1.75rem; line-height: 1.12; margin: 0 0 10px; }
+.folder p { margin: 0 0 18px; font-size: 0.95rem; line-height: 1.55; }
+.folder .open { font-family: var(--mono); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--seal); }
+.folder .seal-mini { position: absolute; right: 16px; bottom: 14px; width: 54px; height: 54px; border-radius: 50%; border: 3px solid var(--seal); color: var(--seal); display: grid; place-items: center; font-family: var(--mono); font-weight: 700; font-size: 0.6rem; letter-spacing: 0.1em; transform: rotate(-12deg); opacity: 0.8; text-align: center; line-height: 1.1; }
+.folder.empty { background: transparent; color: var(--paper-dim); border: 1.5px dashed var(--line); box-shadow: none; cursor: default; }
+.folder.empty::before { background: transparent; color: var(--paper-dim); border: 1.5px dashed var(--line); border-bottom: none; }
+.folder.empty:hover { transform: none; }
+.folder.empty .state { border-bottom-color: var(--line); }
+
+/* Chi tiết hồ sơ */
+.case { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px 56px; align-items: start; }
+.doc { position: relative; background: var(--paper-bg); color: var(--paper-ink); padding: 30px 28px 34px; box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55); transform: rotate(-0.8deg); font-family: var(--mono); font-size: 0.98rem; line-height: 1.75; }
+.doc .tag { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; border-bottom: 1.5px solid var(--paper-ink); padding-bottom: 10px; margin-bottom: 18px; font-weight: 700; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.doc p { margin: 0 0 14px; }
+.redact { background: #0b0908; color: #0b0908; padding: 0 4px; user-select: none; }
+.doc .stamp { position: absolute; right: 18px; bottom: 14px; transform: rotate(-9deg); border: 3px solid var(--seal); color: var(--seal); font-weight: 700; padding: 3px 12px; letter-spacing: 0.16em; font-size: 0.9rem; opacity: 0.85; }
+.sheet { margin: 0; padding: 0; list-style: none; font-family: var(--mono); font-size: 0.95rem; letter-spacing: 0.04em; }
+.sheet li { display: grid; grid-template-columns: 8.6rem minmax(0, 1fr); gap: 4px 16px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.sheet li:first-child { border-top: 1px solid var(--line); }
+.sheet .k { color: var(--seal-bright); padding-top: 3px; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.suspects { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 22px; margin-top: 12px; }
+.sus { background: #1a1514; border: 1px solid var(--line); padding: 12px 12px 16px; position: relative; }
+.sus:nth-child(odd) { transform: rotate(-1.2deg); }
+.sus:nth-child(even) { transform: rotate(1deg); }
+.sus svg { width: 100%; height: auto; display: block; background: #0c0a09; margin-bottom: 12px; }
+.sus b { display: block; font-family: var(--display); font-size: 1.05rem; line-height: 1.25; }
+.sus span { display: block; color: var(--paper-dim); font-size: 0.86rem; line-height: 1.45; margin-top: 4px; }
+.sus::after { content: "?"; position: absolute; top: 6px; right: 12px; font-family: var(--display); font-weight: 900; font-size: 1.6rem; color: var(--seal-bright); }
+.investigate { text-align: left; }
+.btn.big { padding: 20px 38px; font-size: 1.05rem; }
+.investigate .hint { color: var(--paper-dim); font-size: 0.92rem; margin: 16px 0 0; max-width: 34rem; }
+
+/* Theo dõi */
+.chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 22px; padding: 0; list-style: none; }
+.chip { display: inline-block; padding: 11px 20px; border: 1.5px solid var(--line); font-family: var(--mono); font-size: 0.86rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
+a.chip { border-color: var(--seal-bright); }
+a.chip:hover { background: rgba(210, 74, 63, 0.14); }
+span.chip { color: var(--paper-dim); }
+.note { color: var(--paper-dim); font-size: 0.92rem; max-width: 34rem; margin: 0; }
+
+footer { border-top: 1px solid var(--line); padding-block: 30px 44px; color: var(--paper-dim); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+
+/* ===== Nâng cấp: 3D, chuyển động, chiều sâu ===== */
+html{overflow-x:hidden;overflow-x:clip;scroll-padding-top:76px}
+.wrap{position:relative;z-index:1}
+.top{position:sticky;top:0;z-index:30;isolation:isolate;border-bottom:0;padding-block:14px}
+.top::before{content:"";position:absolute;z-index:-1;inset:0 auto 0 50%;width:100vw;transform:translateX(-50%);background:rgba(7,6,6,.78);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+h1{letter-spacing:-.02em}
+h1 em{text-shadow:0 0 34px rgba(210,74,63,.35)}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity .9s}
+#gl.on{opacity:1}
+.seal-wrap{transition:opacity .9s;cursor:pointer}
+.seal-wrap.gl-on{opacity:0}
+.hero>div:first-child>*{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.hero>div:first-child>:nth-child(2){animation-delay:.08s}.hero>div:first-child>:nth-child(3){animation-delay:.16s}.hero>div:first-child>:nth-child(4){animation-delay:.24s}.hero>div:first-child>:nth-child(5){animation-delay:.32s}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.view-in{animation:viewIn .4s ease both}
+@keyframes viewIn{from{opacity:0}}
+html.js [data-reveal]{opacity:0;translate:0 22px;transition:opacity .7s ease var(--d,0ms),translate .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms)}
+html.js [data-reveal].in{opacity:1;translate:none}
+html.js .folder[data-reveal]{transition:opacity .7s ease var(--d,0ms),translate .7s cubic-bezier(.2,.7,.2,1) var(--d,0ms),transform .2s}
+.folder.in .seal-mini{animation:stampMini .5s .4s cubic-bezier(.2,.9,.3,1.1) both}
+@keyframes stampMini{from{opacity:0;transform:rotate(-20deg) scale(1.6)}to{opacity:.8;transform:rotate(-12deg) scale(1)}}
+@media (hover:hover){
+.folder:not(.empty):hover{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-5px)}
+.folder:not(.empty)::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .2s;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.38),transparent 55%)}
+.folder:not(.empty):hover::after{opacity:1}}
+.thread{position:fixed;left:max(5px,env(safe-area-inset-left,0px));top:0;bottom:0;width:2px;z-index:25;pointer-events:none;opacity:.8}
+.thread i{position:absolute;inset:0;background:var(--seal-bright);transform-origin:top;transform:scaleY(0)}
+.thread b{position:absolute;left:-4px;top:0;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a7a,var(--seal) 70%);box-shadow:0 0 12px rgba(210,74,63,.7)}
+.now{display:inline-flex;align-items:center;gap:10px;margin-top:26px;color:var(--paper-dim);text-decoration:none}
+.now:hover{color:var(--paper)}
+.now i{width:8px;height:8px;border-radius:50%;background:var(--seal-bright);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(210,74,63,.6)}70%,100%{box-shadow:0 0 0 8px rgba(210,74,63,0)}}
+@media (prefers-reduced-motion:reduce){html.js [data-reveal]{opacity:1;translate:none;transition:none}.hero>div:first-child>*,.view-in,.now i,.folder.in .seal-mini{animation:none}.thread{display:none}}
+@media (max-width: 820px) {
+  .hero, .case { grid-template-columns: minmax(0, 1fr); }
+  .seal-wrap { order: -1; width: min(72vw, 320px); }
+  .steps, .pillars { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .sheet li { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seal { animation: none; }
+  html { scroll-behavior: auto; }
+  .btn, .folder { transition: none; }
+}
+</style>
+
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#gioi-thieu"><i aria-hidden="true"></i>DẤU ĐỎ</a>
+    <nav class="nav mono" aria-label="Điều hướng">
+      <a href="#gioi-thieu" data-nav="home">Giới thiệu</a>
+      <a href="#kho-ho-so" data-nav="vault">Kho hồ sơ</a>
+      <a href="#theo-doi" data-nav="follow" id="nav-follow">Theo dõi</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Màn hình 1: Giới thiệu Dấu Đỏ -->
+    <div id="view-home">
+      <div class="hero">
+        <div>
+          <p class="eyebrow mono">Hồ sơ mật · Mystery Game</p>
+          <h1>Mỗi vụ án,<br>một <em>dấu đỏ.</em></h1>
+          <p class="lead">Dấu Đỏ là nơi những vụ án bí ẩn mang hồn Việt được kể thành trò chơi suy luận. Bạn là thám tử: khám xét hiện trường, thẩm vấn nghi phạm và tự chỉ ra hung thủ. Chơi ngay trên trình duyệt, không cần tải.</p>
+          <div class="cta">
+            <a class="btn solid" href="#kho-ho-so">Mở kho hồ sơ</a>
+            <button class="btn ghost" type="button" id="cta-follow">Theo dõi Dấu Đỏ</button>
+          </div>
+          <a class="now mono" id="now-open" href="#kho-ho-so"></a>
+        </div>
+        <div class="seal-wrap">
+          <svg class="seal" viewBox="0 0 400 400" role="img" aria-label="Con dấu sáp đỏ có lỗ khóa chứa vân tay, dải băng ghi Dấu Đỏ">
+            <defs>
+              <filter id="wax" x="-10%" y="-10%" width="120%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n"/>
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="18"/>
+              </filter>
+              <radialGradient id="waxfill" cx="38%" cy="32%" r="80%">
+                <stop offset="0" stop-color="#b3120f"/>
+                <stop offset="0.55" stop-color="#8a0303"/>
+                <stop offset="1" stop-color="#5c0202"/>
+              </radialGradient>
+              <clipPath id="keyhole">
+                <circle cx="200" cy="165" r="38"/>
+                <path d="M176 192 L164 268 L236 268 L224 192 Z"/>
+              </clipPath>
+            </defs>
+            <circle cx="200" cy="200" r="176" fill="url(#waxfill)" filter="url(#wax)"/>
+            <circle cx="200" cy="200" r="150" fill="none" stroke="#e8c9b8" stroke-opacity="0.35" stroke-width="9" stroke-dasharray="1.6 6.4"/>
+            <circle cx="200" cy="200" r="138" fill="none" stroke="#e8c9b8" stroke-opacity="0.45" stroke-width="1.5"/>
+            <circle cx="200" cy="200" r="126" fill="#6d0202" fill-opacity="0.55"/>
+            <circle cx="200" cy="190" r="70" fill="none" stroke="#ffe3d0" stroke-opacity="0.13" stroke-width="120" stroke-dasharray="3 14.6"/>
+            <g>
+              <circle cx="200" cy="165" r="44" fill="#d8cdb9"/>
+              <path d="M172 188 L158 274 L242 274 L228 188 Z" fill="#d8cdb9"/>
+              <circle cx="200" cy="165" r="38" fill="#2a0303"/>
+              <path d="M176 192 L164 268 L236 268 L224 192 Z" fill="#2a0303"/>
+              <g clip-path="url(#keyhole)" fill="none" stroke="#d8cdb9" stroke-opacity="0.6" stroke-width="1.6" stroke-dasharray="46 3 26 4">
+                <ellipse cx="200" cy="190" rx="7" ry="9"/>
+                <ellipse cx="200" cy="190" rx="14" ry="19"/>
+                <ellipse cx="200" cy="190" rx="21" ry="29"/>
+                <ellipse cx="200" cy="190" rx="28" ry="39"/>
+                <ellipse cx="200" cy="190" rx="35" ry="49"/>
+                <ellipse cx="200" cy="190" rx="42" ry="59"/>
+                <ellipse cx="200" cy="190" rx="49" ry="69"/>
+                <ellipse cx="200" cy="190" rx="56" ry="79"/>
+              </g>
+            </g>
+            <path d="M62 282 Q200 312 338 282 L352 336 Q200 366 48 336 Z" fill="#d8cdb9"/>
+            <path d="M62 282 Q200 312 338 282 L352 336 Q200 366 48 336 Z" fill="none" stroke="#8a0303" stroke-width="2.5"/>
+            <text x="200" y="334" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-weight="900" font-size="38" fill="#7a0202" letter-spacing="2">DẤU ĐỎ</text>
+          </svg>
+        </div>
+      </div>
+
+      <section aria-labelledby="h-about">
+        <p class="eyebrow mono">Dấu Đỏ là gì</p>
+        <h2 id="h-about">Trinh thám Việt, chơi trong trình duyệt</h2>
+        <p class="intro">Mỗi tựa game là một hồ sơ vụ án riêng. Tất cả được lưu trong kho hồ sơ của Dấu Đỏ, chọn hồ sơ nào là bước vào vụ án đó.</p>
+        <ul class="pillars">
+          <li><h3>Hồn Việt</h3><p>Bối cảnh, con người và tín ngưỡng Việt Nam làm nên không khí của từng vụ án.</p></li>
+          <li><h3>Mở là chơi</h3><p>Chạy ngay trên trình duyệt của điện thoại, máy tính bảng và máy tính. Không cần tải, không cần cài đặt.</p></li>
+          <li><h3>Tự suy luận</h3><p>Không có người chơi hộ, không có đáp án dán sẵn. Bạn tự tìm manh mối và tự kết luận.</p></li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="h-play">
+        <p class="eyebrow mono">Cách chơi</p>
+        <h2 id="h-play">Ba bước cho mỗi vụ án</h2>
+        <ol class="steps">
+          <li><h3>Khám xét</h3><p>Đi qua từng căn phòng, mở từng vật dụng, gom các manh mối rải rác.</p></li>
+          <li><h3>Thẩm vấn</h3><p>Hỏi từng nghi phạm, đối chiếu lời khai và tìm chỗ họ mâu thuẫn nhau.</p></li>
+          <li><h3>Kết luận</h3><p>Khi đủ chứng cứ, hãy chỉ mặt hung thủ trước khi trời sáng.</p></li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="h-vault-cta">
+        <div class="vault-cta">
+          <div>
+            <p class="eyebrow mono">Kho lưu trữ hồ sơ</p>
+            <h2 id="h-vault-cta">Chọn một hồ sơ để bắt đầu</h2>
+          </div>
+          <a class="btn solid" href="#kho-ho-so">Vào kho hồ sơ</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Màn hình 2: Kho hồ sơ -->
+    <div id="view-vault" hidden>
+      <div class="page-head">
+        <p class="eyebrow mono">Kho lưu trữ hồ sơ</p>
+        <h2 class="page-title">Các vụ án của Dấu Đỏ</h2>
+        <p class="intro" style="margin-bottom:0">Mỗi hồ sơ là một tựa game. Mở hồ sơ để đọc giới thiệu, sau đó bắt đầu điều tra.</p>
+      </div>
+      <div class="vault" id="vault-list"></div>
+    </div>
+
+    <!-- Màn hình 3: Chi tiết một hồ sơ -->
+    <div id="view-case" hidden></div>
+  </main>
+
+  <section id="follow" aria-labelledby="h-follow">
+    <p class="eyebrow mono">Theo dõi</p>
+    <h2 id="h-follow">Là người đầu tiên mở hồ sơ mới</h2>
+    <p class="intro">Theo dõi Dấu Đỏ để biết khi có vụ án mới được thêm vào kho hồ sơ.</p>
+    <ul class="chips" id="chips"></ul>
+    <p class="note">Bạn thích kiểu vụ án nào: kinh dị tâm linh, án mạng làng quê hay bí ẩn thời xưa? Hãy nhắn cho Dấu Đỏ, ý kiến của người chơi sẽ được cân nhắc khi chọn hồ sơ tiếp theo.</p>
+  </section>
+
+  <footer class="mono">
+    <span>Dấu Đỏ – Mystery Game</span>
+    <span>Mỗi vụ án, một dấu đỏ.</span>
+  </footer>
+</div>
+
+<script>
+/* ===== Cấu hình ===== */
+// Địa chỉ các kênh. Kênh nào để trống sẽ hiện "sắp mở".
+var LINKS = { "Facebook": "", "Instagram": "", "TikTok": "", "Discord": "" };
+
+// Kho hồ sơ. Thêm game mới = thêm một mục vào danh sách này.
+// "play" là đường dẫn tới file HTML của game.
+var CASES = [
+  {
+    id: "ho-so-001",
+    no: "Hồ sơ #001",
+    title: "Đêm Rằm Tháng Bảy",
+    summary: "Một ngôi nhà cổ ven sông, một lá thư máu, năm người cùng ở dưới một mái nhà khi điện tắt.",
+    status: "Chưa giải",
+    play: "games/dem_ram_thang_bay.html",
+    excerpt: [
+      "Tháng Bảy, năm 2026. Làng cổ ven sông. Mưa như trút nước.",
+      "Ông Lương Văn Thạc, 72 tuổi, nhận được một lá thư máu: <em>“Đêm Rằm, tao về lấy mạng.”</em> Ông thuê thám tử Trần Bảo đến bảo vệ.",
+      "Nửa đêm, mất điện. Tiếng hát ru ai oán vọng lên từ phía giếng ngoài sân. Khi đèn sáng lại, ông Thạc đã tắt thở trong thư phòng <span class=\"redact\">khóa kín từ bên trong</span>.",
+      "Kẻ thủ ác là một trong <span class=\"redact\">năm người</span> đang có mặt. Bạn phải tìm ra trước khi trời sáng."
+    ],
+    sheet: [
+      ["Thể loại", "Trinh thám, giải đố, phòng kín"],
+      ["Địa điểm", "5 căn phòng để khám xét: Sân Trước, Phòng Khách, Nhà Bếp, Hành Lang, Thư Phòng"],
+      ["Nghi phạm", "5 người, mỗi người một lời khai"],
+      ["Nền tảng", "Trình duyệt trên điện thoại, máy tính bảng, máy tính"],
+      ["Ngôn ngữ", "Tiếng Việt"]
+    ],
+    suspects: [
+      ["Lương Minh Quân", "Con trai nạn nhân, 38 tuổi"],
+      ["Triệu Thanh Vân", "Con dâu, 35 tuổi, y tá"],
+      ["Phạm Đức Khoa", "Khách buôn đồ cổ, 45 tuổi"],
+      ["Thầy Cửu", "Thầy cúng, 62 tuổi"],
+      ["Chị Tư Hạnh", "Giúp việc, 46 tuổi"]
+    ]
+  }
+];
+
+/* ===== Hiển thị ===== */
+var SILHOUETTE = '<svg viewBox="0 0 120 130" aria-hidden="true"><circle cx="60" cy="48" r="24" fill="#26201e"/><path d="M12 130 C12 90 34 78 60 78 C86 78 108 90 108 130 Z" fill="#26201e"/><rect x="0" y="0" width="120" height="130" fill="none" stroke="#3a312d" stroke-width="2"/></svg>';
+function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML.replace(/"/g, '&quot;'); }
+
+function buildChips() {
+  var chips = document.getElementById('chips');
+  Object.keys(LINKS).forEach(function (name) {
+    var li = document.createElement('li');
+    var el;
+    if (LINKS[name]) {
+      el = document.createElement('a');
+      el.href = LINKS[name]; el.target = '_blank'; el.rel = 'noopener';
+      el.textContent = name;
+    } else {
+      el = document.createElement('span');
+      el.textContent = name + ' · sắp mở';
+    }
+    el.className = 'chip';
+    li.appendChild(el);
+    chips.appendChild(li);
+  });
+}
+
+function buildVault() {
+  var box = document.getElementById('vault-list');
+  var html = '';
+  CASES.forEach(function (c) {
+    html += '<a class="folder" href="#' + c.id + '" data-no="' + esc(c.no) + '">' +
+      '<div class="state"><span>Trạng thái</span><span>' + esc(c.status) + '</span></div>' +
+      '<h3>' + esc(c.title) + '</h3>' +
+      '<p>' + esc(c.summary) + '</p>' +
+      '<span class="open">Mở hồ sơ →</span>' +
+      '<span class="seal-mini" aria-hidden="true">DẤU<br>ĐỎ</span>' +
+      '</a>';
+  });
+  html += '<div class="folder empty" data-no="Hồ sơ tiếp theo">' +
+    '<div class="state"><span>Trạng thái</span><span>Còn trống</span></div>' +
+    '<h3>Chưa có hồ sơ</h3>' +
+    '<p>Các vụ án mới sẽ được thêm vào kho khi hoàn thành.</p></div>';
+  box.innerHTML = html;
+}
+
+function buildCase(c) {
+  var h = '<a class="back mono" href="#kho-ho-so">← Về kho hồ sơ</a>' +
+    '<div class="page-head"><p class="eyebrow mono">' + esc(c.no) + '</p>' +
+    '<h2 class="page-title">' + esc(c.title) + '</h2>' +
+    '<p class="intro" style="margin-bottom:0">' + esc(c.summary) + '</p></div>' +
+    '<section><div class="case">' +
+    '<article class="doc" aria-label="Trích hồ sơ vụ án"><div class="tag"><span>' + esc(c.no) + '</span><span>Mật</span></div>';
+  c.excerpt.forEach(function (p) { h += '<p>' + p + '</p>'; });
+  h += '<span class="stamp">' + esc(c.status).toUpperCase() + '</span></article><ul class="sheet">';
+  c.sheet.forEach(function (r) { h += '<li><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span></li>'; });
+  h += '</ul></div></section>' +
+    '<section aria-labelledby="h-sus"><p class="eyebrow mono">Nghi phạm</p><h2 id="h-sus">Ai đang nói dối?</h2>' +
+    '<p class="intro">Tất cả đều có mặt trong nhà đêm đó. Tất cả đều có điều muốn giấu.</p><div class="suspects">';
+  c.suspects.forEach(function (s) { h += '<div class="sus">' + SILHOUETTE + '<b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>'; });
+  h += '</div></section>' +
+    '<section class="investigate" aria-labelledby="h-go"><p class="eyebrow mono">Sẵn sàng</p><h2 id="h-go">Bắt đầu điều tra</h2>' +
+    '<a class="btn solid big" href="' + esc(c.play) + '">Điều tra vụ án</a>' +
+    '<p class="hint">Game mở trong trang riêng. Nên chơi bằng điện thoại, máy tính bảng hoặc máy tính, trong chỗ yên tĩnh.</p></section>';
+  return h;
+}
+
+/* ===== Chuyển màn hình bằng địa chỉ sau dấu # ===== */
+var views = { home: document.getElementById('view-home'), vault: document.getElementById('view-vault'), 'case': document.getElementById('view-case') };
+function show(name) {
+  Object.keys(views).forEach(function (k) { views[k].hidden = (k !== name); });
+  document.querySelectorAll('[data-nav]').forEach(function (a) {
+    var key = a.getAttribute('data-nav');
+    var on = (key === name) || (name === 'case' && key === 'vault');
+    if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+}
+function scrollToFollow() {
+  var el = document.getElementById('follow');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function route() {
+  var h = location.hash.replace('#', '');
+  var found = null;
+  CASES.forEach(function (c) { if (c.id === h) found = c; });
+  if (found) {
+    views['case'].innerHTML = buildCase(found);
+    show('case');
+    window.scrollTo(0, 0);
+  } else if (h === 'kho-ho-so') {
+    show('vault');
+    window.scrollTo(0, 0);
+  } else if (h === 'theo-doi') {
+    show('home');
+    setTimeout(scrollToFollow, 30);
+  } else {
+    show('home');
+    window.scrollTo(0, 0);
+  }
+}
+
+
+/* ===== Nâng cấp: hiệu ứng cuộn, nghiêng thẻ, sợi chỉ đỏ ===== */
+var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }) : null;
+function markReveal() {
+  document.querySelectorAll('.pillars li,.steps li,.folder,.doc,.sheet li,.sus,section .eyebrow,section h2,section .intro,.vault-cta .btn,.page-head>*,.chips,.note,.investigate .btn,.hint').forEach(function (el) {
+    if (el.hasAttribute('data-reveal')) return;
+    el.setAttribute('data-reveal', '');
+    el.style.setProperty('--d', (Array.prototype.indexOf.call(el.parentNode.children, el) % 6) * 70 + 'ms');
+    if (io) io.observe(el); else el.classList.add('in');
+  });
+}
+window.addEventListener('hashchange', function () {
+  markReveal();
+  var v = document.querySelector('main > div:not([hidden])');
+  if (v) { v.classList.remove('view-in'); void v.offsetWidth; v.classList.add('view-in'); }
+});
+markReveal();
+
+var now = document.getElementById('now-open'), lastCase = CASES[CASES.length - 1];
+if (lastCase) { now.href = '#' + lastCase.id; now.innerHTML = '<i></i>Đang mở · ' + esc(lastCase.no) + ' · ' + esc(lastCase.title) + ' →'; }
+
+var vl = document.getElementById('vault-list');
+vl.addEventListener('pointermove', function (e) {
+  var f = e.target.closest && e.target.closest('.folder:not(.empty)');
+  if (!f || e.pointerType === 'touch') return;
+  var b = f.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+  f.style.setProperty('--ry', ((x - 0.5) * 10) + 'deg'); f.style.setProperty('--rx', ((0.5 - y) * 8) + 'deg');
+  f.style.setProperty('--gx', x * 100 + '%'); f.style.setProperty('--gy', y * 100 + '%');
+});
+vl.addEventListener('pointerout', function (e) {
+  var f = e.target.closest && e.target.closest('.folder');
+  if (f && !f.contains(e.relatedTarget)) { f.style.removeProperty('--rx'); f.style.removeProperty('--ry'); }
+});
+
+// Sợi chỉ đỏ + chiếc đinh ghim chạy theo tiến độ cuộn trang
+var th = document.createElement('div'); th.className = 'thread'; th.setAttribute('aria-hidden', 'true'); th.innerHTML = '<i></i><b></b>';
+document.body.appendChild(th);
+var tk = 0;
+function tickThread() {
+  tk = 0;
+  var m = document.documentElement.scrollHeight - innerHeight, p = m > 0 ? Math.min(1, scrollY / m) : 0;
+  th.firstChild.style.transform = 'scaleY(' + p + ')'; th.lastChild.style.transform = 'translateY(' + p * (innerHeight - 10) + 'px)';
+}
+addEventListener('scroll', function () { if (!tk) tk = requestAnimationFrame(tickThread); }, { passive: true });
+addEventListener('resize', tickThread); tickThread();
+
+/* ===== 3D: con dấu sáp + bụi hương. Tự rơi về con dấu SVG nếu máy yếu, tắt chuyển động hoặc không có WebGL ===== */
+(function () {
+  var coarse = matchMedia('(pointer: coarse)').matches;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || (navigator.hardwareConcurrency || 4) < 4) return;
+  var cv = document.getElementById('gl'), wrap = document.querySelector('.seal-wrap');
+  addEventListener('load', function () {
+    setTimeout(function () {
+      var sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      sc.onload = function () { try { init(window.THREE); } catch (err) { console.warn('3D tắt:', err); } };
+      document.head.appendChild(sc);
+    }, 200);
+  });
+  function mk(w, h) { var c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+  function init(T) {
+    var r = new T.WebGLRenderer({ canvas: cv, alpha: true, antialias: !coarse });
+    r.setPixelRatio(Math.min(devicePixelRatio || 1, coarse ? 1.5 : 2));
+    r.outputEncoding = T.sRGBEncoding; r.toneMapping = T.ACESFilmicToneMapping;
+    var scene = new T.Scene(), cam = new T.PerspectiveCamera(35, 1, 0.1, 60), W, H, upp;
+    cam.position.z = 12;
+    function size() { W = cv.clientWidth; H = cv.clientHeight; r.setSize(W, H, false); cam.aspect = W / H; cam.updateProjectionMatrix(); upp = 2 * 12 * Math.tan(17.5 * Math.PI / 180) / H; }
+    size(); addEventListener('resize', size);
+
+    // Hoạ tiết con dấu vẽ bằng canvas: bản màu và bản độ nổi, cùng toạ độ với SVG gốc
+    var S = 1024, C = S / 2, k = 2.68;
+    function paint(bump) {
+      var c = mk(S, S), x = c.getContext('2d');
+      var g = x.createRadialGradient(S * .38, S * .32, 0, S * .38, S * .32, S * .8);
+      g.addColorStop(0, '#b3120f'); g.addColorStop(.55, '#8a0303'); g.addColorStop(1, '#5c0202');
+      x.fillStyle = bump ? '#808080' : g; x.fillRect(0, 0, S, S);
+      x.beginPath(); x.arc(C, C, 126 * k, 0, 7); x.fillStyle = bump ? '#606060' : 'rgba(60,0,0,.5)'; x.fill();
+      x.strokeStyle = bump ? '#e0e0e0' : 'rgba(232,201,184,.5)'; x.lineWidth = 4; x.beginPath(); x.arc(C, C, 138 * k, 0, 7); x.stroke();
+      x.fillStyle = bump ? '#d0d0d0' : 'rgba(232,201,184,.4)';
+      for (var i = 0; i < 120; i++) { var a = i / 120 * 6.2832; x.beginPath(); x.arc(C + Math.cos(a) * 150 * k, C + Math.sin(a) * 150 * k, 5, 0, 7); x.fill(); }
+      function key(rc, t, b, y1, y2) { x.beginPath(); x.arc(C, C - 35 * k, rc * k, 0, 7, true); x.moveTo(C - t * k, C + y1 * k); x.lineTo(C - b * k, C + y2 * k); x.lineTo(C + b * k, C + y2 * k); x.lineTo(C + t * k, C + y1 * k); x.closePath(); }
+      key(44, 28, 42, -12, 74); x.fillStyle = bump ? '#f0f0f0' : '#d8cdb9'; x.fill();
+      key(38, 24, 36, -8, 68); x.fillStyle = bump ? '#101010' : '#2a0303'; x.fill();
+      x.save(); x.clip(); x.strokeStyle = bump ? '#b0b0b0' : 'rgba(216,205,185,.6)'; x.lineWidth = 1.6 * k; x.setLineDash([46 * k, 3 * k, 26 * k, 4 * k]);
+      for (var j = 1; j <= 8; j++) { x.beginPath(); x.ellipse(C, C - 10 * k, 7 * j * k, (10 * j - 1) * k, 0, 0, 6.2832); x.stroke(); }
+      x.restore(); return c;
+    }
+    var map = new T.CanvasTexture(paint(false)); map.encoding = T.sRGBEncoding; map.anisotropy = 4;
+    var bumpTex = new T.CanvasTexture(paint(true));
+
+    // Khối sáp: viền lượn sóng như sáp chảy, mép bo tròn
+    var R = 1.65, sh = new T.Shape(), N = 96, i;
+    for (i = 0; i < N; i++) {
+      var an = i / N * 6.2832, rr = R * (1 + .035 * Math.sin(3 * an + 1.2) + .025 * Math.sin(5 * an + .4) + .015 * Math.sin(9 * an + 2.1) + .01 * Math.sin(13 * an));
+      if (i) sh.lineTo(Math.cos(an) * rr, Math.sin(an) * rr); else sh.moveTo(Math.cos(an) * rr, Math.sin(an) * rr);
+    }
+    var geo = new T.ExtrudeGeometry(sh, { depth: .22, bevelEnabled: true, bevelThickness: .16, bevelSize: .14, bevelSegments: 5 });
+    geo.translate(0, 0, -.11);
+    var P = geo.attributes.position, UV = geo.attributes.uv, span = (R + .14) * 2;
+    for (i = 0; i < P.count; i++) UV.setXY(i, P.getX(i) / span + .5, P.getY(i) / span + .5);
+    geo.computeVertexNormals();
+    var NM = geo.attributes.normal, buckets = {}, key2, a;
+    function kk(n) { return P.getX(n).toFixed(3) + ',' + P.getY(n).toFixed(3) + ',' + P.getZ(n).toFixed(3); }
+    for (i = 0; i < P.count; i++) { key2 = kk(i); a = buckets[key2] || (buckets[key2] = [0, 0, 0]); a[0] += NM.getX(i); a[1] += NM.getY(i); a[2] += NM.getZ(i); }
+    for (i = 0; i < P.count; i++) { a = buckets[kk(i)]; var l = Math.hypot(a[0], a[1], a[2]) || 1; NM.setXYZ(i, a[0] / l, a[1] / l, a[2] / l); }
+    var seal = new T.Mesh(geo, new T.MeshPhysicalMaterial({ map: map, bumpMap: bumpTex, bumpScale: .03, roughness: .4, metalness: 0, clearcoat: .6, clearcoatRoughness: .25 }));
+
+    // Dải giấy "DẤU ĐỎ" quấn ngang con dấu
+    var rc = mk(1024, 300), rx = rc.getContext('2d'), rt = new T.CanvasTexture(rc); rt.encoding = T.sRGBEncoding;
+    function ribbon() {
+      rx.fillStyle = '#d8cdb9'; rx.fillRect(0, 0, 1024, 300); rx.strokeStyle = '#8a0303'; rx.lineWidth = 7; rx.strokeRect(14, 14, 996, 272);
+      rx.fillStyle = '#7a0202'; rx.font = '900 150px "Playfair Display",Georgia,serif'; rx.textAlign = 'center'; rx.textBaseline = 'middle';
+      if ('letterSpacing' in rx) rx.letterSpacing = '8px';
+      rx.fillText('DẤU ĐỎ', 512, 160); rt.needsUpdate = true;
+    }
+    ribbon(); if (document.fonts && document.fonts.load) document.fonts.load('900 150px "Playfair Display"', 'DẤU ĐỎ').then(ribbon, function () {});
+    var rg = new T.PlaneGeometry(2.85, .58, 24, 1), rp = rg.attributes.position;
+    for (i = 0; i < rp.count; i++) { var u = rp.getX(i) / 1.425; rp.setY(i, rp.getY(i) - .14 * (1 - u * u)); }
+    var rib = new T.Mesh(rg, new T.MeshStandardMaterial({ map: rt, roughness: .9, side: T.DoubleSide }));
+    rib.position.set(0, -1.14, .31);
+    var shd = new T.Mesh(rg, new T.MeshBasicMaterial({ color: 0x1a0000, transparent: true, opacity: .4 }));
+    shd.position.set(.02, -1.2, .29); shd.scale.setScalar(1.04);
+    var g = new T.Group(); g.add(seal, shd, rib); scene.add(g);
+
+    // Ánh sáng: đèn ấm đi theo con trỏ, đèn đỏ rìa, nền tối ấm
+    scene.add(new T.AmbientLight(0x502018, .6));
+    var keyL = new T.PointLight(0xffd9b0, 1.7), rimL = new T.PointLight(0xd24a3f, 1);
+    scene.add(keyL, rimL);
+
+    // Bụi hương trôi chậm
+    var DN = coarse ? 50 : 110, nx = [], ny = [], nz = [], sp = [], pos = new Float32Array(DN * 3);
+    for (i = 0; i < DN; i++) { nx.push(Math.random()); ny.push(Math.random()); nz.push(Math.random() * 5 - 3); sp.push(.004 + Math.random() * .008); }
+    var sc2 = mk(64, 64), sx = sc2.getContext('2d'), sg = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    sg.addColorStop(0, 'rgba(255,255,255,1)'); sg.addColorStop(1, 'rgba(255,255,255,0)'); sx.fillStyle = sg; sx.fillRect(0, 0, 64, 64);
+    var dg = new T.BufferGeometry(); dg.setAttribute('position', new T.BufferAttribute(pos, 3));
+    scene.add(new T.Points(dg, new T.PointsMaterial({ size: .12, map: new T.CanvasTexture(sc2), transparent: true, depthWrite: false, blending: T.AdditiveBlending, color: 0xd8b9a0, opacity: .5 })));
+
+    var tx = 0, ty = 0, px = 0, py = 0, lx = -1, ly = -1, lgx = 0, lgy = 0, press = 0, ps = 1, cx = 0, cy = 0, raf = 0, n = 0, shown = false;
+    addEventListener('pointermove', function (e) {
+      tx = Math.max(-1, Math.min(1, (e.clientX - cx) / (W * .4))); ty = Math.max(-1, Math.min(1, (e.clientY - cy) / (H * .4))); lx = e.clientX; ly = e.clientY;
+    }, { passive: true });
+    wrap.addEventListener('pointerdown', function () { press = 1; });
+    addEventListener('pointerup', function () { press = 0; });
+
+    function frame(now) {
+      raf = requestAnimationFrame(frame);
+      if (coarse && (n++ & 1)) return;
+      var t = now / 1000, b = wrap.getBoundingClientRect(), vis = !views.home.hidden && b.width > 0 && b.bottom > -80 && b.top < H + 80;
+      g.visible = vis;
+      if (vis) {
+        cx = b.left + b.width / 2; cy = b.top + b.height / 2;
+        g.position.set((cx - W / 2) * upp, -(cy - H / 2) * upp, 0);
+        ps += ((press ? .95 : 1) - ps) * .2; g.scale.setScalar(b.width * .88 * upp / 3.58 * ps);
+        px += (tx - px) * .06; py += (ty - py) * .06;
+        g.rotation.set(-py * .26 + Math.cos(t * .4) * .03, px * .38 + Math.sin(t * .5) * .05, -.087 + Math.sin(t * .3) * .01);
+        var gx = (lx < 0 ? cx - b.width * .6 : lx), gy = (ly < 0 ? cy - b.width * .6 : ly);
+        lgx += (gx - lgx) * .1; lgy += (gy - lgy) * .1;
+        keyL.position.set((lgx - W / 2) * upp, -(lgy - H / 2) * upp, 3);
+        rimL.position.set(g.position.x + 4, g.position.y - 2, 2);
+      }
+      var sy = scrollY / H;
+      for (var q = 0; q < DN; q++) {
+        var y = ((ny[q] + t * sp[q] + sy * (.1 + (nz[q] + 3) * .05)) % 1 + 1) % 1;
+        pos[q * 3] = (nx[q] - .5) * W * upp + Math.sin(t * .3 + q) * .15; pos[q * 3 + 1] = (y - .5) * H * upp; pos[q * 3 + 2] = nz[q];
+      }
+      dg.attributes.position.needsUpdate = true;
+      r.render(scene, cam);
+      if (!shown) { shown = true; cv.classList.add('on'); wrap.classList.add('gl-on'); }
+    }
+    function run() { if (!raf) raf = requestAnimationFrame(frame); }
+    document.addEventListener('visibilitychange', function () { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else run(); });
+    run();
+  }
+})();
+
+buildChips();
+buildVault();
+document.getElementById('cta-follow').addEventListener('click', scrollToFollow);
+window.addEventListener('hashchange', route);
+route();
+markReveal();
+</script>
+
+</body>
+</html>

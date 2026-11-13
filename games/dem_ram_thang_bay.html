@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đêm Rằm Tháng Bảy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #d3c9b8;
+            --blood-red: #8a0303;
+            --ui-bg: rgba(20, 20, 20, 0.9);
+            --border-color: #333;
+            --hs: 44px;
+        }
+        @media (max-width: 640px) { :root { --hs: 34px; } }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Courier Prime', monospace;
+            height: 100%;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        input, textarea { user-select: text; -webkit-user-select: text; }
+
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 50;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .title-font { font-family: 'Playfair Display', serif; }
+
+        @keyframes lightning {
+            0% { background-color: transparent; }
+            5% { background-color: rgba(255,255,255,0.2); }
+            10% { background-color: transparent; }
+            12% { background-color: rgba(255,255,255,0.4); }
+            15% { background-color: transparent; }
+            100% { background-color: transparent; }
+        }
+        .lightning-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            animation: lightning 10s infinite;
+            z-index: 15;
+        }
+
+        .rain {
+            position: absolute; width: 100%; height: 100%;
+            background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="100"><rect width="1" height="20" fill="rgba(255,255,255,0.2)"/></svg>') repeat;
+            animation: fall 0.5s linear infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @keyframes fall { to { background-position: 0 1000px; } }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); }
+
+        .hidden-ui { display: none !important; }
+
+        .pulsate { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(138, 3, 3, 0.7); border-color: var(--blood-red); }
+            70% { box-shadow: 0 0 0 10px rgba(138, 3, 3, 0); border-color: var(--border-color); }
+            100% { box-shadow: 0 0 0 0 rgba(138, 3, 3, 0); border-color: var(--border-color); }
+        }
+
+        .btn {
+            background: var(--ui-bg); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 0.5rem 1rem; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { background: #222; border-color: #666; }
+        .btn-red { border-color: var(--blood-red); color: #ff6b6b; }
+        .btn-red:hover { background: var(--blood-red); color: white; }
+        @media (max-width: 480px) {
+            .btn { padding: 0.35rem 0.55rem; }
+            #game-ui .nav-btn { padding: 0.4rem 0.4rem; }
+        }
+
+        .bg-yard    { background: url('./bg_yard.png') center/cover no-repeat, linear-gradient(#0c1216, #1b2a2a); }
+        .bg-living  { background: url('./bg_living.png') center/cover no-repeat, linear-gradient(#17100c, #2a1d16); }
+        .bg-kitchen { background: url('./bg_kitchen.png') center/cover no-repeat, linear-gradient(#131412, #26291f); }
+        .bg-hallway { background: url('./bg_hallway.png') center/cover no-repeat, linear-gradient(#100c0c, #221a1a); }
+        .bg-study   { background: url('./bg_study.png') center/cover no-repeat, linear-gradient(#0f0d12, #1f1a26); }
+
+        .digit-scroller {
+            width: 50px; height: 80px; font-size: 2.5rem;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px solid var(--border-color); background: #111;
+        }
+
+        .avatar-img {
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #555;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            transition: all 0.3s;
+            background: #1a1414;
+        }
+        .avatar-img:hover {
+            border-color: var(--blood-red);
+            box-shadow: 0 0 15px rgba(138, 3, 3, 0.8);
+        }
+        .avatar-sm { width: 56px; height: 56px; }
+        @media (min-width: 768px) { .avatar-sm { width: 90px; height: 90px; } }
+        @media (min-width: 768px) and (max-height: 500px) { .avatar-sm { width: 52px; height: 52px; } }
+        .avatar-lg { width: 64px; height: 64px; }
+        @media (min-width: 768px) { .avatar-lg { width: 140px; height: 140px; } }
+
+        .interactive-item {
+            position: absolute;
+            width: var(--hs); height: var(--hs);
+            margin: calc(var(--hs) / -2) 0 0 calc(var(--hs) / -2);
+            background: rgba(15, 10, 10, 0.65);
+            border: 2px solid rgba(212, 175, 55, 0.8);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(138, 3, 3, 0.6), inset 0 0 8px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
+            animation: hotspot-pulse 2.5s infinite;
+        }
+        @media (max-width: 640px) { .interactive-item { font-size: 1rem; } }
+        .interactive-item:hover {
+            background: rgba(138, 3, 3, 0.85);
+            transform: scale(1.25) rotate(5deg);
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.9), inset 0 0 12px rgba(255,255,255,0.4);
+        }
+        .interactive-item::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.9);
+            color: #d3c9b8;
+            border: 1px solid var(--blood-red);
+            padding: 2px 8px;
+            font-size: 10px;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-in-out;
+            font-family: 'Courier Prime', monospace;
+        }
+        .interactive-item:hover::after, .interactive-item:focus-visible::after { opacity: 1; }
+        @keyframes hotspot-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(138, 3, 3, 0.8), inset 0 0 6px rgba(0,0,0,0.8); }
+            70% { box-shadow: 0 0 0 14px rgba(138, 3, 3, 0), inset 0 0 8px rgba(0,0,0,0.8); }
+            100% { box-shadow: 0 0 0 0 rgba(138, 3, 3, 0), inset 0 0 6px rgba(0,0,0,0.8); }
+        }
+
+        #stage {
+            aspect-ratio: 16 / 9;
+            width: min(100%, calc((100vh - 7rem) * 16 / 9));
+            width: min(100%, calc((100dvh - 7rem) * 16 / 9));
+            max-height: 100%;
+        }
+        @media (hover: none) { .interactive-item::after { opacity: 1; } }
+
+        #suspects-strip { display: none; gap: 0.5rem; padding: 0.5rem; width: 100%; justify-content: center; flex-shrink: 0; }
+        @media (max-width: 767px) {
+            #suspects-strip.show { display: flex; }
+            #suspects-layer { display: none !important; }
+        }
+
+        .modal-h { height: 85vh; height: 85dvh; max-height: 640px; }
+        @media (min-width: 768px) { .modal-h { height: 80vh; height: 80dvh; max-height: none; } }
+
+        /* ===== Nâng cấp hình ảnh: lớp hiệu ứng canvas ===== */
+        #fx { position:absolute; inset:0; width:100%; height:100%; z-index:12; pointer-events:none; }
+        .fx-on #rain-effect { display:none !important; }
+        .fx-on .interactive-item { animation: hs-pulse 3s ease-out infinite, itemIn .6s ease both; }
+        @keyframes itemIn { from { opacity:0; scale:.6; } to { opacity:1; scale:1; } }
+        #audio-overlay h1 { text-shadow:0 0 28px rgba(138,3,3,.75); animation: titleFlick 7s infinite; }
+        @keyframes titleFlick { 0%,100%{opacity:1} 41%{opacity:1} 42%{opacity:.55} 43%{opacity:1} 45%{opacity:.7} 46%{opacity:1} }
+        @media (prefers-reduced-motion: reduce) { #audio-overlay h1, .fx-on .interactive-item { animation:none; } }
+
+        /* ===== Điểm khám xét: biểu tượng đường nét thay emoji ===== */
+        .interactive-item { border: 1.5px solid rgba(212,175,55,.55); background: rgba(10,8,8,.55); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); color: #e8d9a8; box-shadow: 0 2px 10px rgba(0,0,0,.6); animation: hs-pulse 3s ease-out infinite; transition: background .25s, border-color .25s, color .25s, transform .25s; }
+        .interactive-item svg { width: 54%; height: 54%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+        .interactive-item:hover { background: rgba(138,3,3,.82); border-color: #e8d9a8; color: #fff; transform: scale(1.08); box-shadow: 0 0 18px rgba(138,3,3,.7); animation: none; }
+        .interactive-item:focus-visible { outline: 2px solid #e8d9a8; outline-offset: 3px; }
+        .interactive-item::after { bottom: -30px; background: rgba(12,10,10,.92); border: 1px solid rgba(212,175,55,.35); color: #e8d9a8; font-size: 11px; letter-spacing: .04em; padding: 3px 10px; border-radius: 999px; }
+        @keyframes hs-pulse { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,.35), 0 2px 10px rgba(0,0,0,.6); } 70%, 100% { box-shadow: 0 0 0 12px rgba(212,175,55,0), 0 2px 10px rgba(0,0,0,.6); } }
+
+        /* ===== Văn bản kiểu hồ sơ vụ án ===== */
+        .dos-tag { display:flex; justify-content:space-between; gap:12px; padding:12px 24px 10px; border-bottom:1.5px solid #1b1613; font-family:'Courier Prime',monospace; font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#1b1613; }
+        .dos-tag span:last-child { color:#8a0303; }
+        .dossier { position:relative; width:100%; max-width:42rem; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.7); animation:dosIn .5s cubic-bezier(.2,.8,.2,1) both; }
+        .dossier #prologue-text { min-height:300px; padding:22px 24px 40px; font-family:'Courier Prime',monospace; font-size:clamp(.92rem,2.4vw,1.08rem); line-height:1.85; color:#1b1613; text-align:left; }
+        #prologue-text:not(:empty)::after { content:"▌"; color:#8a0303; animation:caret 1s steps(1) infinite; }
+        #prologue:has(#btn-skip.hidden-ui) #prologue-text::after { display:none; }
+        .dossier::after { content:"CHƯA GIẢI"; position:absolute; right:18px; bottom:14px; border:3px solid #8a0303; color:#8a0303; font-family:'Courier Prime',monospace; font-weight:700; letter-spacing:.16em; padding:2px 12px; transform:rotate(-9deg) scale(1.6); opacity:0; transition:opacity .25s, transform .35s cubic-bezier(.2,.9,.3,1.1); pointer-events:none; }
+        #prologue:has(#btn-skip.hidden-ui) .dossier::after { opacity:.85; transform:rotate(-9deg) scale(1); }
+        @keyframes caret { 50% { opacity:0; } }
+        @keyframes dosIn { from { opacity:0; transform:translateY(14px); } }
+        @keyframes stampIn { from { opacity:0; transform:rotate(-3deg) scale(1.7); } }
+        #objective::before { content:"MỤC TIÊU"; display:inline-block; margin-right:10px; padding:1px 8px; border:1px solid #8a0303; color:#ff8a7a; font-size:.66rem; font-weight:700; letter-spacing:.14em; vertical-align:1px; }
+        #modal-clue, #modal-message { position:relative; padding:0; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border:0; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.65); font-family:'Courier Prime',monospace; text-align:left; align-items:stretch; animation:dosIn .35s cubic-bezier(.2,.8,.2,1) both; }
+        #modal-clue > :not(.dos-tag), #modal-message > :not(.dos-tag) { margin-left:24px; margin-right:24px; width:auto; }
+        #clue-icon { width:46px; height:46px; display:grid; place-items:center; margin-top:18px; margin-bottom:10px; border:2px solid #8a0303; border-radius:50%; color:#8a0303; align-self:center; }
+        #clue-icon svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+        #clue-title { font-size:1.7rem; line-height:1.2; color:#1b1613; text-align:center; }
+        #clue-status { align-self:center; border:2px solid #6b6256; color:#6b6256; padding:2px 12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; font-size:.72rem; margin-bottom:16px; transform:rotate(-3deg); }
+        #clue-status.is-new { border-color:#8a0303; color:#8a0303; animation:stampIn .4s .2s cubic-bezier(.2,.9,.3,1.1) both; }
+        #clue-imgs img { background:#f1ece0; padding:6px 6px 24px; border:0; border-radius:0; transform:rotate(-1.2deg); box-shadow:0 8px 18px rgba(0,0,0,.45); }
+        #clue-intro { color:#5a4a3a; font-size:.9rem; border-left:3px solid #8a0303; padding-left:10px; }
+        #clue-intro::before { content:"Ghi chú thám tử: "; font-style:normal; font-weight:700; color:#8a0303; }
+        #clue-text { padding:10px 14px; background:repeating-linear-gradient(transparent 0 1.7rem, rgba(27,22,19,.13) 1.7rem calc(1.7rem + 1px)); border:0; border-radius:0; color:#1b1613; line-height:1.7rem; font-size:clamp(.95rem,2.2vw,1.05rem); }
+        #msg-content { font-size:1rem; line-height:1.7; padding-top:16px; color:#1b1613; }
+        #dynamic-img-container { margin-top:16px; }
+        #modal-clue .btn, #modal-message .btn { align-self:center; margin-bottom:22px; background:#1b1613; color:#d8cdb9; border-color:#1b1613; font-family:'Courier Prime',monospace; letter-spacing:.12em; }
+        #modal-clue .btn:hover, #modal-message .btn:hover { background:#8a0303; border-color:#8a0303; }
+        #clue-list { list-style:none; padding-left:0; counter-reset:c; }
+        #clue-list li { counter-increment:c; position:relative; padding:8px 0 8px 3.2rem; border-bottom:1px dashed rgba(92,74,48,.7); line-height:1.55; }
+        #clue-list li::before { content:"Nº " counter(c,decimal-leading-zero); position:absolute; left:0; top:10px; font-family:'Courier Prime',monospace; font-size:.7rem; font-weight:700; letter-spacing:.06em; color:#d24a3f; }
+        #clue-list li.italic { padding-left:0; counter-increment:none; }
+        #clue-list li.italic::before { content:none; }
+        @media (prefers-reduced-motion: reduce) { .dossier, #modal-clue, #modal-message, #clue-status.is-new, #prologue-text::after { animation:none; } }
+
+        /* ===== Sửa màn mở đầu: cuộn được, nút luôn bấm được ===== */
+        #prologue { overflow-y:auto; justify-content:flex-start; padding:16px; -webkit-overflow-scrolling:touch; }
+        #prologue .dossier { margin-top:auto; flex-shrink:0; }
+        #prologue .dossier #prologue-text { min-height:min(300px,38dvh); padding:18px 20px 44px; }
+        #prologue > button { flex-shrink:0; position:sticky; bottom:12px; z-index:5; }
+        #btn-skip, #btn-start-game { margin-bottom:auto; }
+        /* ===== Ổ khóa: mỗi ổ một chất liệu ===== */
+        #modal-lock { --wood:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .35' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .05 0 0 0 0 .02 0 0 0 0 0 0 0 0 .55 -.1'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23w)'/%3E%3C/svg%3E"); --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .08 0 0 0 0 .05 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"); padding:16px 18px 20px; border-width:3px; box-shadow:0 22px 50px rgba(0,0,0,.7), inset 0 0 40px rgba(0,0,0,.6); }
+        #modal-lock[data-lock=door] { --bd:#1d1209; --wbg:linear-gradient(#b08050,#8a5d34 50%,#b08050); --wfg:#2a150a; --wbd:#2a1709; --plate:#24160d; --ttl:#e8cf9a; background:var(--wood), repeating-linear-gradient(90deg,#4b2f1c 0 64px,#2a180d 64px 67px,#4b2f1c 67px 131px); border-color:var(--bd); }
+        #modal-lock[data-lock=desk] { --bd:#7a5a22; --wbg:linear-gradient(#ecd28a,#a67c2b 50%,#ecd28a); --wfg:#2b1d08; --wbd:#4a3410; --plate:#1c1208; --ttl:#ecd28a; background:var(--wood), linear-gradient(#3b2415,#2b190d); border-color:var(--bd); }
+        #modal-lock[data-lock=box] { --bd:#8a6a2a; --wbg:linear-gradient(#86a898,#456a5c 50%,#86a898); --wfg:#0c1a15; --wbd:#162620; --plate:#0f1b17; --ttl:#a9cdbb; background:var(--grain), linear-gradient(145deg,#33463f,#1b2824); border-color:var(--bd); }
+        #modal-lock[data-lock=cabinet] { --bd:#a98a4a; --wbg:linear-gradient(#f2e8cc,#b8a674 50%,#f2e8cc); --wfg:#3a2410; --wbd:#5b4318; --plate:#1d0e0a; --ttl:#d9bd7a; background:var(--wood), linear-gradient(#3a1a14,#240f0b); border-color:var(--bd); }
+        .lock-hero { width:100%; max-width:260px; margin:0 auto 14px; border:2px solid var(--bd,#555); box-shadow:inset 0 0 18px rgba(0,0,0,.8), 0 4px 12px rgba(0,0,0,.6); line-height:0; }
+        .lock-hero svg { width:100%; height:auto; display:block; }
+        #lock-title { font-family:'Playfair Display',serif; color:var(--ttl,#d3c9b8); text-shadow:0 1px 0 rgba(0,0,0,.8); letter-spacing:.04em; margin-bottom:14px; }
+        #modal-lock > div.flex { padding:12px 14px; background:var(--plate,#111); border:2px solid var(--wbd,#333); border-radius:6px; box-shadow:inset 0 2px 10px rgba(0,0,0,.8), 0 1px 0 rgba(255,255,255,.08); }
+        .digit-scroller { background:var(--wbg,#111); color:var(--wfg,#ddd); border:2px solid var(--wbd,#333); font-family:'Playfair Display',serif; font-weight:700; text-shadow:0 1px 0 rgba(255,255,255,.35); box-shadow:inset 0 16px 14px -10px rgba(0,0,0,.65), inset 0 -16px 14px -10px rgba(0,0,0,.65); overflow:hidden; }
+        #modal-lock .num-up, #modal-lock .num-down { font-size:0; width:44px; height:22px; position:relative; background:var(--wbg,#222); border:1px solid var(--wbd,#444); }
+        #modal-lock .num-up::after, #modal-lock .num-down::after { content:""; position:absolute; left:50%; top:50%; margin:-4px 0 0 -6px; border:6px solid transparent; }
+        #modal-lock .num-up::after { border-bottom:8px solid var(--wfg,#ddd); border-top:0; }
+        #modal-lock .num-down::after { border-top:8px solid var(--wfg,#ddd); border-bottom:0; margin-top:-3px; }
+        #modal-lock .num-up:hover, #modal-lock .num-down:hover { filter:brightness(1.2); background:var(--wbg); }
+        #btn-unlock { background:var(--wbg,#600); color:var(--wfg,#fff); border:2px solid var(--wbd,#800); font-family:'Playfair Display',serif; font-weight:700; letter-spacing:.2em; }
+        #btn-unlock:hover { filter:brightness(1.15); background:var(--wbg); color:var(--wfg); }
+        #modal-lock .shake, #modal-lock.shake { animation:lockShake .4s; }
+        @keyframes lockShake { 20%,60% { transform:translateX(-7px); } 40%,80% { transform:translateX(7px); } }
+        /* ===== Sổ tay thám tử ===== */
+        #modal-notebook { display:flex; flex-direction:column; overflow:hidden; max-height:calc(100dvh - 24px); padding:14px 14px 14px 22px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .08 0 0 0 0 .05 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"), linear-gradient(145deg,#4a2a18,#26150b); border:0; border-radius:6px 14px 14px 6px; box-shadow:0 24px 56px rgba(0,0,0,.7), inset 0 0 0 2px rgba(0,0,0,.5); color:#2a2218; font-family:'Patrick Hand','Courier Prime',cursive; }
+        #modal-notebook::before { content:""; position:absolute; inset:5px 5px 5px 12px; border:1.5px dashed rgba(224,190,130,.35); border-radius:4px; pointer-events:none; }
+        #modal-notebook::after { content:""; position:absolute; left:0; top:0; bottom:0; width:14px; background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(255,255,255,.06) 60%,transparent); pointer-events:none; }
+        #modal-notebook .close-modal { z-index:6; color:#5a4630; right:26px; top:18px; }
+        .nb-page { position:relative; flex:1; min-height:0; overflow-y:auto; margin-left:8px; padding:20px 18px 24px 46px; border-radius:2px; color:#2a2218; box-shadow:inset 0 0 40px rgba(120,90,40,.25), 0 2px 0 #c9bb98, 0 4px 0 #b5a67f;
+            background:radial-gradient(circle at 86% 9%,transparent 0 26px,rgba(110,70,20,.16) 27px 30px,transparent 32px), linear-gradient(90deg,transparent 35px,rgba(180,50,40,.5) 35px,rgba(180,50,40,.5) 36.5px,transparent 36.5px), repeating-linear-gradient(transparent 0 1.74rem,rgba(70,100,140,.2) 1.74rem calc(1.74rem + 1px)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"), #e6dcc3; background-attachment:local; }
+        .nb-tape { position:absolute; top:8px; left:70px; width:76px; height:22px; background:rgba(235,225,170,.72); transform:rotate(-4deg); box-shadow:0 1px 3px rgba(0,0,0,.3); z-index:4; pointer-events:none; }
+        #modal-notebook h2 { font-family:'Patrick Hand',cursive; font-size:2rem; color:#2a2218; border-color:#2a2218; margin-top:8px; }
+        .nb-sub { font-family:'Courier Prime',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#8a0303; margin:-10px 0 14px; }
+        #modal-notebook h3 { font-family:'Patrick Hand',cursive; font-size:1.3rem; color:#8a0303; text-decoration:underline wavy rgba(138,3,3,.5); text-underline-offset:4px; }
+        #modal-notebook #clue-list li { font-size:1.2rem; line-height:1.5; border-bottom:0; padding:3px 0 3px 3.2rem; }
+        #modal-notebook #clue-list li::before { font-family:'Patrick Hand',cursive; font-size:1rem; left:-2px; top:5px; }
+        #modal-notebook #clue-list li.italic { color:#7a6a52; }
+        #modal-notebook #clue-list { max-height:none; overflow:visible; }
+        #modal-notebook select { background:rgba(255,250,235,.5); border:0; border-bottom:1.5px solid #2a2218; border-radius:0; color:#2a2218; font-family:inherit; font-size:1.05rem; padding:4px; }
+        #modal-notebook option { background:#e6dcc3; color:#2a2218; }
+        #modal-notebook .btn { background:#2a2218; color:#e6dcc3; border:0; border-radius:2px; font-family:'Courier Prime',monospace; letter-spacing:.12em; }
+        #modal-notebook .btn:hover { background:#5c3b00; }
+        #modal-notebook #btn-accuse { background:#8a0303; color:#fff; }
+        #modal-notebook #btn-accuse:hover { background:#a30505; }
+        #modal-notebook .text-yellow-400 { color:#8a5a00; }
+        #modal-notebook .text-green-400 { color:#1f6b2a; }
+        @media (prefers-reduced-motion: reduce) { #modal-lock.shake { animation:none; } }
+
+        /* ===== Biên bản hỏi cung + cài đặt AI ===== */
+        #modal-interrogation { padding-top:36px; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border:0; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.7); font-family:'Courier Prime',monospace; }
+        #modal-interrogation > .dos-tag { position:absolute; top:0; left:0; right:0; padding-right:52px; }
+        #modal-interrogation > div:nth-child(2) { background:#cfc3aa; border-color:rgba(27,22,19,.35); }
+        #modal-interrogation > div:nth-child(3) { background:transparent; }
+        #suspect-avatar { border:6px solid #f1ece0; border-bottom-width:22px; border-radius:0; box-shadow:0 8px 18px rgba(0,0,0,.45); transform:rotate(-2deg); }
+        #suspect-name { color:#8a0303; }
+        #suspect-role { color:#5a4a3a; }
+        #suspect-bio { background:rgba(27,22,19,.06); border:0; border-left:3px solid #8a0303; border-radius:0; color:#1b1613; }
+        #chat-history > div.self-end { background:none; border:0; border-right:3px solid #1b1613; border-radius:0; color:#1b1613; }
+        #chat-history > div.self-end::before { content:"THÁM TỬ HỎI"; display:block; font-size:.62rem; letter-spacing:.14em; font-weight:700; color:#5a4a3a; }
+        #chat-history > div.self-start { background:rgba(138,3,3,.07); border:0; border-left:3px solid #8a0303; border-radius:0; color:#1b1613; }
+        #chat-history > div.self-start > span:first-child { color:#8a0303; text-transform:uppercase; letter-spacing:.08em; }
+        #chat-history > div.self-start .text-yellow-500 { color:#8a5a00; }
+        #chat-history > .text-gray-500 { color:#6b6256; }
+        #chat-chips, #ev-panel { border-color:rgba(27,22,19,.35); }
+        #modal-interrogation .btn { background:transparent; border:1px solid #1b1613; color:#1b1613; border-radius:0; font-family:'Courier Prime',monospace; }
+        #modal-interrogation .btn:hover { background:#1b1613; color:#d8cdb9; }
+        #modal-interrogation #btn-send-chat { background:#8a0303; border-color:#8a0303; color:#fff; }
+        #modal-interrogation #btn-send-chat:hover { background:#a30505; }
+        #chat-input { background:#f1ece0; border:0; border-bottom:2px solid #1b1613; border-radius:0; color:#1b1613; }
+        #chat-input::placeholder { color:#8a7f6e; }
+        #modal-interrogation .close-modal { color:#5a4a3a; }
+    </style>
+</head>
+<body class="crt">
+
+<div id="app-container" class="w-full h-full relative flex justify-center items-center">
+
+    <div id="audio-overlay" class="absolute inset-0 z-50 bg-black flex flex-col justify-center items-center text-center p-6">
+        <h1 class="text-4xl title-font text-red-700 mb-4">ĐÊM RẰM THÁNG BẢY</h1>
+        <p class="mb-8 max-w-md">Game sử dụng âm thanh và hiệu ứng hù dọa nhẹ.<br>Đeo tai nghe để có trải nghiệm tốt nhất.</p>
+        <p id="net-warn" class="hidden-ui mb-6 max-w-md" style="color:#eab308;font-size:0.85rem">Không tải được giao diện (Tailwind). Hãy kiểm tra kết nối mạng rồi tải lại trang.</p>
+        <button id="btn-continue" class="btn btn-red text-xl px-8 py-3 mb-3 hidden-ui">TIẾP TỤC VỤ ÁN</button>
+        <button id="btn-start-audio" class="btn text-xl px-8 py-3 pulsate">VÀO NHÀ CHÍNH</button>
+    </div>
+
+    <div id="prologue" class="absolute inset-0 z-40 bg-black flex flex-col justify-center items-center p-8 hidden-ui">
+        <div id="prologue-text" class="text-lg md:text-xl max-w-2xl leading-loose min-h-[300px] cursor-pointer"></div>
+        <button id="btn-skip" class="btn text-sm mt-4">BỎ QUA ▶</button>
+        <button id="btn-start-game" class="btn btn-red mt-8 hidden-ui">TIẾP TỤC ĐIỀU TRA</button>
+    </div>
+
+    <div id="game-ui" class="w-full h-full max-w-5xl relative hidden-ui flex flex-col lightning-bg">
+        <div class="h-12 border-b border-[#333] flex justify-between items-center px-2 md:px-4 bg-black/80 z-30">
+            <div class="hidden md:block title-font text-xl tracking-widest text-red-600">TRẦN BẢO - THÁM TỬ TƯ</div>
+            <div id="room-name" class="font-bold">Sân Trước</div>
+            <div class="flex gap-2">
+                <button id="btn-mute" class="btn text-sm" title="Bật/tắt âm thanh">🔊</button>
+                <button id="btn-hint-global" class="btn text-sm">💡 GỢI Ý</button>
+                <button id="btn-notebook" class="btn text-sm">📓 SỔ TAY</button>
+            </div>
+        </div>
+
+        <div id="objective" class="px-3 py-2 text-xs md:text-sm bg-[#1a1210] border-b border-[#5c4a30] text-[#e8dbce] z-30"></div>
+        <div id="scene-container" class="flex-1 relative overflow-hidden bg-black flex flex-col items-center justify-center">
+            <div id="stage" class="relative overflow-hidden bg-yard">
+                <div id="rain-effect" class="rain"></div>
+                <div id="items-layer" class="absolute inset-0 z-20"></div>
+                <div id="suspects-layer" class="absolute bottom-10 w-full flex justify-center gap-3 md:gap-8 hidden-ui z-20 px-2"></div>
+                <div id="msg-box" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 border border-gray-600 p-3 rounded text-center w-11/12 max-w-md hidden-ui z-30 opacity-0 transition-opacity duration-300"></div>
+            </div>
+            <div id="suspects-strip"></div>
+        </div>
+
+        <div class="h-16 border-t border-[#333] bg-black/90 flex justify-center items-center gap-1 md:gap-4 px-1 md:px-2 z-30">
+            <button class="btn nav-btn text-xs md:text-sm" data-room="frontYard">SÂN TRƯỚC</button>
+            <button class="btn nav-btn text-xs md:text-sm" data-room="livingRoom">PHÒNG KHÁCH</button>
+            <button class="btn nav-btn text-xs md:text-sm" data-room="kitchen">NHÀ BẾP</button>
+            <button class="btn nav-btn text-xs md:text-sm" data-room="hallway">HÀNH LANG</button>
+            <button class="btn nav-btn text-xs md:text-sm" data-room="study">THƯ PHÒNG</button>
+        </div>
+    </div>
+
+    <div id="modal-bg" class="absolute inset-0 bg-black/80 z-50 hidden-ui flex justify-center items-center p-2 md:p-4">
+        <div id="modal-interrogation" class="bg-[#111] border border-[#444] w-full max-w-3xl modal-h flex flex-col md:flex-row hidden-ui relative">
+            <div class="md:w-2/5 border-b md:border-b-0 md:border-r border-[#333] p-3 md:p-4 flex flex-row md:flex-col items-center gap-3 md:gap-0 bg-[#0a0a0a] shrink-0">
+                <img id="suspect-avatar" src="" alt="Avatar" class="avatar-img avatar-lg md:mb-4 shrink-0">
+                <div class="flex flex-col md:items-center min-w-0 md:w-full pr-6 md:pr-0">
+                    <h2 id="suspect-name" class="font-bold text-lg md:text-2xl text-red-500 mb-0 md:mb-1 title-font">Tên</h2>
+                    <div id="suspect-role" class="text-xs md:text-sm text-gray-400 mb-1 md:mb-4 italic">Vai trò</div>
+                    <div id="suspect-bio" class="text-xs md:text-sm text-gray-300 text-justify overflow-y-auto bg-black/50 p-2 md:p-3 rounded border border-[#222] max-h-16 md:max-h-none">Tiểu sử...</div>
+                </div>
+            </div>
+            <div class="md:w-3/5 flex flex-col flex-1 min-h-0 bg-[#151515]">
+                <div id="chat-history" class="flex-1 min-h-0 p-4 overflow-y-auto flex flex-col gap-3"></div>
+                <div id="chat-chips" class="px-3 pt-2 flex flex-wrap gap-2 border-t border-[#333]"></div>
+                <div id="ev-panel" class="px-3 pt-2 flex flex-wrap gap-2 hidden-ui"></div>
+                <div class="p-3 flex flex-wrap gap-2">
+                    <input type="text" id="chat-input" class="flex-1 min-w-0 bg-black border border-[#555] text-white p-2 rounded focus:outline-none focus:border-red-500" placeholder="Hỏi bất kỳ điều gì..." autocomplete="off">
+                    <button id="btn-send-chat" class="btn btn-red">HỎI</button>
+                    <button id="btn-evidence" class="btn text-sm">📎 ĐƯA VẬT CHỨNG</button>
+                </div>
+            </div>
+            <button class="absolute top-2 right-2 text-gray-500 hover:text-white close-modal px-3 py-1 text-2xl font-bold">&times;</button>
+        </div>
+
+        <div id="modal-lock" class="bg-[#1a1a1a] border-2 border-red-900 p-6 flex flex-col items-center hidden-ui relative w-full max-w-sm max-h-full overflow-y-auto">
+            <h2 id="lock-title" class="text-xl mb-6 font-bold title-font">Ổ Khóa Số</h2>
+            <div class="flex gap-2 mb-6">
+                <div class="flex flex-col items-center gap-1">
+                    <button class="btn px-2 py-0 num-up" data-idx="0">▲</button>
+                    <div class="digit-scroller" id="digit-0">0</div>
+                    <button class="btn px-2 py-0 num-down" data-idx="0">▼</button>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                    <button class="btn px-2 py-0 num-up" data-idx="1">▲</button>
+                    <div class="digit-scroller" id="digit-1">0</div>
+                    <button class="btn px-2 py-0 num-down" data-idx="1">▼</button>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                    <button class="btn px-2 py-0 num-up" data-idx="2">▲</button>
+                    <div class="digit-scroller" id="digit-2">0</div>
+                    <button class="btn px-2 py-0 num-down" data-idx="2">▼</button>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                    <button class="btn px-2 py-0 num-up" data-idx="3">▲</button>
+                    <div class="digit-scroller" id="digit-3">0</div>
+                    <button class="btn px-2 py-0 num-down" data-idx="3">▼</button>
+                </div>
+            </div>
+            <button id="btn-unlock" class="btn btn-red w-full">MỞ KHÓA</button>
+            <div id="lock-error" class="text-red-500 mt-2 text-sm h-5"></div>
+            <button id="btn-hint" class="btn w-full mt-2">💡 GỢI Ý (0/3)</button>
+            <div id="lock-hint" class="text-yellow-200 text-sm mt-3 min-h-[3rem] text-center"></div>
+            <button class="absolute top-1 right-2 text-gray-500 hover:text-white close-modal text-2xl font-bold">&times;</button>
+        </div>
+
+        <div id="modal-notebook" class="bg-[#2c2820] border border-[#5c4a30] w-11/12 max-w-md p-6 hidden-ui relative text-[#dcd0c0] font-sans max-h-full overflow-y-auto">
+            <h2 class="text-2xl mb-4 font-bold border-b border-[#5c4a30] pb-2 font-serif text-[#e8dbce]">Sổ Tay Thám Tử</h2>
+            <ul id="clue-list" class="list-disc pl-5 space-y-2 max-h-[40vh] overflow-y-auto text-sm">
+                <li class="italic text-gray-400">Chưa ghi nhận manh mối nào...</li>
+            </ul>
+            <button class="absolute top-2 right-3 text-[#5c4a30] hover:text-[#e8dbce] close-modal text-3xl font-bold">&times;</button>
+
+            <div class="mt-6 border-t border-[#5c4a30] pt-4">
+                <h3 class="font-bold text-yellow-300 mb-2">Dựng lại hiện trường: 23:30</h3><div id="recon-rows" class="space-y-1 mb-2"></div><button id="btn-recon" class="btn w-full mb-1">KIỂM TRA</button><div id="recon-msg" class="text-sm min-h-[1.25rem] mb-4"></div>
+                <h3 class="font-bold text-red-400 mb-2">Kết Án</h3>
+                <select id="accuse-suspect" class="w-full bg-[#1a1712] border border-[#5c4a30] p-2 mb-2 text-[#dcd0c0] outline-none">
+                    <option value="">-- Chọn Hung Thủ --</option>
+                    <option value="quan">Lương Minh Quân</option>
+                    <option value="van">Triệu Thanh Vân</option>
+                    <option value="khoa">Phạm Đức Khoa</option>
+                    <option value="cuu">Thầy Cửu</option>
+                    <option value="hanh">Chị Tư Hạnh</option>
+                </select>
+                <button id="btn-accuse" class="btn w-full bg-red-900 border-red-700 text-white font-bold hover:bg-red-800">CHỈ ĐIỂM</button>
+                <div id="accuse-error" class="text-yellow-400 text-sm mt-2 min-h-[1.25rem]"></div>
+            </div>
+        </div>
+
+        <div id="modal-clue" class="bg-[#111] border border-[#8a0303] p-6 w-11/12 max-w-2xl text-center hidden-ui flex flex-col items-center max-h-full overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="clue-title">
+            <div id="clue-icon" class="text-4xl mb-2" aria-hidden="true"></div>
+            <h3 id="clue-title" class="title-font text-2xl text-[#d3c9b8] mb-1"></h3>
+            <div id="clue-status" class="text-sm text-red-500 mb-4"></div>
+            <div id="clue-imgs" class="mb-4 w-full"></div>
+            <p id="clue-intro" class="text-sm md:text-base italic text-gray-400 mb-3 hidden-ui"></p>
+            <div id="clue-text" class="w-full text-left text-base md:text-lg leading-relaxed bg-black/40 border border-[#333] p-4 rounded mb-5"></div>
+            <button id="btn-clue-close" class="btn close-modal">ĐÓNG</button>
+        </div>
+
+        <div id="modal-message" class="bg-[#111] border border-[#555] p-6 w-11/12 max-w-3xl text-center hidden-ui flex flex-col items-center max-h-full overflow-y-auto">
+            <div id="dynamic-img-container" class="mb-4"></div>
+            <div id="msg-content" class="mb-4 text-base md:text-lg">Message</div>
+            <button class="btn close-modal">ĐÓNG</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let audioCtx, masterGain, sfxBus, ambBus, reverbIn, noiseBuf;
+let muted = false;
+try { muted = localStorage.getItem('drtb_muted') === '1'; } catch (e) {}
+
+const AMB = { profile: null, nextEvent: 0, tock: false, thTimer: null };
+
+const ROOM_AUDIO = {
+    frontYard:  { rain: 0.031, rainLP: 9000, roof: 0.05, wind: 0.065, drone: 0.009, indoor: false, clock: false, drip: false, well: true, whisper: false, creak: 0.10 },
+    livingRoom: { rain: 0.034, rainLP: 1400, roof: 0.07, wind: 0.020, drone: 0.014, indoor: true,  clock: true,  drip: false, whisper: false, creak: 0.35 },
+    kitchen:    { rain: 0.034, rainLP: 1500, roof: 0.07, wind: 0.015, drone: 0.014, indoor: true,  clock: false, drip: true,  whisper: false, creak: 0.20 },
+    hallway:    { rain: 0.028, rainLP: 1100, roof: 0.06, wind: 0.017, drone: 0.020, indoor: true,  clock: false, drip: false, whisper: true,  creak: 0.45 },
+    study:      { rain: 0.024, rainLP:  900, roof: 0.05, wind: 0.010, drone: 0.016, indoor: true,  clock: true,  drip: false, whisper: true,  creak: 0.25 }
+};
+
+function makeNoiseBuffer(sec) {
+    const len = Math.floor(audioCtx.sampleRate * sec);
+    const b = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+    const d = b.getChannelData(0);
+    for (let k = 0; k < len; k++) d[k] = Math.random() * 2 - 1;
+    return b;
+}
+function makeReverbIR(sec, decay) {
+    const len = Math.floor(audioCtx.sampleRate * sec);
+    const b = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+    for (let c = 0; c < 2; c++) {
+        const d = b.getChannelData(c);
+        for (let k = 0; k < len; k++) d[k] = (Math.random() * 2 - 1) * Math.pow(1 - k / len, decay);
+    }
+    return b;
+}
+
+function initAudio() {
+    if (audioCtx) { if (audioCtx.state !== 'running') audioCtx.resume(); return; }
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { audioCtx = null; return; }
+    const ac = audioCtx;
+
+    masterGain = ac.createGain();
+    masterGain.gain.value = muted ? 0 : 1;
+    const comp = ac.createDynamicsCompressor();
+    comp.threshold.value = -20; comp.knee.value = 20; comp.ratio.value = 4;
+    comp.attack.value = 0.005; comp.release.value = 0.3;
+    masterGain.connect(comp); comp.connect(ac.destination);
+
+    ambBus = ac.createGain(); ambBus.connect(masterGain);
+    sfxBus = ac.createGain(); sfxBus.connect(masterGain);
+
+    const conv = ac.createConvolver();
+    conv.buffer = makeReverbIR(2.8, 3);
+    const wet = ac.createGain(); wet.gain.value = 0.5;
+    reverbIn = ac.createGain();
+    reverbIn.connect(conv); conv.connect(wet); wet.connect(masterGain);
+
+    noiseBuf = makeNoiseBuffer(4);
+    AMB.nextEvent = performance.now() + 8000;
+    startAmbience();
+    startMusic();
+    setInterval(ambientTick, 1000);
+}
+
+function startAmbience() {
+    const ac = audioCtx;
+    const loopNoise = () => {
+        const s = ac.createBufferSource();
+        s.buffer = noiseBuf; s.loop = true; s.start(0, Math.random() * 3);
+        return s;
+    };
+    const lfo = (freq, depth, target) => {
+        const o = ac.createOscillator(); o.frequency.value = freq;
+        const g = ac.createGain(); g.gain.value = depth;
+        o.connect(g); g.connect(target); o.start();
+    };
+
+    AMB.droneG = ac.createGain(); AMB.droneG.gain.value = 0;
+    const droneLP = ac.createBiquadFilter();
+    droneLP.type = 'lowpass'; droneLP.frequency.value = 240; droneLP.Q.value = 2;
+    droneLP.connect(AMB.droneG); AMB.droneG.connect(ambBus);
+    [[55, 'sawtooth', 0.5], [55.45, 'sawtooth', 0.5], [27.5, 'sine', 1], [77.8, 'sawtooth', 0.12]].forEach(([f, type, v]) => {
+        const o = ac.createOscillator(); o.type = type; o.frequency.value = f;
+        const g = ac.createGain(); g.gain.value = v;
+        o.connect(g); g.connect(droneLP); o.start();
+    });
+    lfo(0.05, 90, droneLP.frequency);
+
+    const rainHP = ac.createBiquadFilter(); rainHP.type = 'highpass'; rainHP.frequency.value = 250;
+    AMB.rainLP = ac.createBiquadFilter(); AMB.rainLP.type = 'lowpass'; AMB.rainLP.frequency.value = 9000;
+    AMB.rainG = ac.createGain(); AMB.rainG.gain.value = 0;
+    loopNoise().connect(rainHP); rainHP.connect(AMB.rainLP); AMB.rainLP.connect(AMB.rainG); AMB.rainG.connect(ambBus);
+    const roofLP = ac.createBiquadFilter(); roofLP.type = 'lowpass'; roofLP.frequency.value = 450;
+    AMB.roofG = ac.createGain(); AMB.roofG.gain.value = 0;
+    loopNoise().connect(roofLP); roofLP.connect(AMB.roofG); AMB.roofG.connect(ambBus);
+
+    AMB.windG = ac.createGain(); AMB.windG.gain.value = 0;
+    const windLP = ac.createBiquadFilter(); windLP.type = 'lowpass'; windLP.frequency.value = 420; windLP.Q.value = 3;
+    loopNoise().connect(windLP); windLP.connect(AMB.windG); AMB.windG.connect(ambBus);
+    lfo(0.07, 220, windLP.frequency);
+    lfo(0.13, 90, windLP.frequency);
+
+    setRoomAmbience('frontYard');
+}
+
+function setRoomAmbience(roomId) {
+    if (!audioCtx || !AMB.rainG || !AMB.roofG) return;
+    const p = ROOM_AUDIO[roomId] || ROOM_AUDIO.frontYard, t = audioCtx.currentTime;
+    AMB.profile = p;
+    AMB.rainG.gain.setTargetAtTime(p.rain, t, 0.5);
+    AMB.rainLP.frequency.setTargetAtTime(p.rainLP, t, 0.5);
+    AMB.windG.gain.setTargetAtTime(p.wind, t, 0.5);
+    AMB.roofG.gain.setTargetAtTime(p.roof, t, 0.5);
+    AMB.droneG.gain.setTargetAtTime(p.drone, t, 0.8);
+    scheduleThunder();
+}
+
+function scheduleThunder() {
+    clearTimeout(AMB.thTimer);
+    let wait = 9000 + Math.random() * 9000;
+    try {
+        const a = document.getAnimations().find(x => x.animationName === 'lightning');
+        if (a && a.currentTime != null) {
+            const cycle = 10000, t = Number(a.currentTime) % cycle;
+            wait = (1200 - t + cycle) % cycle;
+            if (wait < 2000) wait += cycle;
+        }
+    } catch (e) {}
+    AMB.thTimer = setTimeout(() => {
+        const inGame = !$('game-ui').classList.contains('hidden-ui');
+        if (inGame && Math.random() < 0.85) sfx('thunder', 0.15 + Math.random() * 1.6);
+        scheduleThunder();
+    }, wait);
+}
+
+function ambientTick() {
+    if (!audioCtx || audioCtx.state !== 'running' || muted || document.hidden) return;
+    if ($('game-ui').classList.contains('hidden-ui')) return;
+    const p = AMB.profile || ROOM_AUDIO.frontYard, now = performance.now();
+    if (p.clock) { AMB.tock = !AMB.tock; sfx('tick', AMB.tock); }
+    if (now < AMB.nextEvent) return;
+    AMB.nextEvent = now + 7000 + Math.random() * 13000;
+    const r = Math.random();
+    if (p.well && r < 0.3) sfx('wellPlop');
+    else if (p.drip && r < 0.5) sfx('drip');
+    else if (r < p.creak) sfx('creak');
+    else if (p.whisper && r < 0.9) sfx('breath');
+    else if (p.drip) sfx('drip');
+}
+
+function toggleMute() {
+    muted = !muted;
+    if (audioCtx && masterGain) {
+        masterGain.gain.setTargetAtTime(muted ? 0 : 1, audioCtx.currentTime, 0.05);
+        if (!muted && audioCtx.state !== 'running') audioCtx.resume();
+    }
+    document.getElementById('btn-mute').textContent = muted ? '🔇' : '🔊';
+    try { localStorage.setItem('drtb_muted', muted ? '1' : '0'); } catch (e) {}
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (!audioCtx) return;
+    if (document.hidden) audioCtx.suspend(); else audioCtx.resume();
+});
+document.addEventListener('pointerdown', () => {
+    if (audioCtx && audioCtx.state !== 'running' && !document.hidden) audioCtx.resume();
+});
+
+function out(node, o) {
+    node.connect(o.bus || sfxBus);
+    if (o.rev) { const s = audioCtx.createGain(); s.gain.value = o.rev; node.connect(s); s.connect(reverbIn); }
+}
+
+function tone(o) {
+    const ac = audioCtx, t0 = ac.currentTime + (o.t || 0), dur = o.dur || 0.2, vol = o.vol || 0.1;
+    const osc = ac.createOscillator();
+    osc.type = o.type || 'sine';
+    osc.frequency.setValueAtTime(o.f, t0);
+    if (o.f2) osc.frequency.exponentialRampToValueAtTime(o.f2, t0 + dur);
+    const g = ac.createGain();
+    const att = Math.min(o.attack || 0.005, dur * 0.8);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol, t0 + att);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g);
+    let last = g;
+    if (o.lp) { const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; g.connect(f); last = f; }
+    out(last, o);
+    osc.start(t0); osc.stop(t0 + dur + 0.05);
+}
+
+function noiseHit(o) {
+    const ac = audioCtx, t0 = ac.currentTime + (o.t || 0), dur = o.dur || 0.1;
+    const type = o.type || 'bandpass', f = o.f || 1000, q = o.q || 1;
+    const src = ac.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
+    const flt = ac.createBiquadFilter(); flt.type = type; flt.Q.value = q;
+    flt.frequency.setValueAtTime(f, t0);
+    if (o.f2) flt.frequency.exponentialRampToValueAtTime(o.f2, t0 + dur);
+    const nyq = ac.sampleRate / 2;
+    let frac = type === 'lowpass' ? f / nyq : type === 'highpass' ? (nyq - f) / nyq : (f / q) * 1.57 / nyq;
+    frac = Math.max(0.002, Math.min(1, frac));
+    const peak = (o.vol || 0.1) * Math.min(40, 1 / (1.7 * Math.sqrt(frac)));
+    const g = ac.createGain();
+    const att = Math.min(o.attack || 0.003, dur * 0.8);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(peak, t0 + att);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(flt); flt.connect(g); out(g, o);
+    src.start(t0, Math.random() * 3); src.stop(t0 + dur + 0.05);
+}
+
+function bell(f, t, vol) {
+    tone({ f, t, dur: 2.4, vol, attack: 0.008, rev: 0.8 });
+    tone({ f: f * 2.76, t, dur: 1.1, vol: vol * 0.3, attack: 0.008, rev: 0.8 });
+    tone({ f: f * 5.4, t, dur: 0.5, vol: vol * 0.12, attack: 0.005, rev: 0.8 });
+}
+
+const SFX = {
+    click() {
+        noiseHit({ dur: 0.05, vol: 0.08, f: 1600, q: 2 });
+        tone({ f: 150, f2: 70, dur: 0.12, vol: 0.1 });
+    },
+    digit() {
+        noiseHit({ dur: 0.035, vol: 0.18, f: 3000, q: 5 });
+        tone({ type: 'square', f: 1100, f2: 700, dur: 0.03, vol: 0.025 });
+    },
+    paper() {
+        noiseHit({ dur: 0.4, vol: 0.1, f: 3800, f2: 1800, q: 0.7, attack: 0.05 });
+        noiseHit({ t: 0.14, dur: 0.22, vol: 0.07, type: 'highpass', f: 4500, attack: 0.03 });
+    },
+    clue() {
+        SFX.paper();
+        bell(293.66, 0.15, 0.06);
+        bell(311.13, 0.4, 0.045);
+    },
+    note() {
+        for (let k = 0; k < 4; k++) noiseHit({ t: k * 0.07, dur: 0.06, vol: 0.09, f: 4800 + k * 300, q: 3 });
+        tone({ t: 0.3, f: 1760, dur: 0.18, vol: 0.03, rev: 0.4 });
+    },
+    unlockOK() {
+        noiseHit({ dur: 0.07, vol: 0.15, f: 2200, q: 5 });
+        tone({ type: 'triangle', f: 190, f2: 60, dur: 0.28, vol: 0.2 });
+        noiseHit({ t: 0.13, dur: 0.05, vol: 0.11, f: 3400, q: 6 });
+        tone({ t: 0.16, f: 1318, dur: 0.9, vol: 0.05, rev: 0.6 });
+        tone({ t: 0.16, f: 1976, dur: 0.6, vol: 0.025, rev: 0.6 });
+    },
+    unlockFail() {
+        tone({ type: 'sawtooth', f: 140, f2: 85, dur: 0.38, vol: 0.12, lp: 700 });
+        noiseHit({ dur: 0.04, vol: 0.18, f: 1400, q: 4 });
+        noiseHit({ t: 0.09, dur: 0.04, vol: 0.14, f: 1100, q: 4 });
+    },
+    locked() {
+        [0, 0.11, 0.26].forEach((d, k) => {
+            noiseHit({ t: d, dur: 0.05, vol: 0.2 - k * 0.03, f: 900 + k * 150, q: 3 });
+            tone({ t: d, f: 110, f2: 70, dur: 0.1, vol: 0.14 });
+        });
+    },
+    creak(dur) {
+        const ac = audioCtx, d = dur || (0.7 + Math.random() * 0.9), t0 = ac.currentTime + 0.02;
+        const osc = ac.createOscillator(); osc.type = 'sawtooth';
+        const f0 = 140 + Math.random() * 90;
+        osc.frequency.setValueAtTime(f0, t0);
+        osc.frequency.linearRampToValueAtTime(f0 * (1.5 + Math.random() * 0.5), t0 + d * 0.5);
+        osc.frequency.linearRampToValueAtTime(f0 * 1.15, t0 + d);
+        const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 9;
+        bp.frequency.setValueAtTime(600, t0);
+        bp.frequency.linearRampToValueAtTime(1400, t0 + d * 0.6);
+        bp.frequency.linearRampToValueAtTime(800, t0 + d);
+        const trem = ac.createOscillator(); trem.frequency.value = 22 + Math.random() * 10;
+        const tg = ac.createGain(); tg.gain.value = 0.3;
+        const tremG = ac.createGain(); tremG.gain.value = 0.7;
+        trem.connect(tg); tg.connect(tremG.gain);
+        const g = ac.createGain();
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.linearRampToValueAtTime(0.35, t0 + d * 0.15);
+        g.gain.linearRampToValueAtTime(0.2, t0 + d * 0.7);
+        g.gain.linearRampToValueAtTime(0.0001, t0 + d);
+        osc.connect(bp); bp.connect(tremG); tremG.connect(g);
+        out(g, { rev: 0.35 });
+        osc.start(t0); trem.start(t0);
+        osc.stop(t0 + d + 0.05); trem.stop(t0 + d + 0.05);
+    },
+    doorOpen() {
+        SFX.creak(1.1);
+        tone({ t: 1.0, type: 'triangle', f: 90, f2: 45, dur: 0.3, vol: 0.2 });
+        noiseHit({ t: 1.0, dur: 0.12, vol: 0.14, type: 'lowpass', f: 500 });
+    },
+    step(wet) {
+        if (wet) { noiseHit({ dur: 0.18, vol: 0.05, f: 2200, f2: 900, q: 0.8 }); noiseHit({ t: 0.46, dur: 0.16, vol: 0.04, f: 2000, f2: 900, q: 0.8 }); }
+        [0, 0.46].forEach((d, k) => {
+            const v = k ? 0.8 : 1;
+            noiseHit({ t: d, dur: 0.14, vol: 0.11 * v, type: 'lowpass', f: 420, q: 0.7 });
+            tone({ t: d, type: 'triangle', f: 95, f2: 48, dur: 0.16, vol: 0.12 * v });
+            noiseHit({ t: d, dur: 0.05, vol: 0.05 * v, f: 1500, q: 1.5 });
+        });
+    },
+    tick(tock) {
+        noiseHit({ dur: 0.025, vol: 0.1, f: tock ? 1500 : 1900, q: 6 });
+        tone({ f: tock ? 520 : 680, f2: tock ? 480 : 640, dur: 0.05, vol: 0.04, rev: 0.25 });
+    },
+    drip() {
+        const f = 1100 + Math.random() * 700;
+        tone({ f, f2: f * 0.55, dur: 0.14, vol: 0.1, attack: 0.002, rev: 0.8 });
+        tone({ t: 0.16, f: f * 0.8, f2: f * 0.45, dur: 0.1, vol: 0.03, attack: 0.002, rev: 0.8 });
+    },
+    breath() {
+        noiseHit({ dur: 2.2, vol: 0.03, f: 1400, f2: 800, q: 5, attack: 0.9, rev: 0.9 });
+        noiseHit({ dur: 2.2, vol: 0.02, f: 2600, f2: 1800, q: 6, attack: 0.9, rev: 0.9 });
+    },
+    thunder(delay) {
+        const d = delay || 0, indoor = !!(AMB.profile && AMB.profile.indoor);
+        noiseHit({ t: d, dur: 0.35, vol: indoor ? 0.07 : 0.18, type: 'lowpass', f: indoor ? 900 : 3000, f2: 200, q: 0.7, attack: 0.01, rev: 0.5 });
+        noiseHit({ t: d + 0.1, dur: 3.6, vol: indoor ? 0.16 : 0.3, type: 'lowpass', f: indoor ? 130 : 240, f2: 45, q: 0.7, attack: 0.25, rev: 0.6 });
+        tone({ t: d + 0.1, f: 48, f2: 30, dur: 3, vol: indoor ? 0.12 : 0.18, attack: 0.3, lp: 120 });
+    },
+    msgIn() { tone({ f: 540, f2: 400, dur: 0.09, vol: 0.045, attack: 0.004, rev: 0.3 }); },
+    send() { noiseHit({ dur: 0.03, vol: 0.09, f: 2400, q: 3 }); },
+    typeKey() { noiseHit({ dur: 0.02, vol: 0.08, f: 2000 + Math.random() * 900, q: 3 }); },
+    hint() { bell(659.25, 0, 0.05); bell(987.77, 0.18, 0.025); },
+    heartbeat() {
+        [0, 0.28].forEach((d, k) => tone({ t: d, f: 80, f2: 38, dur: 0.22, vol: 0.26 - k * 0.08, attack: 0.012 }));
+    },
+    stinger() {
+        [233.08, 246.94, 349.23].forEach(f => tone({ type: 'sawtooth', f, dur: 1.6, vol: 0.025, attack: 0.9, lp: 700, rev: 0.7 }));
+        tone({ t: 0.85, type: 'triangle', f: 70, f2: 32, dur: 0.6, vol: 0.24, attack: 0.01 });
+        noiseHit({ t: 0.85, dur: 0.4, vol: 0.14, type: 'lowpass', f: 600, f2: 120, attack: 0.005, rev: 0.6 });
+    },
+    win() {
+        [220, 261.63, 329.63, 440].forEach((f, k) => bell(f, 0.25 * k, 0.06));
+        tone({ t: 0.2, f: 110, dur: 4, vol: 0.06, attack: 1.2, lp: 400, rev: 0.6 });
+    },
+    lose() {
+        tone({ type: 'sawtooth', f: 90, f2: 28, dur: 2.2, vol: 0.14, attack: 0.02, lp: 260 });
+        noiseHit({ dur: 0.3, vol: 0.28, type: 'lowpass', f: 700, f2: 90, attack: 0.004, rev: 0.4 });
+        [233.08, 246.94, 277.18].forEach(f => tone({ t: 0.5, type: 'sawtooth', f, f2: f * 0.94, dur: 3.2, vol: 0.04, attack: 0.8, lp: 600, rev: 0.8 }));
+        noiseHit({ t: 0.45, dur: 0.15, vol: 0.3, type: 'lowpass', f: 500, attack: 0.004 });
+    }
+};
+function sfx(name, ...args) {
+    if (!audioCtx || muted || audioCtx.state !== 'running' || !SFX[name]) return;
+    try { SFX[name](...args); } catch (e) {}
+    try { const d = DUCK[name]; if (d) musicDuck(d[0], d[1]); } catch (e) {}
+}
+
+/* ===== NHẠC NỀN & SFX MỚI: nhạc dân gian Việt tổng hợp bằng Web Audio (không cần file âm thanh) =====
+   Nhạc lấy motif từ bài hát ru trong băng cassette (La thứ ngũ cung: A C D E G).
+   Nhạc cụ: đàn nhị, đàn bầu, sáo trúc, mõ, chuông, trống + lớp pad kéo dài.
+   Nhạc đổi màu theo phòng, dâng dần theo tiến độ (số khóa đã mở), hạ xuống khi thẩm vấn. */
+const MUS = { bus: null, duck: null, ending: null, room: 'frontYard', level: 0, tm: null,
+    nLead: 0, nPad: 0, nPerc: 0, nBell: 0, nBeat: 0, scareT: -1e9, scares: 0 };
+const BEAT = 0.95;
+const LEAD_V = 0.065, MO_V = 0.04, PAD_V = 0.017, BELL_V = 0.03, DRUM_V = 0.065;
+const CELLS = {
+    ru:    [[220, 1], [262, 1], [294, 1.5], [262, 0.5], [220, 2.5]],
+    ru2:   [[220, 1], [196, 1], [220, 3]],
+    sigh:  [[294, 2], [262, 1], [220, 3]],
+    rise:  [[330, 1.5], [294, 0.5], [262, 1], [220, 2.5]],
+    dread: [[220, 1], [233.08, 1], [220, 0.5], [311.13, 3.5]],
+    high:  [[659.25, 1], [587.33, 1], [440, 3]]
+};
+/* Mỗi phòng một sắc thái, nhưng độ căng giữ ngang nhau để nhạc không "tố" hung thủ (bếp không bị làm căng hơn phòng khác). */
+const ROOM_MUS = {
+    frontYard:  { vol: 1.00, lead: [['bau', 0.65], ['sao', 0.35]], cells: ['ru', 'sigh', 'high'], gap: 1.0,  pad: [110, 164.81],         mo: { from: 1, gap: 5.5, hits: [0] },          bell: { from: 2, gap: 40, f: 146.83 } },
+    livingRoom: { vol: 0.90, lead: [['nhi', 1]],                   cells: ['sigh', 'rise', 'ru2'], gap: 1.15, pad: [110, 130.81, 196],    mo: { from: 0, gap: 7,   hits: [0, 0.9, 1.8] }, bell: { from: 0, gap: 28, f: 220 } },
+    kitchen:    { vol: 0.85, lead: [['bau', 0.8], ['nhi', 0.2]],   cells: ['ru2', 'rise', 'sigh'], gap: 1.2,  pad: [110, 164.81],         mo: { from: 2, gap: 6.5, hits: [0] },          bell: null },
+    hallway:    { vol: 0.95, lead: [['sao', 0.7], ['bau', 0.3]],   cells: ['ru', 'dread', 'high'], gap: 0.9,  pad: [110, 155.56, 196],    mo: null,                                      bell: null },
+    study:      { vol: 0.70, lead: [['nhi', 1]],                   cells: ['sigh', 'dread'],       gap: 1.6,  pad: [110, 164.81],         mo: null,                                      bell: null, heart: true }
+};
+const GAP_BY_TIER = [22, 18, 15, 12, 9, 8];
+const DUCK = { thunder: [0.45, 2.4], stinger: [0.2, 3.5], heartbeat: [0.5, 1.2], win: [0.35, 4], lose: [0.1, 5],
+    clue: [0.6, 1.5], unlockOK: [0.55, 1.8], doorOpen: [0.5, 2], slamFar: [0.4, 2], powerOn: [0.3, 2.5] };
+
+function musicDuck(depth, sec) {
+    if (!audioCtx || !MUS.duck) return;
+    const t = audioCtx.currentTime, g = MUS.duck.gain;
+    g.cancelScheduledValues(t);
+    g.setValueAtTime(g.value, t);
+    g.linearRampToValueAtTime(Math.max(0.0001, depth), t + 0.08);
+    g.setTargetAtTime(1, t + 0.08 + sec * 0.4, sec * 0.25);
+}
+
+/* --- Giọng nhạc cụ: dao động + vibrato + bộ lọc + bao âm, đi vào MUS.bus --- */
+function mvoice(o) {
+    const ac = audioCtx, t0 = ac.currentTime + (o.t || 0), dur = o.dur;
+    const att = o.att || 0.05, rel = Math.min(o.rel || 0.3, dur * 0.6);
+    const mix = ac.createGain();
+    (o.types || [[o.type || 'sawtooth', 0, 1]]).forEach(([type, det, gain]) => {
+        const os = ac.createOscillator(); os.type = type; os.detune.value = det;
+        if (o.path) {
+            os.frequency.setValueAtTime(o.path[0][1], t0 + o.path[0][0]);
+            for (let k = 1; k < o.path.length; k++) os.frequency.linearRampToValueAtTime(o.path[k][1], t0 + o.path[k][0]);
+        } else {
+            os.frequency.setValueAtTime(o.f0 || o.f, t0);
+            if (o.f0) os.frequency.exponentialRampToValueAtTime(o.f, t0 + (o.glide || 0.12));
+        }
+        if (o.vib) {
+            const l = ac.createOscillator(); l.frequency.value = o.vib[0];
+            const lg = ac.createGain(); lg.gain.setValueAtTime(0, t0); lg.gain.linearRampToValueAtTime(o.vib[1], t0 + (o.vib[2] || 0.3));
+            l.connect(lg); lg.connect(os.detune); l.start(t0); l.stop(t0 + dur + 0.1);
+        }
+        const sg = ac.createGain(); sg.gain.value = gain;
+        os.connect(sg); sg.connect(mix); os.start(t0); os.stop(t0 + dur + 0.1);
+    });
+    let last = mix;
+    if (o.lp) { const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = o.lp; last.connect(f); last = f; }
+    if (o.pk) { const f = ac.createBiquadFilter(); f.type = 'peaking'; f.frequency.value = o.pk[0]; f.Q.value = o.pk[1]; f.gain.value = o.pk[2]; last.connect(f); last = f; }
+    const env = ac.createGain();
+    env.gain.setValueAtTime(0.0001, t0);
+    env.gain.exponentialRampToValueAtTime(o.vol, t0 + att);
+    if (o.pluck) env.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    else { env.gain.setValueAtTime(o.vol, Math.max(t0 + att, t0 + dur - rel)); env.gain.exponentialRampToValueAtTime(0.0001, t0 + dur); }
+    last.connect(env);
+    if (o.noise) {
+        const ns = ac.createBufferSource(); ns.buffer = noiseBuf; ns.loop = true;
+        const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = o.nf || 2000; bp.Q.value = o.nq || 2;
+        const ng = ac.createGain(); ng.gain.value = o.noise;
+        ns.connect(bp); bp.connect(ng); ng.connect(env); ns.start(t0, Math.random() * 3); ns.stop(t0 + dur + 0.1);
+    }
+    let dest = env;
+    if (o.pan) { const p = ac.createStereoPanner(); p.pan.value = o.pan; env.connect(p); dest = p; }
+    out(dest, { bus: MUS.bus, rev: o.rev });
+}
+const INS = {
+    // Đàn nhị: dây kéo, mũi, vibrato chậm, trượt vào nốt
+    nhi(f, t, dur, v) { mvoice({ f, f0: f * 0.95, glide: 0.14, t, dur, vol: v * 0.9, types: [['sawtooth', -6, 0.6], ['sawtooth', 7, 0.6], ['triangle', 0, 0.5]],
+        vib: [5.4, 14, 0.5], lp: 2300, pk: [1050, 3, 7], noise: 0.05, nf: 3200, att: 0.22, rel: 0.6, rev: 0.75, pan: -0.25 }); },
+    // Đàn bầu: nốt gảy hài âm, uốn cao độ lên rồi chùng xuống
+    bau(f, t, dur, v) { mvoice({ path: [[0, f], [dur * 0.28, f], [dur * 0.5, f * 1.09], [dur * 0.8, f * 0.985], [dur, f * 0.97]], t, dur, vol: v,
+        types: [['sine', 0, 1], ['sine', 1200, 0.18], ['triangle', 0, 0.15]], vib: [3.2, 28, 0.6], lp: 1800, pluck: true, att: 0.006, rev: 0.8, pan: 0.2 }); },
+    // Sáo trúc: hơi thở xa xăm
+    sao(f, t, dur, v) { mvoice({ f, f0: f * 0.985, glide: 0.2, t, dur, vol: v, types: [['sine', 0, 1], ['sine', 1200, 0.12]],
+        vib: [4.6, 18, 0.7], noise: 0.35, nf: f * 2.2, nq: 3, att: 0.18, rel: 0.5, rev: 0.95, pan: 0.35 }); }
+};
+function mMo(t, v, f, rev) {
+    noiseHit({ t, dur: 0.05, vol: v * 0.5, f: f * 1.8, q: 4, bus: MUS.bus, rev: rev || 0.5 });
+    tone({ t, f, f2: f * 0.88, dur: 0.12, vol: v, attack: 0.001, bus: MUS.bus, rev: rev || 0.5 });
+    tone({ t, f: f * 1.5, f2: f * 1.3, dur: 0.06, vol: v * 0.4, attack: 0.001, bus: MUS.bus, rev: rev || 0.5 });
+}
+function mDrum(t, v) {
+    tone({ t, f: 95, f2: 42, dur: 0.5, vol: v, attack: 0.004, bus: MUS.bus, rev: 0.5 });
+    noiseHit({ t, dur: 0.12, vol: v * 0.35, type: 'lowpass', f: 380, bus: MUS.bus });
+}
+function mBell(f, t, v) {
+    tone({ t, f, dur: 5, vol: v, attack: 0.01, bus: MUS.bus, rev: 1 });
+    tone({ t, f: f * 2.76, dur: 2.2, vol: v * 0.3, attack: 0.01, bus: MUS.bus, rev: 1 });
+    tone({ t, f: f * 5.4, dur: 1, vol: v * 0.12, attack: 0.005, bus: MUS.bus, rev: 1 });
+}
+function mPad(freqs, t, dur, v) {
+    freqs.forEach((f, k) => mvoice({ f, t, dur, vol: v, types: [['triangle', k * 3 - 3, 1], ['sine', 0, 0.6]], lp: 520, att: dur * 0.4, rel: dur * 0.45, rev: 0.6 }));
+}
+function pickW(arr) { let r = Math.random() * arr.reduce((s, a) => s + a[1], 0); for (const a of arr) { if ((r -= a[1]) <= 0) return a[0]; } return arr[0][0]; }
+
+function musicCtx() {
+    const L = state.locks, vis = id => !$(id).classList.contains('hidden-ui');
+    const tier = (L.box.solved ? 1 : 0) + (L.door.solved ? 1 : 0) + (L.desk.solved ? 1 : 0) + (L.cabinet.solved ? 1 : 0) + (state.ev.recon ? 1 : 0);
+    const mode = MUS.ending ? 'end' : vis('game-ui') ? 'game' : vis('prologue') ? 'prologue' : 'title';
+    return { mode, room: mode === 'game' ? state.room : (mode === 'end' ? 'study' : 'frontYard'), tier: mode === 'game' ? tier : 0,
+        inter: vis('modal-bg') && vis('modal-interrogation') };
+}
+
+function schedLead(c, at, R) {
+    const now = audioCtx.currentTime, ins = pickW(R.lead);
+    let name = R.cells[Math.floor(Math.random() * R.cells.length)];
+    if (c.tier >= 3 && Math.random() < 0.3) name = 'dread';
+    let cell = CELLS[name];
+    if (c.room === 'hallway' && Math.random() < 0.5) cell = cell.slice().reverse();   // motif chạy ngược: nghe quen mà lạ
+    const oct = (name === 'high') ? 1 : (ins === 'bau' ? 1 : 2);
+    const v = LEAD_V * (c.tier >= 4 ? 1.15 : 1);
+    let cur = 0;
+    cell.forEach(([f, b]) => { INS[ins](f * oct, Math.max(0.05, at - now) + cur, b * BEAT * 1.15, v); cur += b * BEAT; });
+    return cur;
+}
+
+function musicRoomEnter(c) {
+    const t = performance.now();
+    if (c.tier < 1 || MUS.scares >= 2 || t - MUS.scareT < 150000 || Math.random() > 0.5) return;
+    if (c.room === 'hallway') {
+        MUS.scareT = t; MUS.scares++;
+        setTimeout(() => sfx('rustle'), 1800);          // vạt áo dài lướt qua sau lưng
+        setTimeout(() => sfx('slamFar'), 3600);         // cửa sập xa, đủ làm giật mình nhưng không quá to
+    } else if (c.room === 'livingRoom') {
+        MUS.scareT = t; MUS.scares++;
+        setTimeout(() => { sfx('creak', 1.4); sfx('breath'); }, 1500);
+    }
+}
+
+function musicTick() {
+    if (!audioCtx || !MUS.bus || audioCtx.state !== 'running') return;
+    const ac = audioCtx, now = ac.currentTime, c = musicCtx();
+    const R = ROOM_MUS[c.room] || ROOM_MUS.frontYard;
+    let lv = 0;
+    if (c.mode === 'prologue') lv = 0.8; else if (c.mode === 'game') lv = R.vol * (c.inter ? 0.5 : 1); else if (c.mode === 'end') lv = 0.9;
+    if (lv !== MUS.level) { MUS.level = lv; MUS.bus.gain.setTargetAtTime(lv, now, c.mode === 'game' ? 1.2 : 0.6); }
+    if (c.mode === 'game' && c.room !== MUS.room) musicRoomEnter(c);
+    MUS.room = c.room;
+    if (muted || document.hidden || lv === 0) return;
+
+    const tier = c.tier, H = now + 0.6, jit = () => 0.8 + Math.random() * 0.5;
+    if (!c.inter && c.mode !== 'end' && H > MUS.nLead) {
+        const at = Math.max(now + 0.15, MUS.nLead), len = schedLead(c, at, R);
+        MUS.nLead = at + len + GAP_BY_TIER[tier] * R.gap * jit();
+    }
+    if (H > MUS.nPad) {
+        const at = Math.max(now + 0.1, MUS.nPad), dur = 18 + Math.random() * 6;
+        const chord = c.mode === 'end' ? (MUS.ending === 'win' ? [110, 164.81, 220] : [110, 116.54, 164.81]) : R.pad.concat(tier >= 3 ? [233.08] : []);
+        mPad(chord, at - now, dur, PAD_V);
+        if (tier >= 2 || c.mode === 'end') tone({ t: at - now, f: 55, dur, vol: 0.018, attack: dur * 0.4, bus: MUS.bus });
+        MUS.nPad = at + dur * 0.6;
+    }
+    const M = c.mode === 'prologue' ? { from: 0, gap: 6, hits: [0] } : (c.mode === 'end' ? { from: 0, gap: 8, hits: [0] } : R.mo);
+    if (M && tier >= M.from && !c.inter && H > MUS.nPerc) {
+        const at = Math.max(now + 0.1, MUS.nPerc), f = 680 + Math.random() * 180;
+        M.hits.forEach(h => mMo(at - now + h, MO_V, f * (h > 1 ? 0.94 : 1), c.room === 'frontYard' ? 0.9 : 0.5));
+        MUS.nPerc = at + M.gap * jit();
+    }
+    if (R.bell && c.mode === 'game' && tier >= R.bell.from && !c.inter && H > MUS.nBell) {
+        mBell(R.bell.f, Math.max(0.1, MUS.nBell - now), BELL_V);
+        MUS.nBell = Math.max(now, MUS.nBell) + R.bell.gap * jit();
+    }
+    if (c.mode === 'game' && (tier >= 4 || (R.heart && tier >= 3)) && H > MUS.nBeat) {
+        const at = Math.max(now + 0.05, MUS.nBeat);
+        mDrum(at - now, DRUM_V); mDrum(at - now + 0.3, DRUM_V * 0.65);
+        MUS.nBeat = at + (tier >= 5 ? 1.5 : 2.4);
+    }
+}
+
+function musicEnd(kind) {
+    MUS.ending = kind;
+    if (!audioCtx || !MUS.bus) return;
+    const t = audioCtx.currentTime;
+    MUS.nLead = MUS.nPad = MUS.nPerc = MUS.nBeat = t + 1;
+    if (kind === 'win') {
+        INS.bau(220, 2.2, 5, 0.055); INS.sao(329.63, 3.4, 6, 0.04); mBell(110, 2.2, 0.03);
+    } else {
+        mDrum(0.2, 0.12); mDrum(1.4, 0.1); mDrum(2.6, 0.08);
+        INS.nhi(233.08, 0.6, 5, 0.05); INS.nhi(311.13, 0.9, 5, 0.04);
+    }
+}
+
+function startMusic() {
+    const ac = audioCtx;
+    MUS.duck = ac.createGain(); MUS.duck.gain.value = 1; MUS.duck.connect(masterGain);
+    MUS.bus = ac.createGain(); MUS.bus.gain.value = 0; MUS.bus.connect(MUS.duck);
+    const t = ac.currentTime;
+    MUS.nLead = t + 7; MUS.nPad = t + 0.5; MUS.nPerc = t + 5; MUS.nBell = t + 14; MUS.nBeat = t + 3;
+    clearInterval(MUS.tm); MUS.tm = setInterval(musicTick, 250);
+}
+
+/* --- SFX mới --- */
+Object.assign(SFX, {
+    powerOut() {
+        noiseHit({ dur: 0.06, vol: 0.2, f: 1400, q: 3 });
+        tone({ type: 'triangle', f: 160, f2: 40, dur: 0.9, vol: 0.16, lp: 500 });
+        tone({ type: 'sawtooth', f: 100, f2: 20, dur: 1.6, vol: 0.05, lp: 300, attack: 0.01 });
+        noiseHit({ t: 0.02, dur: 1.2, vol: 0.04, type: 'lowpass', f: 900, f2: 100, rev: 0.5 });
+    },
+    powerOn() {
+        [0, 0.13, 0.3].forEach((d, k) => {
+            noiseHit({ t: d, dur: 0.04, vol: 0.12, f: 2600, q: 4 });
+            tone({ t: d, type: 'sawtooth', f: 100, dur: k === 2 ? 1.8 : 0.08, vol: 0.035, lp: 900, attack: 0.005 });
+        });
+        tone({ t: 0.3, f: 50, dur: 1.8, vol: 0.05, lp: 200 });
+    },
+    breakerClick() {
+        noiseHit({ dur: 0.05, vol: 0.2, f: 1200, q: 3 });
+        tone({ type: 'square', f: 110, f2: 60, dur: 0.07, vol: 0.1, lp: 900 });
+        noiseHit({ t: 0.11, dur: 0.06, vol: 0.22, f: 900, q: 2 });
+        tone({ t: 0.11, f: 1800, f2: 1500, dur: 0.25, vol: 0.025, rev: 0.5 });
+    },
+    porcelain() {
+        tone({ f: 2400, dur: 0.5, vol: 0.05, attack: 0.002, rev: 0.5 });
+        tone({ t: 0.01, f: 3610, dur: 0.3, vol: 0.03, attack: 0.002, rev: 0.5 });
+        noiseHit({ dur: 0.03, vol: 0.1, f: 4200, q: 4 });
+    },
+    clockStop() {
+        [0, 0.7, 1.8].forEach((d, k) => {
+            noiseHit({ t: d, dur: 0.03, vol: 0.1 - k * 0.02, f: 1500 - k * 200, q: 6 });
+            tone({ t: d, f: 520 - k * 60, dur: 0.06, vol: 0.04, rev: 0.25 });
+        });
+        tone({ t: 2.9, type: 'sawtooth', f: 300, f2: 70, dur: 0.5, vol: 0.04, lp: 600, rev: 0.4 });
+    },
+    wellPlop() {
+        tone({ f: 380, f2: 150, dur: 0.3, vol: 0.12, attack: 0.003, rev: 1 });
+        tone({ t: 0.05, f: 190, f2: 90, dur: 0.5, vol: 0.06, rev: 1, lp: 500 });
+        noiseHit({ dur: 0.2, vol: 0.04, type: 'lowpass', f: 600, rev: 1 });
+    },
+    slamFar() {
+        noiseHit({ dur: 0.18, vol: 0.22, type: 'lowpass', f: 700, f2: 150, rev: 0.8 });
+        tone({ type: 'triangle', f: 85, f2: 38, dur: 0.35, vol: 0.2, rev: 0.7 });
+        noiseHit({ t: 0.22, dur: 0.1, vol: 0.08, f: 1100, q: 2, rev: 0.8 });
+    },
+    rustle() {
+        noiseHit({ dur: 0.7, vol: 0.07, f: 2800, f2: 1500, q: 0.8, attack: 0.18, rev: 0.5 });
+        noiseHit({ t: 0.45, dur: 0.5, vol: 0.05, f: 2000, f2: 1200, q: 0.9, attack: 0.1, rev: 0.6 });
+    },
+    chair() {
+        SFX.creak(0.45);
+        noiseHit({ t: 0.3, dur: 0.08, vol: 0.06, type: 'lowpass', f: 500 });
+    }
+});
+
+const CASSETTE_LEVEL = 0.018;
+function playCassetteSound(opts) {
+    if (!audioCtx || !masterGain || muted) return;
+    opts = opts || {};
+    musicDuck(0.25, 9);
+    const ac = audioCtx, far = !!opts.far, vol = opts.vol == null ? 1 : opts.vol;
+    const t0 = ac.currentTime + 0.1, step = 0.5;
+    const notes = [220, 262, 294, 262, 220, 196, 220, 0, 262, 294, 330, 294, 262, 220, 0, 0];
+    const total = notes.length * step;
+
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = far ? 220 : 300;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = far ? 1200 : 3400;
+    const outG = ac.createGain(); outG.gain.value = vol;
+    const send = ac.createGain(); send.gain.value = far ? 0.9 : 0.4;
+    hp.connect(lp); lp.connect(outG); outG.connect(sfxBus);
+    outG.connect(send); send.connect(reverbIn);
+
+    const env = ac.createGain(); env.gain.value = 0;
+    const mix = ac.createGain();
+    mix.connect(env); env.connect(hp);
+
+    const voice = ac.createOscillator(); voice.type = 'sawtooth';
+    const body = ac.createOscillator(); body.type = 'triangle';
+    const f1 = ac.createBiquadFilter(); f1.type = 'bandpass'; f1.frequency.value = 330; f1.Q.value = 4;
+    const f2 = ac.createBiquadFilter(); f2.type = 'bandpass'; f2.frequency.value = 780; f2.Q.value = 6;
+    const f2g = ac.createGain(); f2g.gain.value = 0.6;
+    const bodyG = ac.createGain(); bodyG.gain.value = 0.45;
+    voice.connect(f1); f1.connect(mix);
+    voice.connect(f2); f2.connect(f2g); f2g.connect(mix);
+    body.connect(bodyG); bodyG.connect(mix);
+
+    const wow = ac.createOscillator(); wow.frequency.value = 0.7;
+    const wowG = ac.createGain(); wowG.gain.value = 14;
+    const vib = ac.createOscillator(); vib.frequency.value = 5.2;
+    const vibG = ac.createGain(); vibG.gain.value = 9;
+    const flut = ac.createOscillator(); flut.frequency.value = 11;
+    const flutG = ac.createGain(); flutG.gain.value = 3;
+    [[wow, wowG], [vib, vibG], [flut, flutG]].forEach(([o, g]) => {
+        o.connect(g); g.connect(voice.detune); g.connect(body.detune);
+    });
+
+    notes.forEach((f, idx) => {
+        if (!f) return;
+        const t = t0 + idx * step;
+        [voice, body].forEach(o => {
+            o.frequency.setValueAtTime(f * 0.96, t);
+            o.frequency.exponentialRampToValueAtTime(f, t + 0.1);
+        });
+        env.gain.setValueAtTime(0, t);
+        env.gain.linearRampToValueAtTime(CASSETTE_LEVEL, t + 0.07);
+        env.gain.setTargetAtTime(0, t + 0.3, 0.09);
+        tone({ t: 0.1 + idx * step + 0.02, f: f * 2, dur: 1.3, vol: 0.04 * CASSETTE_LEVEL / 0.22, attack: 0.003, rev: 0.7, bus: hp });
+        tone({ t: 0.1 + idx * step + 0.02, f: f * 4.02, dur: 0.5, vol: 0.012 * CASSETTE_LEVEL / 0.22, attack: 0.002, rev: 0.7, bus: hp });
+    });
+
+    [voice, body].forEach(o => {
+        o.detune.setValueAtTime(0, t0 + 4.5);
+        o.detune.linearRampToValueAtTime(-240, t0 + 7.4);
+    });
+
+    const noise = ac.createBufferSource(); noise.buffer = noiseBuf; noise.loop = true;
+    const nhp = ac.createBiquadFilter(); nhp.type = 'highpass'; nhp.frequency.value = 3500;
+    const ng = ac.createGain();
+    ng.gain.setValueAtTime(0, t0);
+    ng.gain.linearRampToValueAtTime(0.012, t0 + 0.1);
+    ng.gain.setValueAtTime(0.012, t0 + total);
+    ng.gain.linearRampToValueAtTime(0, t0 + total + 0.15);
+    noise.connect(nhp); nhp.connect(ng); ng.connect(hp);
+
+    [voice, body, wow, vib, flut].forEach(o => { o.start(t0); o.stop(t0 + total + 0.3); });
+    noise.start(t0, Math.random() * 3); noise.stop(t0 + total + 0.3);
+
+    if (!far) {
+        noiseHit({ t: 0.06, dur: 0.05, vol: 0.12, f: 1800, q: 4 });
+        tone({ t: 0.08, type: 'sawtooth', f: 45, f2: 110, dur: 0.3, vol: 0.04, lp: 400 });
+        noiseHit({ t: 0.15 + total, dur: 0.05, vol: 0.1, f: 1500, q: 4 });
+    }
+}
+
+const state = {
+    room: 'frontYard',
+    clues: [],
+    locks: {
+        door: { code: '1939', solved: false },
+        desk: { code: '2315', solved: false },
+        box: { code: '1507', solved: false },
+        cabinet: { code: '1996', solved: false }
+    },
+    currentLock: null,
+    lockInput: [0,0,0,0],
+    ev: {},
+    fb: {},
+    hints: {},
+    wrong: 0
+};
+
+const SAVE_KEY = 'drtb_save_v1';
+function save() {
+    try {
+        const solved = {};
+        Object.keys(state.locks).forEach(k => solved[k] = state.locks[k].solved);
+        localStorage.setItem(SAVE_KEY, JSON.stringify({
+            room: state.room, clues: state.clues, solved, ev: state.ev, hints: state.hints, wrong: state.wrong
+        }));
+    } catch (e) {}
+}
+function loadSave() {
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+}
+function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
+function hasProgress(s) {
+    return !!s && ((s.clues && s.clues.length) || Object.values(s.solved || {}).some(Boolean));
+}
+function applySave(s) {
+    state.clues = Array.isArray(s.clues) ? s.clues : [];
+    Object.keys(state.locks).forEach(k => state.locks[k].solved = !!(s.solved && s.solved[k]));
+    state.ev = s.ev || {};
+    state.hints = s.hints || {};
+    state.wrong = s.wrong || 0;
+    state.room = s.room || 'frontYard';
+    renderClues();
+}
+function restartGame() { clearSave(); location.reload(); }
+
+const INTENTS = {
+    victim: ['ong thac','thac','ong thach','nan nhan','chu nha','ong chu','quan he','cha chong','cha toi','ba toi'],
+    tonight: ['toi nay','dem nay','o dau','lam gi','khai','luc do','alibi','ngoai pham'],
+    power: ['mat dien','cup dien','tat dien','den tat','23h30','cau dao','mat den'],
+    tea: ['pha tra','chen tra','am tra','binh tra','uong tra','tach tra','ly tra','khay tra','ban sanh','21h10','21h20','21h30'],
+    drug: ['thuoc','an than','thuoc ngu','bot trang','thuoc doc'],
+    money: ['tien','no nan','mac no','co bac','thua ke','di chuc','vay tien','tien nong'],
+    fight: ['cai nhau','cai va','to tieng','xung dot','22h30','mau thuan'],
+    fake: ['do gia','do co','mon do','lua dao'],
+    cass: ['bang cassette','bang cat xet','cassette','cat xet','tieng hat','hat ru','tieng ru','may hat','may cat xet'],
+    ghost: ['ma quy','oan hon','bong trang','ao trang','linh hon','bong ma','co ma'],
+    lan: ['co lan','chi lan','ten lan','ai la lan','hau gai','1996','binh ty','em gai','chi gai'],
+    well: ['gieng','bia da','cai bia','tam bia'],
+    box: ['hop go','cai hop','hop le','hop khoa'],
+    door: ['ma cua','mat ma','chia khoa','khoa so','thu phong','cua phong','ma so'],
+    leave: ['roi san','23h10','di dau','tui y te','ra xe','ra ngoai','roi di','bo di'],
+    phone: ['dien thoai','goi video','video','cuoc goi','ra cong','hut thuoc','goi cho vo'],
+    letter: ['la thu','thu doa','nac danh','de doa','thu mau','dem ram'],
+    suspect: ['nghi ai','ke giet','thu pham','nghi ngo','ai giet','hung thu','nghi van'],
+    body: ['phap y','tu vong','gio chet','chet luc','nguyen nhan'],
+    ritual: ['le cung','co hon','thay cung','cung bai','dang cung'],
+    bg: ['12 nam','ten me','que quan','xin viec','gioi thieu','lai lich','gia dinh','lam o day']
+};
+const RAW_KW = {
+    tea: ['trà'],
+    money: ['nợ','nần'],
+    cass: ['băng'],
+    ghost: ['ma','quỷ'],
+    lan: ['lan'],
+    phone: ['vợ'],
+    ritual: ['cúng']
+};
+const norm = t => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd')
+    .replace(/(\d{1,2})\s*[:h]\s*(\d{2})/g, '$1h$2').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const rawTokens = t => t.toLowerCase().normalize('NFC').split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+function detectIntent(q) {
+    const n = ' ' + norm(q) + ' ';
+    const toks = rawTokens(q);
+    let best = null, score = 0;
+    for (const id of Object.keys(INTENTS)) {
+        let sc = 0;
+        for (const k of INTENTS[id]) if (n.includes(' ' + k + ' ')) sc += k.length;
+        for (const k of (RAW_KW[id] || [])) if (toks.includes(k)) sc += k.length + 1;
+        if (sc > score) { score = sc; best = id; }
+    }
+    return best;
+}
+
+Object.assign(INTENTS, {
+    who: ['ai co mat','ai o do','ai o day','co nhung ai','ai dung canh','ai ben canh','ai o san','co ai o'],
+    see: ['thay gi','nhin thay','nghe thay','nghe gi','de y','bat thuong','phat hien','dang ngo'],
+    witness: ['ai thay','xac nhan','chung minh','nhan chung','ai lam chung'],
+    fear: ['co so','so khong','cam thay','nghi sao','nghi the nao'],
+    hello: ['xin chao','chao ong','chao anh','chao chi','chao thay'],
+    p_quan: ['anh quan','minh quan'], p_van: ['chi van','co van'], p_khoa: ['ong khoa'], p_cuu: ['thay cuu','ong cuu'], p_hanh: ['chi tu','ba tu','chi hanh']
+});
+Object.assign(RAW_KW, { p_quan: ['quân'], p_van: ['vân'], p_khoa: ['khoa'], p_cuu: ['cửu'], p_hanh: ['hạnh'] });
+function guessIntent(q) {
+    const n = ' ' + norm(q) + ' ';
+    if (/ (may gio|luc nao|khi nao|o dau|di dau) /.test(n)) return 'tonight';
+    if (/ ai /.test(n)) return 'who';
+    if (/ (thay|nghe|nhin) /.test(n)) return 'see';
+    if (/ (so|hoang) /.test(n)) return 'fear';
+    return null;
+}
+const F = {
+    photo: () => state.locks.desk.solved,
+    cass: () => state.locks.box.solved,
+    cab: () => state.locks.cabinet.solved,
+    study: () => state.locks.door.solved
+};
+const EVID = {
+    tea:   { n: 'Chén trà có cặn bột trắng', ok: () => state.ev.tea },
+    breaker: { n: 'Cầu dao sập 23:30–23:50', ok: () => state.ev.breaker },
+    stele: { n: 'Bia đá "Rằm tháng Bảy, năm Bính Tý"', ok: () => state.ev.stele },
+    diary: { n: 'Nhật ký ông Thạc', ok: () => F.photo() },
+    photo: { n: 'Tấm ảnh Lan & Hạnh, 1996', ok: () => F.photo() },
+    cassette: { n: 'Máy cassette có hẹn giờ', ok: () => F.cass() },
+    hanky: { n: 'Khăn tay thêu chữ H', ok: () => F.cass() },
+    costume: { n: 'Áo dài trắng và tóc giả', ok: () => F.cab() },
+    pills: { n: 'Lọ thuốc an thần rỗng', ok: () => F.cab() }
+};
+const CHIPS = [
+    ['Tối nay ở đâu?', 'tonight', () => true],
+    ['Quan hệ với ông Thạc', 'victim', () => true],
+    ['Chuyện mất điện', 'power', () => true],
+    ['Lá thư đe dọa', 'letter', () => true],
+    ['Tiếng hát ru', 'cass', () => true],
+    ['Ai có mặt lúc đó?', 'who', () => true],
+    ['Có thấy gì lạ?', 'see', () => true],
+    ['Cái giếng', 'well', () => true],
+    ['Mã cửa thư phòng', 'door', () => state.locks.box.solved],
+    ['Chén trà', 'tea', () => state.ev.tea],
+    ['Thuốc an thần', 'drug', () => state.ev.tea],
+    ['Lan, năm 1996', 'lan', () => F.photo()]
+];
+
+const characters = {
+    quan: {
+        id: 'quan', name: "Lương Minh Quân", role: "Con trai nạn nhân, 38 tuổi", avatar: "./quan.png",
+        bio: "Kẻ thừa kế duy nhất. Có tin đồn dạo này nợ nần cờ bạc rất nhiều. Khai rằng lúc cúp điện đang khấn vái ngoài sân cùng hàng xóm.",
+        a: {
+            victim: "Ông ấy là cha tôi. Nghiêm khắc, keo kiệt, nhưng tôi chưa bao giờ nghĩ đến chuyện hại ông.",
+            money: ["Đúng, tôi nợ nần, và lúc 22h30 tôi có xin ông ấy tiền. Ông mắng tôi là đồ vô dụng, tôi bỏ ra sân. Nhưng tôi không giết cha mình!", "Quân cãi cha lúc 22h30 vì tiền, rồi ra sân cúng cùng cả xóm."],
+            tonight: "Cả đêm tôi khấn ngoài sân cùng cả xóm, từ 19 giờ. Thầy Cửu làm chứng cho tôi!",
+            leave: "Tôi á? Tôi đứng khấn ngoài sân từ đầu tới cuối, đã nói rồi mà.",
+            power: ["Lúc cúp điện (23h30) tôi đang khấn ngoài sân cùng cả xóm. Tối om, ai cũng nghe tiếng hát ru vọng từ phía giếng. Lạnh cả người.", "Lúc mất điện 23h30, Quân đang ở ngoài sân cùng cả xóm."],
+            tea: "Trà tối của ba thì chị Tư lo, mà ba chỉ uống khi trà đã nguội bớt nên khay hay để ở bàn sảnh một lúc. Lúc đó tôi đang khấn ngoài sân, không biết ai ra vào.",
+            drug: "Tôi chỉ biết ba thỉnh thoảng uống thuốc ngủ. Hỏi Vân đi, cô ấy là y tá.",
+            letter: "Chiều nay ba cho tôi xem lá thư đó. Tôi tưởng trò đùa của đám đòi nợ... hóa ra không phải.",
+            door: "Mã cửa thư phòng chỉ mình ba biết. Có lần tôi hỏi, ông chửi tôi cả buổi. Ông chỉ nói đặt theo thứ ông tự hào nhất, là cái nhà này.",
+            cass: "Tiếng cát xét hát ru đó... nghe quen lắm. Hình như hồi nhỏ tôi từng nghe trong nhà này.",
+            lan: () => F.photo() ? "Lan à? Giờ tôi mới nhớ, đúng là cô hầu gái hồi nhỏ người lớn cấm nhắc tên. Hồi đó tôi mới tám tuổi. Sao ba còn giữ ảnh cô ấy?" : "Lan? Nghe quen mà tôi không nhớ ra. Hồi nhỏ trong nhà có một cô hầu gái người lớn cấm nhắc tên, chắc không phải đâu.",
+            well: "Cái giếng đó từ nhỏ tôi bị cấm lại gần. Không ai giải thích vì sao.",
+            ghost: ["Tôi không tin ma. Nhưng tiếng hát và cái bóng áo trắng tối nay thì tôi thấy thật.", "Quân nói đã thấy bóng áo trắng tối nay, trong khi khai cả đêm chỉ ở ngoài sân."],
+            box: "Hộp gỗ cạnh bia à? Tôi tưởng đồ lễ của thầy Cửu.",
+            suspect: "Tôi không dám đoán. Chỉ biết ai ở gần ba nhất tối nay thì biết nhiều nhất."
+        },
+        ev: {
+            tea: "Nếu có ai bỏ thuốc vào trà thì phải là người đụng vào khay trà. Tôi thì không.",
+            diary: "Ba viết nhật ký à?... Ba đẩy một cô hầu gái xuống giếng?! Cả nhà bảo cô ấy tự tử... Tôi không dám tin.",
+            photo: "Cô gái lớn là Lan? Còn cô bé bên cạnh... tôi thấy quen quen.",
+            costume: ["Áo dài trắng! Đúng cái bóng tôi thấy ở hành lang. Mà khoan... sao anh lại biết cái áo này... Thôi được rồi, tôi nói thật: lúc 23h15 tôi lẻn vào nhà tìm ba xin tiền thêm lần nữa. Cuối hành lang có bóng áo trắng đứng im. Tôi chạy ra sân, 23h25 đã quay lại chỗ khấn. Tôi không dám nói vì sợ mang tiếng.", "Quân thú nhận đã lẻn vào nhà lúc 23h15 và thấy bóng áo trắng ở hành lang (là người mặc đồ giả ma, không phải ma). Lúc 23h30 thì ông ở sân."],
+            cassette: "Máy cát xét! Hồi nhỏ trong nhà có một cái y như vậy.",
+            hanky: "Chữ H thêu tay... mẹ tôi tên Hoa, nhưng cái khăn này không phải của bà. Của ai thì tôi không biết."
+        },
+        fb: ["Tôi đang bối rối lắm, anh hỏi điều khác đi.", "Chuyện đó tôi không rõ.", "Anh cứ hỏi thẳng vào việc đi."]
+    },
+    van: {
+        id: 'van', name: "Triệu Thanh Vân", role: "Con dâu, 35 tuổi (Y tá)", avatar: "./van.png",
+        bio: "Vợ Quân. Là y tá nên rành về thuốc men. Rời sân cúng vào khoảng 23h10 và quay lại lúc 23h25.",
+        a: {
+            victim: "Cha chồng tôi khó tính, nhưng tôi kính trọng ông. Ông không ưa tôi vì tôi là con dâu nghèo.",
+            drug: "Tôi là y tá, ở trạm xá thiếu gì thuốc. Nhưng cha chồng tôi ít khi dùng thuốc an thần. Hôm nay tôi không đưa thuốc nào cho ông.",
+            leave: ["Lúc 23h10 tôi ra xe ngoài cổng lấy cái túi y tế cá nhân thôi, 15 phút sau tôi quay lại sân rồi.", "Vân rời sân lúc 23h10 và quay lại lúc 23h25."],
+            body: ["Tôi kiểm tra sơ bộ: ông mất khoảng 23h30 đến nửa đêm. Môi tím, đồng tử giãn. Giống quá liều thuốc an thần hơn là bệnh tim. Loại này ngấm chậm, ông phải uống từ khoảng một đến hai tiếng trước đó.", "Pháp y sơ bộ (Vân): ông Thạc mất khoảng 23h30–00h, nghi quá liều thuốc an thần ngấm chậm, uống trước đó 1–2 giờ (khoảng 21h30–22h30)."],
+            money: "Tôi có xin ba ít tiền chữa bệnh cho mình, nhưng ông không đồng ý. Tôi không muốn chồng biết chuyện này.",
+            power: "Lúc mất điện tôi đã quay lại sân rồi, đứng cạnh mấy bà hàng xóm.",
+            tonight: "Tôi cúng ngoài sân với mọi người, chỉ ra xe một lát lúc 23h10.",
+            tea: ["Trà ba tối nào cũng do chị Tư pha, rót xong để ở bàn sảnh cho nguội. 21h20 tôi có vào sảnh lấy khăn lau tay, đi ngang qua khay trà thôi, tôi không đụng vào.", "Vân thừa nhận có đi ngang khay trà ở sảnh lúc 21h20."],
+            cass: "Tiếng ru đó tôi nghe thấy từ phía giếng. Lạnh sống lưng.",
+            box: "Hộp gỗ cạnh bia à? Tôi không để ý.",
+            lan: () => F.photo() ? "Tôi về làm dâu mới tám năm, không biết Lan. Nhưng cô bé đứng cạnh trong ảnh có nét giống chị Tư lắm." : "Không biết ai tên Lan.",
+            suspect: "Tôi là y tá, tôi chỉ tin dấu vết. Chén trà là chỗ đầu tiên tôi sẽ xem."
+        },
+        ev: {
+            tea: "Cặn bột trắng... đúng là thuốc an thần tan trong trà. Ai đụng được vào chén trà thì người đó làm được.",
+            diary: "Trà đắng, uống cạn rồi người nặng trĩu... đúng triệu chứng thuốc an thần ngấm chậm. Còn chuyện cô hầu gái thì tôi không biết gì, tôi mới về làm dâu tám năm.",
+            photo: "Cô bé đứng cạnh Lan... giống chị Tư hồi trẻ. Có thể là tôi nhìn nhầm.",
+            pills: "Lọ an thần của ba, nhãn còn ghi tên ông. Tuần trước tôi còn thấy nó gần đầy, sao giờ rỗng thế này?",
+            breaker: "Cầu dao ở bếp. Người ở gần bếp lúc đó mới hạ được nó.",
+            cassette: "Máy có hẹn giờ... vậy người đặt nó đâu cần có mặt lúc 23h30. Chuẩn bị từ trước là được.",
+            costume: "Áo dài trắng, tóc giả... lại nằm trong tủ có khóa số của chị Tư. Tôi không dám nói thêm."
+        },
+        fb: ["Tôi chỉ là y tá, anh hỏi đúng việc đi.", "Tôi không rõ chuyện đó.", "Anh hỏi tôi về thuốc hoặc giờ giấc thì tôi trả lời được."]
+    },
+    khoa: {
+        id: 'khoa', name: "Phạm Đức Khoa", role: "Khách buôn đồ cổ, 45 tuổi", avatar: "./khoa.png",
+        bio: "Đối tác làm ăn. Từng có xích mích vì bán đồ giả cho ông Thạc. Khai rằng lúc cúp điện đang đứng ngoài cổng gọi điện cho vợ.",
+        a: {
+            fake: "Đồ cổ thì nhìn nhầm là chuyện thường! Tôi và lão Thạc cãi nhau xong là thôi, lão đã trả lại tôi rồi, hai bên hết nợ.",
+            phone: ["Lúc cúp điện tôi bực mình ra cổng hút thuốc, tiện gọi video cho vợ. Nhật ký cuộc gọi: 23:28 đến 23:41 đây, anh xem đi!", "Khoa có alibi lúc cầu dao sập: gọi video với vợ từ 23:28 đến 23:41 ngoài cổng."],
+            leave: ["Tôi ra cổng hút thuốc từ 23h10, thấy cô Vân ở chỗ xe, khoảng 23h25 thì cô ấy đi vào sân. Rồi tôi gọi video cho vợ.", "Khoa thấy Vân ở chỗ xe từ 23h10 đến khoảng 23h25 rồi vào sân lại."],
+            tonight: "Tôi ngồi sảnh uống trà tới hơn 23 giờ, rồi ra cổng hút thuốc, gọi cho vợ lúc 23h28.",
+            power: "Lúc mất điện tôi đang ngoài cổng gọi video cho vợ.",
+            victim: "Đối tác lâu năm. Lão hay khoe cái nhà đời Bảo Đại này. Lão sành sỏi nhưng không sạch sẽ. Nghe đồn lão có nguồn hàng không rõ xuất xứ từ mấy chục năm trước.",
+            lan: "Lan? Tôi chỉ quen lão Thạc hơn mười năm. Chuyện nhà này trước đó tôi không biết.",
+            tea: ["Tôi ngồi uống trà ngay sảnh, khay trà của lão Thạc để ở bàn bên cạnh mười mấy phút, ai ngồi đó cũng với tay tới được. Nhưng tôi thề là tôi không đụng vào.", "Khoa ngồi sát khay trà ở sảnh lúc trà để nguội (khoảng 21h10–21h30), nói không đụng vào."],
+            cass: "Cát xét? Thời này còn ai dùng. Tiếng đó nghe từ phía giếng ngoài sân.",
+            box: "Hộp gỗ? Không biết. Tôi chỉ ngồi sảnh rồi ra cổng.",
+            money: "Tôi không thiếu tiền. Giết lão thì tôi được gì?",
+            letter: "Thư dọa? Lão có kẻ thù khắp nơi, đâu riêng tôi.",
+            suspect: "Tôi chỉ là khách. Nhưng người ở nhà này lâu nhất thì biết nhiều nhất."
+        },
+        ev: {
+            diary: "Nhật ký của lão? Lão viết gì tôi đâu biết... nhưng đọc cái này thì lão có nhiều kẻ thù hơn tôi tưởng thật.",
+            photo: "Ảnh cũ thôi. Tôi không quen ai trong ảnh.",
+            tea: "Trà có thuốc? Tôi chưa chạm vào chén trà đó.",
+            breaker: "Cầu dao à? Lúc đó tôi đang gọi video, nhật ký cuộc gọi có hết."
+        },
+        fb: ["Tôi chỉ là khách, xui xẻo mới dính vào vụ này.", "Anh hỏi cái khác đi.", "Việc đó không liên quan đến tôi."]
+    },
+    cuu: {
+        id: 'cuu', name: "Thầy Cửu", role: "Thầy cúng, 62 tuổi", avatar: "./cuu.png",
+        bio: "Được thuê đến cúng cô hồn. Rất hay nói chuyện ma quỷ thần linh dọa dẫm gia đình.",
+        a: {
+            ghost: "Oan hồn không tan! Đêm rằm tháng Bảy cửa ngục mở, kẻ ác ác báo! Khặc khặc...",
+            cass: ["Lúc cúp điện... tôi nghe rõ lắm. Tiếng hát ru từ phía cái giếng vọng lên, rè rè như tiếng cát xét cũ. Mà ma nào lại dùng cát xét?", "Thầy Cửu nghe tiếng ru từ phía giếng, rè rè như cát xét cũ."],
+            well: "Giếng đó từng có người chết, một cô hầu gái, đêm Rằm, gần nửa đêm, khoảng 11 giờ 15. Dân làng không ai dám lại gần vào ban đêm.",
+            box: "Cái hộp gỗ cạnh bia có từ chiều nay, trước giờ cúng. Tôi tưởng nhà chủ đặt làm hộp lễ, khóa số nên không ai mở. Ai đặt thì tôi không thấy.",
+            ritual: "Tôi cúng cô hồn từ 19 giờ, không rời sân nửa bước. Cả xóm chứng kiến.",
+            leave: ["Cô Vân có ra cổng lấy gì đó khoảng 23h10, mười lăm phút sau thì về. Còn cậu Quân... lúc đó tôi mải đọc kinh, trời lại mưa, không để ý cậu ấy có đứng đó không.", "Thầy Cửu không chắc Quân có ở sân lúc 23h10–23h25 (mải đọc kinh, trời mưa)."],
+            lan: () => F.photo() ? "Hai chị em... đứa em nhỏ khóc ở đầu giếng. Nó đi đâu rồi, tôi cũng không rõ." : "Lan... tên đó lâu lắm không ai nhắc. Cô hầu gái chết dưới giếng, người ta bảo “tự tử”. Chuyện xảy ra đêm Rằm, gần nửa đêm, khoảng 11 giờ 15.",
+            letter: "Tôi không viết thư. Tôi chỉ cảnh báo họ: nợ âm thì phải trả.",
+            tonight: "Cúp điện, tôi đang đọc kinh, quay lưng vào nhà.",
+            power: ["Lúc cúp điện tôi đang đọc kinh ngoài sân. Cả cậu Quân lẫn cô Vân đều đứng ngay sau lưng tôi, tôi nghe rõ giọng khấn của họ.", "Thầy Cửu nghe rõ giọng khấn của Quân và Vân ngay sau lưng lúc 23h30, nên cả hai đang ở sân."],
+            suspect: "Người sống mới đáng sợ hơn ma."
+        },
+        ev: {
+            stele: "Bia đó đặt cho người chết dưới giếng. Rằm tháng Bảy... chính là hôm nay.",
+            photo: "Hai cô gái này... tôi nhớ rồi. Cô chị chết, cô em thì khóc suốt.",
+            diary: "Hóa ra lão Thạc đã làm chuyện đó... Nợ âm thì phải trả, tôi đã bảo rồi.",
+            cassette: "Đúng cái tiếng tôi nghe! Vậy ra không phải ma.",
+            costume: "Áo trắng tóc dài... thì ra là người giả ma.",
+            breaker: "Cầu dao ở bếp? Vậy kẻ hạ nó lúc đó phải đang đứng trong bếp."
+        },
+        fb: ["Đừng động vào đồ cúng của tôi!", "Chuyện trần gian, tôi chỉ biết một nửa.", "Hỏi âm khí đi, đừng hỏi cái đó."]
+    },
+    hanh: {
+        id: 'hanh', name: "Chị Tư Hạnh", role: "Giúp việc, 46 tuổi", avatar: "./hanh.png",
+        bio: "Người làm lâu năm, hiền lành, ít nói. Lo liệu mọi việc bếp núc trong nhà.",
+        a: {
+            tea: ["Dạ, tôi pha trà như mọi tối. 21h10 tôi rót ra chén, để khay ở bàn sảnh cho nguội bớt vì ông chủ chỉ uống trà ấm, đến 21h30 mới bưng lên thư phòng.", "Chị Tư khai: để khay trà ở bàn sảnh từ 21h10 đến 21h30 rồi mới mang lên thư phòng."],
+            power: ["Lúc 23h30 cúp điện, tôi đang ở trong bếp. Sợ quá nên tôi không dám ra ngoài.", "Chị Tư khai ở một mình trong bếp lúc mất điện, không ai xác nhận."],
+            tonight: "Tôi ở dưới bếp dọn mâm cúng cả tối.",
+            lan: () => F.photo() ? "Tôi... tôi không nhớ có ai tên Lan... Mà thời đó người tên Lan nhiều lắm, anh biết đấy, nhiều lắm..." : "...Cậu hỏi gì lạ vậy? Ở cái làng này, làm gì có ai tên Lan. Tôi không quen ai tên Lan cả.",
+            victim: "Ông chủ khó tính, nhưng tôi ở đây 12 năm rồi, quen việc.",
+            drug: "Thuốc men là việc cô Vân, tôi không biết. Tôi chỉ pha trà.",
+            door: "Cửa thư phòng tự khóa mỗi khi đóng, mã thì tôi không biết. Mỗi lần mang trà tôi chỉ gõ cửa, ông chủ tự ra mở.",
+            cass: () => F.cass() ? "Cái máy đó... ai bỏ ở đó vậy? Mà nó... nó còn chạy được không anh?" : "Tôi không biết gì về tiếng hát. Tôi sợ lắm.",
+            well: "Cái giếng đó chẳng ai dám lại gần, tôi cũng không.",
+            box: "Hộp gỗ ngoài sân à? Tôi ít khi ra sân, tôi không biết.",
+            ghost: "Mấy chuyện ma quỷ tôi không dám nói. Sợ quá.",
+            bg: "Tôi ở quê lên, nhà nghèo. Xin vào làm theo lời người quen giới thiệu. Chuyện cũ có gì đáng nói đâu.",
+            letter: "Thư dọa à? Tôi không rõ. Chỉ thấy ông chủ tái mặt chiều nay.",
+            suspect: "Tôi phận làm thuê, mong thám tử sớm tìm ra thủ phạm."
+        },
+        ev: {
+            tea: "Trà tôi pha đúng giờ như mọi tối. Khay để ở sảnh cho nguội, ai đi ngang cũng đụng được, tôi không rõ.",
+            breaker: "Cầu dao ở bếp... nghe “cạch” một cái là tối om. Tôi sợ lắm.",
+            diary: ["(Mím môi, tay siết chặt vạt áo, rất lâu không nói) ...Ông chủ viết gì tôi đâu có biết.", "Chị Tư im lặng rất lâu khi nghe về cuốn nhật ký của ông Thạc."],
+            photo: ["...Tấm ảnh này anh lấy ở đâu? Hồi đó chụp ở sân đình, có hai người thôi mà... Thôi, tôi không có gì để nói.", "Chị Tư phản ứng rất lạ khi thấy tấm ảnh Lan & Hạnh năm 1996."],
+            cassette: "Cái máy đó... không phải của tôi. Tôi có đụng vào đâu. Của ai thì... tôi không biết.",
+            hanky: "Chữ H... nhiều người tên bắt đầu bằng H mà. Hoa, Hà, Hương... đâu phải mỗi mình tôi.",
+            costume: ["...Anh đã tìm ra rồi sao? Cái áo ấy tôi cất kỹ lắm mà... Vậy là... tôi cũng chẳng giấu được nữa.", "Chị Tư gần như thừa nhận khi thấy áo dài trắng và tóc giả."],
+            pills: "...Lọ đó... tôi không biết nữa. Thuốc men là việc của người có học, tôi nào dám đụng.",
+            stele: "Chỗ đó người ta kiêng, tôi không ra... Tôi có bao giờ ra đó đâu."
+        },
+        fb: ["Tôi phận làm thuê, anh hỏi gì khác đi.", "Dạ... tôi không rõ, thưa anh.", "Việc đó tôi không biết."]
+    }
+};
+characters.quan.a.fight = characters.quan.a.money;
+Object.assign(characters.quan.a, {
+    who: "Ngoài sân có thầy Cửu, hàng xóm, và Vân lúc đầu. Khoa ngồi sảnh rồi ra cổng. Chị Tư thì ở dưới bếp.",
+    see: "Tôi thấy cái bóng áo trắng và nghe tiếng hát từ phía giếng. Tôi không dám nghĩ thêm.",
+    witness: "Thầy Cửu và cả xóm thấy tôi ở sân. Lúc cúp điện Vân đứng ngay cạnh tôi.",
+    fear: "Sợ chứ. Nhà này đêm nay có ma hay có người, tôi chưa phân biệt nổi.",
+    hello: "Anh thám tử đây à. Cha tôi nhờ anh, vậy mà...",
+    p_van: "Vân là vợ tôi. Cô ấy hiền, kín tiếng, tôi không tin cô ấy làm chuyện xấu.",
+    p_khoa: "Khoa là đối tác của ba tôi. Hai người cãi nhau vụ đồ giả, nhưng tôi nghĩ ổng chỉ tiếc tiền.",
+    p_cuu: "Thầy Cửu cúng ở sân suốt từ 19 giờ. Ông hay nói chuyện ma quỷ nhưng ông để ý mọi người.",
+    p_hanh: "Chị Tư ở nhà này lâu rồi. Hiền, ít nói, chưa bao giờ cãi ai."
+});
+characters.quan.fb = ["Anh cứ hỏi cho rõ. Tôi cũng muốn biết ai hại cha tôi. Hỏi về đêm nay, về ba tôi, hay về những người trong nhà.", "Anh nói rõ hơn đi. Tôi trả lời được chuyện tôi đã thấy và đã nghe."];
+Object.assign(characters.van.a, {
+    who: "Ngoài sân có thầy Cửu, Quân và hàng xóm. Khoa ngồi sảnh rồi ra cổng. Chị Tư ở bếp cả tối.",
+    see: "Lúc ra xe tôi thấy ông Khoa hút thuốc ở cổng. Còn tiếng hát từ giếng thì ai cũng nghe.",
+    witness: "Ông Khoa thấy tôi ở chỗ xe. Lúc cúp điện tôi đứng cạnh mấy bà hàng xóm.",
+    fear: "Tôi là y tá nên ít tin ma, nhưng đêm nay thật sự lạnh sống lưng.",
+    hello: "Chào anh. Có gì anh cứ hỏi, tôi hợp tác.",
+    p_quan: "Chồng tôi nóng tính và nợ nần, nhưng anh ấy sợ ba. Tôi không tin anh ấy giết ai.",
+    p_khoa: "Ông Khoa lanh lợi, ăn nói khéo. Ông ngồi sát khay trà ở sảnh một lúc.",
+    p_cuu: "Thầy Cửu tin chuyện âm dương lắm, nói gì cũng dọa.",
+    p_hanh: "Chị Tư pha trà và mang lên cho ba mỗi tối, việc nhà nào chị cũng nhận."
+});
+characters.van.fb = ["Anh hỏi cụ thể hơn đi. Về thuốc, về giờ giấc hay về mọi người trong nhà thì tôi trả lời được.", "Tôi sẽ nói những gì tôi chắc chắn. Anh muốn hỏi chuyện gì?"];
+Object.assign(characters.khoa.a, {
+    who: "Tôi ngồi sảnh với lão Thạc một lúc, thấy Quân, Vân, thầy Cửu ngoài sân. Chị giúp việc lui cui dưới bếp.",
+    see: "Tôi thấy cô Vân ra chỗ xe lúc 23h10. Tiếng hát ru thì ai cũng nghe, rè rè như băng cũ.",
+    witness: "Nhật ký cuộc gọi video của tôi đây, 23:28 đến 23:41. Vợ tôi làm chứng.",
+    fear: "Tôi làm nghề đồ cổ, thấy nhiều thứ lạ rồi. Nhưng đêm nay tôi cũng thấy rờn rợn.",
+    hello: "Chào thám tử. Tôi chỉ là khách, mong sớm xong chuyện để về.",
+    p_quan: "Quân nợ như chúa chổm, ai cũng biết. Nhưng giết cha thì tôi không dám nói.",
+    p_van: "Cô Vân là y tá, kín miệng. Cô ấy rời sân một lúc lúc 23h10, tôi thấy.",
+    p_cuu: "Thầy Cửu làm nghề cúng, khéo dọa. Tối nay ổng đứng ngoài sân đọc kinh.",
+    p_hanh: "Chị Tư lặng lẽ, pha trà ngon. Tôi ít nói chuyện với chị."
+});
+characters.khoa.fb = ["Anh cứ hỏi thẳng. Về lão Thạc, về đêm nay, hay về những người ở đây, tôi nói được.", "Tôi là khách nên biết có hạn, nhưng cái gì thấy tôi sẽ nói."];
+Object.assign(characters.cuu.a, {
+    who: "Ta đọc kinh ngoài sân, sau lưng là cậu Quân và cô Vân, cùng hàng xóm. Khoa ra cổng, bà Tư xuống bếp.",
+    see: "Ta thấy mưa, thấy chớp, nghe tiếng hát rè rè từ giếng. Còn bóng trắng thì ta không dám khẳng định.",
+    witness: "Cả xóm thấy ta ở sân từ 19 giờ. Ta không rời nửa bước.",
+    fear: "Ta cúng cô hồn bao năm, không sợ. Người sống mới đáng sợ.",
+    hello: "Chào cậu thám tử. Đêm nay âm khí nặng lắm.",
+    p_quan: "Cậu Quân nợ nần, khấn mà mặt cứ lơ đãng.",
+    p_van: "Cô Vân hiền. Lúc 23h10 cô ra cổng, mười lăm phút sau về.",
+    p_khoa: "Ông Khoa buôn đồ cổ. Đồ cổ nhiều thì âm khí cũng nhiều.",
+    p_hanh: "Bà Tư ta ít để ý, chỉ biết bà hay ở bếp và rất sợ cái giếng."
+});
+characters.cuu.fb = ["Cậu hỏi cho rõ. Về tiếng hát, về cái giếng, về những người quanh đây thì ta nói được.", "Chuyện âm dương ta rành, chuyện trần gian ta chỉ biết những gì mắt thấy tai nghe."];
+Object.assign(characters.hanh.a, {
+    who: "Ngoài sân có thầy Cửu, cậu Quân, cô Vân và bà con. Ông Khoa ngồi sảnh rồi ra cổng. Tôi ở dưới bếp.",
+    see: "Tôi ở bếp, chỉ nghe tiếng mưa với tiếng hát từ phía sân. Sợ lắm.",
+    witness: "Ở bếp chỉ có một mình tôi, chắc chẳng ai làm chứng được.",
+    fear: "Dạ sợ. Nhà này đêm Rằm nào cũng nặng nề.",
+    hello: "Dạ chào thám tử. Cần gì cứ gọi tôi.",
+    p_quan: "Cậu Quân từ nhỏ nóng tính, bị ông chủ mắng hoài.",
+    p_van: "Cô Vân hiền, tốt bụng, hay giúp tôi dọn mâm.",
+    p_khoa: "Ông Khoa là khách của ông chủ, uống trà ngoài sảnh.",
+    p_cuu: "Thầy Cửu cúng từ chiều. Thầy nói nhiều chuyện ma lắm."
+});
+characters.hanh.fb = ["Dạ, thám tử hỏi rõ hơn giúp tôi. Việc bếp núc, trà nước hay giờ giấc thì tôi nhớ.", "Tôi phận làm thuê, chuyện gì thấy tận mắt tôi xin thưa."];
+
+const UNLOCK_VIEW = {
+    desk:    { text: "Bạn tìm thấy một cuốn nhật ký và tấm ảnh cũ!", imgs: ["./clue_diary.png", "./clue_photo.png"] },
+    box:     { text: "Hộp gỗ mở ra: bên trong là một máy cassette gắn công tắc hẹn giờ, thành hộp có khe cho tiếng thoát ra. Bạn bấm thử, tiếng hát ru rè rè vang lên, đúng như lúc nửa đêm.", imgs: ["./clue_cassette.png"] },
+    cabinet: { text: "Tìm thấy vật chứng: Dụng cụ giả ma và vỏ lọ thuốc rỗng!", imgs: ["./clue_costume.png"] }
+};
+
+const LOCK_CLUES = {
+    desk: "Trong ngăn kéo: Nhật ký ông Thạc. Một trang cũ ghi: 'Rằm tháng Bảy năm Bính Tý, ta đẩy con bé Lan xuống giếng sau trận cãi vã, rồi bắt cả nhà nói nó tự tử. Đứa em nó ta đuổi về quê ngay trong đêm, chưa từng nhìn rõ mặt.' Trang gần nhất ghi: '21h45: Trà tối nay đắng hơn mọi bữa, vậy mà ta vẫn uống cạn. Mật mã cửa phòng ta lấy theo năm dựng nhà, chắc chẳng ai nghĩ ra.' Cùng một tấm ảnh cũ ghi: 'Lan & Hạnh, 1996'.",
+    box: "Trong hộp gỗ cạnh giếng: một máy cassette đã chạy hết băng, gắn công tắc hẹn giờ lên dây cót, kim chỉ 23:30, thành hộp có khe cho tiếng thoát ra. Cùng chiếc khăn tay thêu chữ H. Người đặt máy không cần có mặt lúc 23:30.",
+    cabinet: "Trong tủ chị Tư: Áo dài trắng, tóc giả, và lọ thuốc an thần rỗng có nhãn tên ông Lương Văn Thạc."
+};
+
+const rooms = {
+    frontYard: {
+        name: "Sân Trước", class: "bg-yard", rain: true,
+        items: [
+            { id: 'bia', icon: '🪦', label: 'Bia Đá Cổ', x: 80, y: 70, action: () => addClue("Bia đá nhỏ cạnh giếng ghi: 'Người quá cố, Rằm tháng Bảy, năm Bính Tý'. Nắp chiếc hộp gỗ bên cạnh khắc nhỏ: '15 - 7'.", 'stele') },
+            { id: 'box', icon: '🔒', label: 'Hộp Gỗ Bằng Đồng', x: 90, y: 80, action: () => openLockModal('box', 'Hộp Gỗ Dưới Bia') },
+            { id: 'cung', icon: '🕯️', label: 'Bàn Cúng Cô Hồn', x: 25, y: 65, action: () => addClue("Bàn cúng cô hồn. Thầy Cửu đã đứng đây suốt đêm.") }
+        ]
+    },
+    livingRoom: {
+        name: "Phòng Khách", class: "bg-living", rain: false,
+        items: [
+            { id: 'xa_ngang', icon: '📜', label: 'Xà Ngang Khắc Chữ', x: 50, y: 10, action: () => addClue("Xà ngang nhà có khắc chữ: 'Bảo Đại thập tứ niên' (Năm Bảo Đại thứ 14). *Ghi chú: Vua Bảo Đại lên ngôi năm 1926.") }
+        ],
+        showSuspects: true
+    },
+    kitchen: {
+        name: "Nhà Bếp", class: "bg-kitchen", rain: false,
+        items: [
+            { id: 'cau_dao', icon: '⚡', label: 'Cầu Dao Điện', x: 75, y: 30, action: () => addClue("Cầu dao tổng ở bếp, phải đứng ngay đó mới hạ được. Đã bị sập xuống lúc 23:30 và được bật lại lúc 23:50.", 'breaker') },
+            { id: 'tu_quan_ao', icon: '🗄️', label: 'Tủ Quần Áo Chị Tư', x: 90, y: 55, action: () => openLockModal('cabinet', 'Tủ Của Chị Tư') }
+        ]
+    },
+    hallway: {
+        name: "Hành Lang", class: "bg-hallway", rain: false,
+        items: [
+            { id: 'door', icon: '🚪', label: 'Khóa Thư Phòng', x: 50, y: 50, action: () => openLockModal('door', 'Cửa Thư Phòng') }
+        ]
+    },
+    study: {
+        name: "Thư Phòng", class: "bg-study", rain: false,
+        locked: true,
+        items: [
+            { id: 'body', icon: '🩻', label: 'Thi Thể Nạn Nhân', x: 45, y: 60, action: () => addClue("Thi thể ông Thạc. Chén trà trên bàn có cặn bột trắng nghi là thuốc an thần. Cặn nằm sát đáy chén, không có vòng bột nổi trên mặt: thuốc đã có sẵn trong chén trước khi trà được rót. Cửa thư phòng tự khóa mỗi khi đóng: từ ngoài phải có mật mã mới vào được, từ trong thì mở bình thường.", 'tea') },
+            { id: 'calendar', icon: '🗓️', label: 'Lịch Tết Cũ', x: 40, y: 25, action: () => addClue("Lịch Tết năm Bính Tý vẫn treo trên tường, trang tháng Bảy khoanh đỏ. Ông Thạc không chịu gỡ suốt ba mươi năm.") },
+            { id: 'clock', icon: '🕰️', label: 'Đồng Hồ Treo Tường', x: 65, y: 30, action: () => addClue("Đồng hồ treo tường dừng lúc 11 giờ 15. Mẩu giấy dán bên dưới, nét chữ ông Thạc: 'Không ai được chỉnh.'", 'clock') },
+            { id: 'desk', icon: '🗝️', label: 'Ngăn Kéo Khóa', x: 55, y: 70, action: () => openLockModal('desk', 'Ngăn Kéo Bàn') }
+        ]
+    }
+};
+
+const $ = id => document.getElementById(id);
+let activeCharacterId = null;
+let replyTimers = [];
+
+const story = `Tháng Bảy, năm 2026. Làng cổ ven sông.\nMưa như trút nước. Tiếng sấm xé toạc màn đêm.\n\nBạn là thám tử Trần Bảo. Ông Lương Văn Thạc (72 tuổi) đã thuê bạn bảo vệ ông ta sau khi nhận được lá thư máu: "Đêm Rằm, tao về lấy mạng".\n\nBạn đến lúc 22h00. Nửa đêm, đột nhiên mất điện. Tiếng hát ru ai oán, rè rè như băng cũ, vọng lên từ phía giếng ngoài sân. Khi có điện lại, ông Thạc đã tắt thở trong thư phòng khóa kín.\n\nNghi phạm là 5 người đang có mặt trong nhà.\nHãy tìm ra kẻ thủ ác trước khi trời sáng. Dòng mục tiêu phía trên màn hình sẽ cho bạn biết cần làm gì tiếp theo.`;
+
+let i = 0;
+let typeTimer;
+function typeWriter() {
+    if (i < story.length) {
+        let char = story.charAt(i);
+        if (char === '\n') char = '<br>';
+        else if (i % 3 === 0 && char !== ' ') sfx('typeKey');
+        if (i === story.indexOf('Tiếng sấm')) sfx('thunder', 0.1);
+        if (i === story.indexOf('đột nhiên mất điện')) { sfx('powerOut'); musicDuck(0.0001, 5); }
+        if (i === story.indexOf('Khi có điện lại')) sfx('powerOn');
+        if (i === story.indexOf('Tiếng hát ru')) playCassetteSound({ far: true, vol: 0.55 });
+        $('prologue-text').innerHTML += char;
+        i++;
+        typeTimer = setTimeout(typeWriter, 30);
+    } else {
+        finishPrologue();
+    }
+}
+function finishPrologue() {
+    clearTimeout(typeTimer);
+    i = story.length;
+    $('prologue-text').innerHTML = story.replace(/\n/g, '<br>');
+    $('btn-start-game').classList.remove('hidden-ui');
+    $('btn-skip').classList.add('hidden-ui');
+}
+$('btn-skip').onclick = finishPrologue;
+$('prologue-text').onclick = () => { if (i < story.length) finishPrologue(); };
+
+$('btn-mute').textContent = muted ? '🔇' : '🔊';
+$('btn-mute').onclick = toggleMute;
+
+const savedGame = loadSave();
+if (hasProgress(savedGame)) {
+    $('btn-continue').classList.remove('hidden-ui');
+    $('btn-start-audio').textContent = 'CHƠI MỚI';
+    $('btn-start-audio').classList.remove('pulsate');
+}
+if (typeof tailwind === 'undefined') $('net-warn').classList.remove('hidden-ui');
+
+$('btn-start-audio').onclick = () => {
+    initAudio();
+    clearSave();
+    $('audio-overlay').classList.add('hidden-ui');
+    $('prologue').classList.remove('hidden-ui');
+    typeWriter();
+};
+
+$('btn-continue').onclick = () => {
+    initAudio();
+    applySave(savedGame);
+    $('audio-overlay').classList.add('hidden-ui');
+    $('game-ui').classList.remove('hidden-ui');
+    const r = (rooms[state.room] && !(state.room === 'study' && !state.locks.door.solved)) ? state.room : 'frontYard';
+    renderRoom(r);
+    updateObjective();
+};
+
+$('btn-start-game').onclick = () => {
+    $('prologue').classList.add('hidden-ui');
+    $('game-ui').classList.remove('hidden-ui');
+    renderRoom('frontYard');
+    document.querySelectorAll('.nav-btn')[1].classList.add('pulsate');
+    setTimeout(() => document.querySelectorAll('.nav-btn')[1].classList.remove('pulsate'), 5000);
+};
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.onclick = (e) => renderRoom(e.currentTarget.dataset.room);
+});
+
+function avatarFallback(char) {
+    const ch = char.name.split(' ').pop().charAt(0).toUpperCase();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><rect width="140" height="140" fill="#1a1414"/><text x="50%" y="62%" font-size="64" text-anchor="middle" fill="#8a0303" font-family="serif">${ch}</text></svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+function setAvatar(img, char) {
+    img.onerror = () => { img.onerror = null; img.src = avatarFallback(char); };
+    img.alt = char.name;
+    img.src = char.avatar;
+}
+
+function buildSuspects(container) {
+    container.innerHTML = '';
+    Object.values(characters).forEach(char => {
+        const charBtn = document.createElement('div');
+        charBtn.className = 'flex flex-col items-center cursor-pointer hover:-translate-y-2 transition-transform';
+        charBtn.onclick = () => openInterrogation(char.id);
+
+        const imgEl = document.createElement('img');
+        imgEl.className = 'avatar-img avatar-sm';
+        setAvatar(imgEl, char);
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'text-[10px] md:text-xs mt-2 bg-black/80 px-2 py-1 rounded border border-[#444] text-gray-300';
+        nameDiv.innerText = char.name.split(' ').pop();
+
+        charBtn.appendChild(imgEl);
+        charBtn.appendChild(nameDiv);
+        container.appendChild(charBtn);
+    });
+}
+
+function renderRoom(roomId) {
+    if (roomId === 'study' && state.locks.door.solved === false) {
+        showMsg("Cửa Thư Phòng đang bị khóa số!");
+        sfx('locked');
+        renderRoom('hallway');
+        return;
+    }
+
+    const prevRoom = state.room;
+    state.room = roomId;
+    const room = rooms[roomId];
+    if (prevRoom !== roomId) sfx('step', roomId === 'frontYard');
+    setRoomAmbience(roomId);
+    $('room-name').innerText = room.name;
+
+    const container = $('stage');
+    container.className = `relative overflow-hidden ${room.class}`;
+    $('rain-effect').style.display = room.rain ? 'block' : 'none';
+
+    const itemsLayer = $('items-layer');
+    itemsLayer.innerHTML = '';
+    room.items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'interactive-item';
+        el.innerText = (item.icon === '🔒' && state.locks.box.solved) ? '🔓' : item.icon;
+        el.setAttribute('data-label', item.label || 'Khám phá');
+        el.style.left = item.x + '%';
+        el.style.top = item.y + '%';
+        const activate = () => {
+            sfx('click');
+            currentItem = item;
+            try { item.action(); } finally { currentItem = null; }
+        };
+        el.onclick = activate;
+        el.tabIndex = 0;
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-label', item.label || 'Khám phá');
+        el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } };
+        itemsLayer.appendChild(el);
+    });
+
+    const suspectsLayer = $('suspects-layer');
+    const suspectsStrip = $('suspects-strip');
+    if (room.showSuspects) {
+        buildSuspects(suspectsLayer);
+        buildSuspects(suspectsStrip);
+        suspectsLayer.classList.remove('hidden-ui');
+        suspectsStrip.classList.add('show');
+    } else {
+        suspectsLayer.classList.add('hidden-ui');
+        suspectsStrip.classList.remove('show');
+    }
+    updateObjective();
+    save();
+}
+
+let msgTimer, msgTimer2;
+function showMsg(text) {
+    const box = $('msg-box');
+    box.innerText = text;
+    box.classList.remove('hidden-ui');
+    box.style.opacity = 1;
+    clearTimeout(msgTimer); clearTimeout(msgTimer2);
+    msgTimer = setTimeout(() => {
+        box.style.opacity = 0;
+        msgTimer2 = setTimeout(() => box.classList.add('hidden-ui'), 300);
+    }, 4000);
+}
+
+function showModalMsg(text, imgUrls = []) {
+    $('msg-content').innerHTML = text;
+    const container = $('dynamic-img-container');
+    container.innerHTML = '';
+
+    if (imgUrls.length > 0) {
+        const wrapper = document.createElement('div');
+        wrapper.className = imgUrls.length > 1 ? 'flex gap-2 justify-center flex-wrap' : 'flex justify-center';
+
+        imgUrls.forEach(url => {
+            const imgBox = document.createElement('div');
+            imgBox.className = 'relative max-h-[40vh] border border-[#555] rounded shadow-lg overflow-hidden bg-[#111]';
+
+            const img = document.createElement('img');
+            img.src = url;
+            img.className = 'max-h-[40vh] object-contain block mx-auto relative z-10';
+            
+            img.onerror = function() {
+                this.onerror = null;
+                const fileName = url.replace('./', '');
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+                    <rect width="300" height="200" fill="#1a1414"/>
+                    <rect x="10" y="10" width="280" height="180" fill="none" stroke="#8a0303" stroke-width="2" stroke-dasharray="6,4"/>
+                    <text x="150" y="90" font-size="30" text-anchor="middle" fill="#8a0303">📷</text>
+                    <text x="150" y="120" font-size="13" text-anchor="middle" fill="#d3c9b8" font-family="monospace">MANH MỐI VẬT CHỨNG</text>
+                    <text x="150" y="145" font-size="11" text-anchor="middle" fill="#777" font-family="monospace">[ ${fileName} ]</text>
+                </svg>`;
+                this.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+            };
+
+            imgBox.appendChild(img);
+            wrapper.appendChild(imgBox);
+        });
+        container.appendChild(wrapper);
+    }
+    openModal('modal-message');
+}
+
+function renderClues() {
+    const list = $('clue-list');
+    list.innerHTML = '';
+    if (!state.clues.length) {
+        list.innerHTML = '<li class="italic text-gray-400">Chưa ghi nhận manh mối nào...</li>';
+        return;
+    }
+    state.clues.forEach(text => {
+        const li = document.createElement('li');
+        li.innerText = text;
+        list.appendChild(li);
+    });
+}
+
+let currentItem = null;
+let afterCloseCb = null;
+
+function addClue(text, flag, opts) {
+    opts = opts || {};
+    if (flag) state.ev[flag] = true;
+    const isNew = !state.clues.includes(text);
+    if (isNew) {
+        state.clues.push(text);
+        const list = $('clue-list');
+        if (state.clues.length === 1) list.innerHTML = '';
+        const li = document.createElement('li');
+        li.innerText = text;
+        list.appendChild(li);
+    }
+    save();
+    if (isNew && flag) { if (flag === 'breaker') sfx('breakerClick'); else if (flag === 'tea') sfx('porcelain'); else if (flag === 'clock') sfx('clockStop'); }
+    if (opts.inline) return isNew;
+    showClueModal(text, {
+        isNew,
+        title: opts.title || (currentItem && currentItem.label),
+        icon: opts.icon || (currentItem && currentItem.icon),
+        intro: opts.intro || (currentItem && THINK[currentItem.id]),
+        imgs: opts.imgs,
+        quiet: opts.quiet
+    });
+    return isNew;
+}
+
+function showClueModal(text, o) {
+    $('clue-icon').textContent = o.icon || '🔎';
+    $('clue-title').textContent = o.title || 'Manh mối';
+    $('clue-status').textContent = o.isNew ? 'Manh mối mới' : 'Manh mối đã có trong Sổ tay';
+    const intro = $('clue-intro');
+    intro.textContent = o.intro || '';
+    intro.classList.toggle('hidden-ui', !o.intro);
+
+    const box = $('clue-imgs');
+    box.innerHTML = '';
+    if (o.imgs && o.imgs.length) {
+        const wrap = document.createElement('div');
+        wrap.className = o.imgs.length > 1 ? 'flex gap-2 justify-center flex-wrap' : 'flex justify-center';
+        o.imgs.forEach(url => {
+            const img = document.createElement('img');
+            img.alt = 'Vật chứng';
+            img.className = 'max-h-[32vh] max-w-full object-cover border border-[#444] rounded shadow-lg';
+            img.onerror = () => {
+                img.onerror = null;
+                img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+                        <rect width="300" height="200" fill="#1c1616" stroke="#8a0303" stroke-width="4"/>
+                        <text x="50%" y="45%" fill="#d3c9b8" font-family="serif" font-size="16" text-anchor="middle">📜 MANH MỐI VẬT CHỨNG</text>
+                        <text x="50%" y="65%" fill="#8a0303" font-family="monospace" font-size="12" text-anchor="middle">${url.replace('./', '')}</text>
+                    </svg>
+                `);
+            };
+            img.src = url;
+            wrap.appendChild(img);
+        });
+        box.appendChild(wrap);
+    }
+    $('clue-text').textContent = text;
+
+    if (!o.quiet) sfx(o.isNew ? 'clue' : 'paper');
+    afterCloseCb = o.isNew ? () => { showMsg('📔 Đã ghi manh mối mới vào Sổ tay!'); sfx('note'); } : null;
+    openModal('modal-clue');
+}
+
+function openModal(id) {
+    document.querySelectorAll('#modal-bg > div').forEach(el => el.classList.add('hidden-ui'));
+    $('modal-bg').classList.remove('hidden-ui');
+    $(id).classList.remove('hidden-ui');
+}
+function closeModals() {
+    $('modal-bg').classList.add('hidden-ui');
+    activeCharacterId = null;
+    replyTimers.forEach(clearTimeout);
+    replyTimers = [];
+    const cb = afterCloseCb;
+    afterCloseCb = null;
+    if (cb) cb();
+}
+document.querySelectorAll('.close-modal').forEach(btn => { btn.onclick = closeModals; });
+$('modal-bg').addEventListener('click', (e) => { if (e.target === $('modal-bg')) closeModals(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });
+
+$('btn-notebook').onclick = () => { sfx('paper'); openModal('modal-notebook'); };
+
+function bubbleU(t) {
+    sfx('send');
+    const hist = $('chat-history');
+    const el = document.createElement('div');
+    el.className = 'text-right text-gray-300 text-sm bg-black/40 p-2 rounded-l self-end max-w-[80%] border-r-2 border-gray-500 mt-2';
+    el.textContent = t;
+    hist.appendChild(el);
+    hist.scrollTop = hist.scrollHeight;
+}
+function bubbleC(char, t, newClue) {
+    sfx('msgIn');
+    const hist = $('chat-history');
+    const el = document.createElement('div');
+    el.className = 'text-left text-red-100 text-sm bg-red-900/30 p-2 rounded-r self-start max-w-[90%] border-l-2 border-red-700 mt-2';
+    const nm = document.createElement('span');
+    nm.className = 'font-bold mr-1 text-red-500';
+    nm.textContent = char.name.split(' ').pop() + ':';
+    el.appendChild(nm);
+    el.appendChild(document.createTextNode(t));
+    if (newClue) {
+        const tag = document.createElement('div');
+        tag.className = 'text-xs text-yellow-500 mt-1';
+        tag.textContent = '📔 Đã ghi vào Sổ tay';
+        el.appendChild(tag);
+    }
+    hist.appendChild(el);
+    hist.scrollTop = hist.scrollHeight;
+}
+function pick(v) {
+    let [t, c] = Array.isArray(v) ? v : [v];
+    if (typeof t === 'function') t = t();
+    return [t, c];
+}
+function reply(char, v) {
+    const id = setTimeout(() => {
+        if (activeCharacterId !== char.id) return;
+        const [t, c] = pick(v);
+        const isNew = !!c && !state.clues.includes(c);
+        if (isNew) addClue(c, null, { inline: true });
+        bubbleC(char, t, isNew);
+        renderChips();
+    }, 500);
+    replyTimers.push(id);
+}
+function renderChips() {
+    const box = $('chat-chips');
+    box.innerHTML = '';
+    const char = characters[activeCharacterId];
+    if (!char) return;
+    CHIPS.filter(c => c[2]() && char.a[c[1]]).forEach(c => {
+        const b = document.createElement('button');
+        b.className = 'btn text-xs';
+        b.textContent = c[0];
+        b.onclick = () => processChat(c[0], c[1]);
+        box.appendChild(b);
+    });
+}
+function openInterrogation(charId) {
+    replyTimers.forEach(clearTimeout);
+    replyTimers = [];
+    activeCharacterId = charId;
+    sfx('click'); sfx('chair');
+    const char = characters[charId];
+    setAvatar($('suspect-avatar'), char);
+    $('suspect-name').innerText = char.name;
+    $('suspect-role').innerText = char.role;
+    $('suspect-bio').innerText = char.bio;
+    $('chat-history').innerHTML = `<div class="text-gray-500 text-sm text-center">-- Bắt đầu thẩm vấn --<br>Gõ câu hỏi tự do bằng tiếng Việt, bấm gợi ý bên dưới, hoặc đưa vật chứng ra.</div>`;
+    $('chat-input').value = '';
+    $('ev-panel').classList.add('hidden-ui');
+    renderChips();
+    openModal('modal-interrogation');
+}
+function processChat(text, forcedIntent) {
+    if (!activeCharacterId) return;
+    const inputEl = $('chat-input');
+    const q = (text || inputEl.value).trim();
+    if (!q) return;
+    $('ev-panel').classList.add('hidden-ui');
+    bubbleU(q);
+    inputEl.value = '';
+    const char = characters[activeCharacterId];
+    const intent = forcedIntent || detectIntent(q) || guessIntent(q);
+    let v = intent && char.a[intent];
+    if (!v) {
+        const n = state.fb[char.id] = (state.fb[char.id] || 0) + 1;
+        v = char.fb[(n - 1) % char.fb.length];
+    }
+    if (intent && char.a[intent]) {
+        const k = char.id + '.' + intent;
+        if (intent === 'cass') state.ev.heard = true;
+        if (k === 'quan.door' || k === 'khoa.victim') state.ev.proud = true;
+        if (k === 'cuu.well' || k === 'cuu.lan') state.ev.lanTime = true;
+        save();
+    }
+    reply(char, v);
+}
+function showEvidence(k) {
+    if (!activeCharacterId) return;
+    $('ev-panel').classList.add('hidden-ui');
+    bubbleU('Đưa ra: ' + EVID[k].n);
+    const char = characters[activeCharacterId];
+    reply(char, char.ev[k] || "Tôi chưa từng thấy thứ này. Anh hỏi người khác đi.");
+}
+$('btn-evidence').onclick = () => {
+    const p = $('ev-panel');
+    if (!p.classList.contains('hidden-ui')) { p.classList.add('hidden-ui'); return; }
+    p.innerHTML = '';
+    const list = Object.entries(EVID).filter(([k, e]) => e.ok());
+    if (!list.length) p.innerHTML = '<span class="text-gray-500 text-sm">Bạn chưa có vật chứng nào để đưa ra.</span>';
+    list.forEach(([k, e]) => {
+        const b = document.createElement('button');
+        b.className = 'btn text-xs';
+        b.textContent = '📎 ' + e.n;
+        b.onclick = () => showEvidence(k);
+        p.appendChild(b);
+    });
+    p.classList.remove('hidden-ui');
+};
+
+$('btn-send-chat').onclick = () => processChat();
+$('chat-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); processChat(); }
+});
+
+const HINTS = {
+    door: [
+        "Ngôi nhà này có ghi lại thời điểm nó ra đời. Hãy xem kỹ các chi tiết kiến trúc trong nhà.",
+        "Xà ngang ở Phòng Khách khắc 'Bảo Đại thập tứ niên'. Vua Bảo Đại lên ngôi năm 1926.",
+        "Năm thứ 14: 1926 + 13 = 1939."
+    ],
+    desk: [
+        "Trong thư phòng có một thứ ông Thạc không cho ai đụng vào suốt nhiều năm.",
+        "Đồng hồ dừng lúc 11:15, và Thầy Cửu kể Lan chết gần nửa đêm đêm Rằm. Ông ám ảnh giờ nào?",
+        "11 giờ 15 đêm là 23:15: 2315."
+    ],
+    box: [
+        "Chiếc bia đá ở sân trước ghi ngày mất của một cô gái. Đêm nay là ngày gì?",
+        "Bia ghi 'Rằm tháng Bảy'. Rằm là ngày 15, tháng Bảy là tháng 07.",
+        "Ngày 15, tháng 07: 1507."
+    ],
+    cabinet: [
+        "Mã của một chiếc tủ riêng thường là con số có ý nghĩa với chủ nhân. Hãy xem lại những gì bạn tìm thấy trong ngăn kéo thư phòng.",
+        "Ảnh ghi 'Lan & Hạnh, 1996'. Bia ghi 'năm Bính Tý', và Bính Tý lặp lại mỗi 60 năm: 1936, 1996, 2056.",
+        "Năm Bính Tý gần nhất trước nay là 1996: 1996."
+    ]
+};
+const LOCK_NAMES = { door: 'Cửa thư phòng', desk: 'Ngăn kéo bàn', box: 'Hộp gỗ dưới bia', cabinet: 'Tủ của chị Tư' };
+const totalHints = () => Object.values(state.hints).reduce((a, b) => a + b, 0);
+function hintFor(lockId) {
+    const n = Math.min((state.hints[lockId] || 0) + 1, 3);
+    state.hints[lockId] = n;
+    save();
+    return `Gợi ý ${n}/3: ${HINTS[lockId][n - 1]}`;
+}
+$('btn-hint').onclick = () => {
+    sfx('hint');
+    const id = state.currentLock;
+    $('lock-hint').innerText = hintFor(id);
+    $('btn-hint').innerText = `💡 GỢI Ý (${state.hints[id]}/3)`;
+};
+$('btn-hint-global').onclick = () => {
+    sfx('hint');
+    const next = ['door', 'desk', 'box', 'cabinet'].find(k => !state.locks[k].solved);
+    if (!next) { showModalMsg("Bạn đã mở đủ các ổ khóa. Hãy xem lại Sổ tay, đối chiếu lời khai rồi bấm KẾT ÁN.", []); return; }
+    showModalMsg(`<b>${LOCK_NAMES[next]}</b><br>${hintFor(next)}`, []);
+};
+
+function openLockModal(lockId, title) {
+    if (lockId === 'box' && !state.ev.heard) { showMsg("Thám tử: 'Một chiếc hộp khóa số. Chưa biết nó liên quan gì. Nên nghe lời khai của mọi người trước.'"); sfx('locked'); return; }
+    if (lockId === 'door' && state.locks.box.solved && !state.ev.proud) { showMsg("Thám tử: 'Mình chưa biết ông Thạc thường đặt mã theo điều gì.'"); sfx('locked'); return; }
+    if (lockId === 'desk' && !state.ev.lanTime) { showMsg("Thám tử: 'Ngăn kéo khóa bốn số. Mình chưa biết ông ấy canh giữ điều gì.'"); sfx('locked'); return; }
+    if (lockId === 'door' && !state.locks.box.solved) { showMsg("Thám tử: 'Trước hết phải làm rõ tiếng hát ru ngoài giếng. Ma hay người?'"); sfx('locked'); return; }
+    if (lockId === 'cabinet' && !state.locks.desk.solved) { showMsg("Thám tử: 'Chưa có lý do gì để lục đồ riêng của ai.'"); sfx('locked'); return; }
+    if (state.locks[lockId].solved) {
+        if (lockId === 'door') { renderRoom('study'); return; }
+        showLockClue(lockId, false);
+        return;
+    }
+    state.currentLock = lockId;
+    $('lock-title').innerText = title;
+    state.lockInput = [0,0,0,0];
+    updateLockUI();
+    $('lock-error').innerText = '';
+    const used = state.hints[lockId] || 0;
+    $('lock-hint').innerText = used ? `Gợi ý ${used}/3: ${HINTS[lockId][used - 1]}` : '';
+    $('btn-hint').innerText = `💡 GỢI Ý (${used}/3)`;
+    openModal('modal-lock');
+}
+
+function updateLockUI() {
+    for (let k = 0; k < 4; k++) { $(`digit-${k}`).innerText = state.lockInput[k]; }
+}
+
+document.querySelectorAll('.num-up').forEach(btn => {
+    btn.onclick = () => {
+        const idx = parseInt(btn.dataset.idx);
+        state.lockInput[idx] = (state.lockInput[idx] + 1) % 10;
+        sfx('digit');
+        updateLockUI();
+    };
+});
+document.querySelectorAll('.num-down').forEach(btn => {
+    btn.onclick = () => {
+        const idx = parseInt(btn.dataset.idx);
+        state.lockInput[idx] = (state.lockInput[idx] - 1 + 10) % 10;
+        sfx('digit');
+        updateLockUI();
+    };
+});
+
+$('btn-unlock').onclick = () => {
+    const inputStr = state.lockInput.join('');
+    const target = state.locks[state.currentLock].code;
+    if (inputStr === target) {
+        state.locks[state.currentLock].solved = true;
+        closeModals();
+        handleUnlockSuccess(state.currentLock);
+        if (state.currentLock !== 'door') renderRoom(state.room);
+        save();
+    } else {
+        sfx('unlockFail');
+        $('lock-error').innerText = "Sai mật mã!";
+        setTimeout(() => $('lock-error').innerText = "", 2000);
+    }
+};
+
+const LOCK_ICONS = { desk: '🗝️', box: '📼', cabinet: '🗄️' };
+function showLockClue(lockId, quiet) {
+    const v = UNLOCK_VIEW[lockId];
+    addClue(LOCK_CLUES[lockId], null, { title: LOCK_NAMES[lockId], icon: LOCK_ICONS[lockId], intro: v.text, imgs: v.imgs, quiet: !!quiet });
+}
+
+function handleUnlockSuccess(lockId) {
+    sfx('unlockOK'); setTimeout(updateObjective, 0);
+    if (lockId === 'door') {
+        showModalMsg("Cạch! Cửa thư phòng đã mở.", []);
+        sfx('doorOpen');
+        renderRoom('study');
+    } else {
+        if (lockId === 'box') playCassetteSound();
+        if (lockId === 'cabinet') setTimeout(() => sfx('stinger'), 450);
+        if (lockId === 'desk') setTimeout(() => sfx('paper'), 350);
+        showLockClue(lockId, true);
+    }
+}
+
+const THINK = {
+    bia: "Rằm tháng Bảy, năm Bính Tý. Một người đã chết ở đây.",
+    xa_ngang: "Căn nhà này có tuổi, và năm dựng nhà được khắc ngay đây.",
+    cau_dao: "Phải đứng đúng trong bếp mới hạ được. Lúc 23:30, ai ở đó?",
+    body: "Chết vì thuốc, không phải vì ma. Thuốc vào lúc nào, và ai đã chạm vào chén trà?",
+    clock: "Đồng hồ dừng ở 11:15 và bị cấm chỉnh. Giờ này có ý nghĩa gì với ông?"
+};
+function updateObjective() {
+    const L = state.locks; let t;
+    if (!L.box.solved) t = "Hồi 1 – Tiếng ma: Tiếng hát ru vọng từ phía giếng. Ma hay người?";
+    else if (!L.door.solved) t = "Hồi 2 – Phòng kín: Ông Thạc chết trong căn phòng khóa kín. Điều gì đã xảy ra?";
+    else if (!L.desk.solved) t = "Hồi 3 – Người dưới giếng: Vì sao có người muốn ông chết?";
+    else if (!L.cabinet.solved) t = "Hồi 4 – Dựng lại hiện trường: Ai đã làm được tất cả?";
+    else if (!state.ev.recon) t = "Hồi 4 – Dựng lại hiện trường: Lúc 23:30, mỗi người ở đâu?";
+    else t = "Mọi mảnh ghép đã đủ. Mở Sổ tay để kết án.";
+    $('objective').innerText = "🎯 " + t;
+}
+const RECON = [['quan','Quân','san'],['van','Vân','san'],['khoa','Khoa','cong'],['cuu','Thầy Cửu','san'],['hanh','Chị Tư','bep']];
+RECON.forEach(r => { const d = document.createElement('div'); d.className = 'flex justify-between items-center text-sm gap-2'; d.innerHTML = `<span>${r[1]}</span><select data-r="${r[0]}" class="bg-[#1a1712] border border-[#5c4a30] p-1 text-[#dcd0c0]"><option value="">-- ở đâu? --</option><option value="san">Ngoài sân</option><option value="cong">Ngoài cổng</option><option value="bep">Trong bếp</option></select>`; $('recon-rows').appendChild(d); });
+$('btn-recon').onclick = () => {
+    const ok = RECON.every(r => document.querySelector(`#recon-rows select[data-r="${r[0]}"]`).value === r[2]);
+    if (ok) { state.ev.recon = true; save(); sfx('clue'); updateObjective(); $('recon-msg').className = 'text-sm text-green-400 mb-4'; $('recon-msg').innerText = "Khớp. Bốn người có mặt ngoài sân hoặc cổng, chỉ một người ở trong bếp."; }
+    else { sfx('unlockFail'); $('recon-msg').className = 'text-sm text-yellow-400 mb-4'; $('recon-msg').innerText = "Chưa khớp. Xem lại lời khai và nhật ký cuộc gọi."; }
+};
+let accuseArmed = null;
+$('accuse-suspect').onchange = () => { accuseArmed = null; $('accuse-error').innerText = ''; };
+function backToGame() {
+    MUS.ending = null;
+    $('prologue').classList.add('hidden-ui');
+    $('game-ui').classList.remove('hidden-ui');
+    accuseArmed = null;
+}
+$('btn-accuse').onclick = () => {
+    const suspect = $('accuse-suspect').value;
+    if (!suspect) { $('accuse-error').innerText = "Vui lòng chọn một người!"; return; }
+    if (!state.ev.recon) { $('accuse-error').innerText = "Hãy dựng lại hiện trường lúc 23:30 trước khi kết án."; return; }
+    if (accuseArmed !== suspect) {
+        accuseArmed = suspect;
+        sfx('heartbeat');
+        $('accuse-error').innerText = "Bạn chắc chắn chứ? Buộc tội sai là thua. Bấm CHỈ ĐIỂM lần nữa để xác nhận.";
+        return;
+    }
+    $('accuse-error').innerText = '';
+
+    closeModals();
+    $('game-ui').classList.add('hidden-ui');
+    $('prologue').classList.remove('hidden-ui');
+    $('btn-start-game').classList.add('hidden-ui');
+    $('btn-skip').classList.add('hidden-ui');
+    const proText = $('prologue-text');
+    const proof = [
+        ['Chén trà có thuốc (khám thi thể trong thư phòng)', !!state.ev.tea],
+        ['Cầu dao ở nhà bếp', !!state.ev.breaker],
+        ['Chiếc hộp gỗ cạnh bia đá', state.locks.box.solved],
+        ['Nhật ký và tấm ảnh trong ngăn kéo', state.locks.desk.solved],
+        ['Vật chứng trong tủ quần áo', state.locks.cabinet.solved]
+    ];
+    const enough = proof.every(p => p[1]);
+
+    if (!enough) {
+        sfx('unlockFail');
+        const list = proof.map(p => (p[1] ? '✔ ' : '✖ ') + p[0]).join('<br>');
+        proText.innerHTML = `Bạn chỉ tay vào ${characters[suspect].name}, nhưng ai nấy đều lắc đầu: "Bằng chứng đâu?"<br><br>Những gì bạn có chưa đủ sức thuyết phục để buộc tội bất kỳ ai.<br><br><div class="text-sm text-left inline-block">${list}</div><br><br><span class="text-yellow-500 font-bold text-2xl">CHƯA ĐỦ BẰNG CHỨNG</span><br><br><button onclick="backToGame()" class="btn mt-4">Quay lại điều tra</button>`;
+    } else if (suspect === 'hanh') {
+        sfx('win'); musicEnd('win');
+        setTimeout(() => playCassetteSound({ far: true, vol: 0.6 }), 5200);
+        clearSave();
+        proText.innerHTML = `Đúng hung thủ. Đủ bằng chứng.<br><br>Chị Tư Hạnh là em gái của Lan, cô hầu gái bị ông Thạc đẩy xuống giếng năm 1996 rồi dàn dựng thành "tự tử". Mười hai năm làm giúp việc trong nhà, bà chờ đúng đêm Rằm này.<br><br><div class="text-base text-left inline-block">Chiều: giấu chiếc cassette hẹn giờ vào hộp gỗ cạnh giếng.<br>21h10: bỏ thuốc an thần lấy từ chính lọ của ông Thạc vào chén trà.<br>23h15: mặc áo dài trắng hiện ra ở hành lang cho người khác nhìn thấy.<br>23h30: hạ cầu dao trong bếp, băng hát ru cất lên. Cả nhà tin là oan hồn về đòi mạng.</div><br><br>Lúc ấy Quân, Vân và Thầy Cửu đều ở ngoài sân, Khoa đang gọi video. Chỉ có một người ở một mình trong bếp.<br><br>Hạnh mỉm cười: "Tôi không hối hận."<br><br>Vụ án khép lại. Nhưng đêm đó, máy cassette trong kho vật chứng dù không có pin vẫn tự động hát ru...<br><br><span class="text-red-500 font-bold text-2xl">HOÀN THÀNH XUẤT SẮC!</span><br><br>Gợi ý đã dùng: ${totalHints()}<br>Số lần buộc tội sai: ${state.wrong}<br><button onclick="restartGame()" class="btn mt-4">Chơi lại</button>`;
+    } else {
+        state.wrong++;
+        sfx('lose'); musicEnd('lose');
+        save();
+        proText.innerHTML = `Bạn đã chỉ điểm sai người.<br><br>Đột nhiên đèn tắt... Tiếng cười lạnh lẽo vang lên. Cửa thư phòng khóa sập lại.<br><br><span class="text-red-600 font-bold text-3xl">GAME OVER</span><br><br><button onclick="backToGame()" class="btn mt-4 mr-2">Quay lại điều tra</button><button onclick="restartGame()" class="btn mt-4">Chơi lại từ đầu</button>`;
+    }
+};
+
+/* ===== Nâng cấp hình ảnh: mưa, sương, bụi, đèn pin + ánh nến, sấm chớp, chuyển phòng ===== */
+(function () {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var coarse = matchMedia('(pointer: coarse)').matches, stage = $('stage');
+    var cv = document.createElement('canvas'); cv.id = 'fx'; cv.setAttribute('aria-hidden', 'true'); stage.appendChild(cv);
+    var x = cv.getContext('2d'); if (!x) return;
+    document.body.classList.add('fx-on');
+    // Mỗi phòng: mưa kính, sương, độ tối viền, mức ánh chớp lọt qua cửa sổ
+    var CFG = { frontYard: { rain: 1, fog: .22, dark: .5, flash: 1 }, livingRoom: { rain: 0, fog: .10, dark: .5, flash: .35 },
+        kitchen: { rain: 0, fog: .08, dark: .52, flash: .3 }, hallway: { rain: 0, fog: .16, dark: .58, flash: .45 }, study: { rain: 0, fog: .06, dark: .6, flash: .25 } };
+    var cfg = CFG.frontYard, W = 0, H = 0, dpr = Math.min(devicePixelRatio || 1, coarse ? 1.25 : 1.5);
+    function size() { W = stage.clientWidth; H = stage.clientHeight; cv.width = W * dpr; cv.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    size(); addEventListener('resize', size);
+    var fs = document.createElement('canvas'); fs.width = fs.height = 256; var fx2 = fs.getContext('2d'), fg = fx2.createRadialGradient(128, 128, 0, 128, 128, 128);
+    fg.addColorStop(0, 'rgba(190,200,205,1)'); fg.addColorStop(1, 'rgba(190,200,205,0)'); fx2.fillStyle = fg; fx2.fillRect(0, 0, 256, 256);
+    var RN = coarse ? 90 : 220, rain = [], fog = [], dust = [], i;
+    for (i = 0; i < RN; i++) rain.push({ x: Math.random(), y: Math.random(), l: 10 + Math.random() * 22, v: .9 + Math.random() * .9, f: Math.random() < .35 });
+    for (i = 0; i < 5; i++) fog.push({ x: Math.random(), y: .45 + Math.random() * .5, s: .5 + Math.random() * .5, v: .004 + Math.random() * .006 });
+    for (i = 0; i < (coarse ? 25 : 50); i++) dust.push({ x: Math.random(), y: Math.random(), v: .004 + Math.random() * .01, p: Math.random() * 6 });
+    var px = -1, py = -1, lx = .5, ly = .4, flashAt = 0, last = 0, n = 0;
+    stage.addEventListener('pointermove', function (e) { var b = stage.getBoundingClientRect(); px = (e.clientX - b.left) / b.width; py = (e.clientY - b.top) / b.height; });
+    stage.addEventListener('pointerleave', function () { px = -1; });
+    function frame(now) {
+        requestAnimationFrame(frame);
+        if (document.hidden) return;
+        if (stage.clientWidth !== W || stage.clientHeight !== H) size();
+        if (!W || (coarse && (n++ & 1))) return;
+        var t = now / 1000, dt = Math.min(.05, (now - last) / 1000 || .016); last = now;
+        x.clearRect(0, 0, W, H);
+        var rm = cfg.rain && (rooms[state.room] || {}).rain;
+        if (rm) {
+            x.lineCap = 'round';
+            [false, true].forEach(function (far) {
+                x.strokeStyle = far ? 'rgba(200,215,230,.16)' : 'rgba(215,225,240,.32)'; x.lineWidth = far ? .7 : 1.2; x.beginPath();
+                rain.forEach(function (d) {
+                    if (d.f !== far) return;
+                    d.y += d.v * dt * (far ? .9 : 1.5); d.x -= d.v * dt * .12; if (d.y > 1.05) { d.y = -.05; d.x = Math.random() * 1.1; } if (d.x < -.05) d.x += 1.1;
+                    var sx = d.x * W, sy = d.y * H, k = far ? .6 : 1; x.moveTo(sx, sy); x.lineTo(sx - d.l * .16 * k, sy + d.l * k);
+                });
+                x.stroke();
+            });
+        }
+        fog.forEach(function (f) {
+            f.x += f.v * dt; if (f.x > 1.4) f.x = -.4;
+            var w = W * (.8 + f.s), h = H * .5 * f.s; x.globalAlpha = cfg.fog * (.7 + .3 * Math.sin(t * .3 + f.s * 9)); x.drawImage(fs, f.x * W - w / 2, f.y * H - h / 2, w, h);
+        });
+        x.globalAlpha = 1; x.globalCompositeOperation = 'lighter'; x.fillStyle = 'rgba(230,200,160,.22)';
+        dust.forEach(function (d) {
+            d.y -= d.v * dt; if (d.y < -.02) d.y = 1.02; x.beginPath(); x.arc((d.x + Math.sin(t * .4 + d.p) * .01) * W, d.y * H, 1 + d.p % 1.2, 0, 7); x.fill();
+        });
+        x.globalCompositeOperation = 'source-over';
+        // Đèn của thám tử: đi theo con trỏ (hoặc trôi nhẹ trên màn cảm ứng), chập chờn như ngọn nến
+        var gx = px < 0 ? .5 + Math.sin(t * .2) * .15 : px, gy = px < 0 ? .42 + Math.cos(t * .17) * .06 : py;
+        lx += (gx - lx) * .08; ly += (gy - ly) * .08;
+        var fl = 1 + .05 * Math.sin(t * 13) + .04 * Math.sin(t * 7.3 + 1) + (Math.random() - .5) * .03, cx = lx * W, cy = ly * H, r = H * .62 * fl;
+        var g = x.createRadialGradient(cx, cy, r * .12, cx, cy, r * 1.7);
+        g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.5, 'rgba(0,0,0,' + cfg.dark * .45 + ')'); g.addColorStop(1, 'rgba(0,0,0,' + cfg.dark + ')');
+        x.fillStyle = g; x.fillRect(0, 0, W, H);
+        x.globalCompositeOperation = 'lighter';
+        g = x.createRadialGradient(cx, cy, 0, cx, cy, r * .8); g.addColorStop(0, 'rgba(255,160,80,' + .13 * fl + ')'); g.addColorStop(1, 'rgba(255,160,80,0)');
+        x.fillStyle = g; x.fillRect(0, 0, W, H);
+        var ft = (performance.now() - flashAt) / 1000;
+        if (ft >= 0 && ft < 1) {
+            var a = (ft < .08 ? ft / .08 : ft < .18 ? 1 - (ft - .08) / .1 * .75 : ft < .26 ? .25 + (ft - .18) / .08 * .75 : Math.max(0, 1 - (ft - .26) / .74)) * cfg.flash * .5;
+            x.fillStyle = 'rgba(190,210,255,' + a + ')'; x.fillRect(0, 0, W, H);
+        }
+        x.globalCompositeOperation = 'source-over';
+    }
+    requestAnimationFrame(frame);
+    // Sấm: chớp loé đúng lúc tiếng sấm vang
+    var sfx0 = sfx;
+    sfx = function (name) { if (name === 'thunder') setTimeout(function () { flashAt = performance.now(); }, (arguments[1] || 0) * 1000); return sfx0.apply(this, arguments); };
+    // Chuyển phòng: tối sầm rồi sáng dần
+    var rr0 = renderRoom;
+    renderRoom = function (id) {
+        var prev = state.room; rr0.apply(this, arguments); cfg = CFG[state.room] || cfg;
+        if (prev !== state.room && stage.animate) stage.animate([{ filter: 'brightness(0) blur(6px)' }, { filter: 'brightness(1) blur(0)' }], { duration: 550, easing: 'ease-out' });
+    };
+})();
+
+/* ===== Biểu tượng đường nét cho điểm khám xét (thay emoji) ===== */
+(function () {
+    var P = {
+        '🪦': '<path d="M7 21V9a5 5 0 0 1 10 0v12M4 21h16M12 8v5M10 10h4"/>',
+        '🔒': '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+        '🔓': '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-1.5"/>',
+        '🕯': '<path d="M10 21V11h4v10M8 21h8M12 3c1.6 2 2.2 3.200 0 5.200-2.200-2-1.600-3.200 0-5.200z"/>',
+        '📜': '<path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM7 4a2 2 0 0 0-2 2v2h4M12 9h4M12 13h4"/>',
+        '⚡': '<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
+        '🗄': '<rect x="5" y="3" width="14" height="18" rx="1.500"/><path d="M5 12h14M10 7.500h4M10 16.500h4"/>',
+        '🚪': '<path d="M6 21V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v17M4 21h16M14 12v.5"/>',
+        '🕰': '<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>',
+        '🗓': '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>',
+        '🗝': '<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M16 7l3 3M14 9l2 2"/>',
+        '🩻': '<path d="M12 3v18M7 7c2 0 4 1 5 3M17 7c-2 0-4 1-5 3M7 12c2 0 4 1 5 3M17 12c-2 0-4 1-5 3"/>'
+    }, FALLBACK = '<circle cx="11" cy="11" r="6"/><path d="m20 20-4.500-4.500"/>';
+    function dress() {
+        document.querySelectorAll('#items-layer .interactive-item').forEach(function (el) {
+            var k = el.textContent.replace(/\uFE0F/g, '').trim();
+            if (!k || el.querySelector('svg')) return;
+            el.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + (P[k] || FALLBACK) + '</svg>';
+        });
+    }
+    window.drIcon = function (k) { k = (k || '').replace(/\uFE0F/g, '').trim(); return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (P[k] || FALLBACK) + '</svg>'; };
+    var rr1 = renderRoom;
+    renderRoom = function () { rr1.apply(this, arguments); dress(); };
+    dress();
+})();
+
+/* ===== Văn bản kiểu hồ sơ vụ án: màn mở đầu, manh mối, thông báo, mục tiêu ===== */
+(function () {
+    function tag(m, l, r) {
+        var t = m.querySelector('.dos-tag');
+        if (!t) { t = document.createElement('div'); t.className = 'dos-tag'; t.innerHTML = '<span></span><span></span>'; m.insertBefore(t, m.firstChild); }
+        t.children[0].textContent = l; t.children[1].textContent = r;
+    }
+    var pt = $('prologue-text'), d = document.createElement('div'); d.className = 'dossier';
+    pt.parentNode.insertBefore(d, pt); d.appendChild(pt);
+    tag(d, 'HỒ SƠ #001 · LÀNG CỔ VEN SÔNG', 'TUYỆT MẬT');
+    var sc0 = showClueModal;
+    showClueModal = function (text, o) {
+        sc0.apply(this, arguments); o = o || {};
+        var n = state.clues.indexOf(text) + 1;
+        tag($('modal-clue'), 'HỒ SƠ #001 · VẬT CHỨNG', n ? 'Nº ' + String(n).padStart(2, '0') : 'Nº --');
+        if (window.drIcon) $('clue-icon').innerHTML = window.drIcon(o.icon || '');
+        $('clue-status').classList.toggle('is-new', !!o.isNew);
+    };
+    var sm0 = showModalMsg;
+    showModalMsg = function () { sm0.apply(this, arguments); tag($('modal-message'), 'HỒ SƠ #001', 'THÔNG BÁO'); };
+    var uo0 = updateObjective;
+    updateObjective = function () { uo0.apply(this, arguments); var o = $('objective'); o.textContent = o.textContent.replace(/^\s*🎯\s*/, ''); };
+    var ms0 = showMsg;
+    showMsg = function (t) { arguments[0] = String(t).replace(/^\s*(\p{Extended_Pictographic}\uFE0F?\s*)+/u, ''); return ms0.apply(this, arguments); };
+})();
+
+/* ===== Sửa màn mở đầu, ổ khóa theo chất liệu, sổ tay thám tử ===== */
+(function () {
+    // Màn mở đầu: tự cuộn theo chữ đang gõ
+    var pr = $('prologue');
+    new MutationObserver(function () { pr.scrollTop = pr.scrollHeight; }).observe($('prologue-text'), { childList: true, characterData: true, subtree: true });
+
+    // Hình ảnh ổ khóa
+    function defs(i, extra) {
+        return '<defs><filter id="g' + i + '"><feTurbulence type="fractalNoise" baseFrequency=".015 .5" numOctaves="3" seed="' + i + '"/><feColorMatrix values="0 0 0 0 .1 0 0 0 0 .05 0 0 0 0 .02 0 0 0 .6 -.1"/></filter>' +
+            '<linearGradient id="b' + i + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6c982"/><stop offset=".55" stop-color="#a97c2e"/><stop offset="1" stop-color="#5b3f12"/></linearGradient>' +
+            '<radialGradient id="v' + i + '" cx=".5" cy=".5" r=".7"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".65"/></radialGradient>' + (extra || '') + '</defs>';
+    }
+    function svg(body) { return '<svg viewBox="0 0 240 150" role="img" aria-hidden="true">' + body + '</svg>'; }
+    function nails(xs, y, r, f) { return xs.map(function (x) { return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + f + '"/>'; }).join(''); }
+    var HERO = {
+        // Cửa gỗ: ván ghép, dải sắt đóng đinh, then cài bằng gỗ và ổ đồng
+        door: svg(defs(1) + '<rect width="240" height="150" fill="#53341d"/><path d="M0 0h60v150H0zM124 0h60v150h-60z" fill="#5d3a21"/><rect width="240" height="150" filter="url(#g1)"/><path d="M60 0V150M122 0V150M184 0V150" stroke="#1b0f07" stroke-width="3"/>' +
+            '<rect y="18" width="240" height="11" fill="#242220"/><rect y="121" width="240" height="11" fill="#242220"/>' + nails([14, 40, 90, 150, 200, 226], 23.500, 2.500, '#3d3935') + nails([14, 40, 90, 150, 200, 226], 126.500, 2.500, '#3d3935') +
+            '<rect x="84" y="44" width="72" height="66" rx="5" fill="#6f4727" stroke="#241308" stroke-width="3"/><rect x="91" y="51" width="58" height="52" rx="3" fill="none" stroke="#3d2413" stroke-width="1.500"/>' +
+            '<rect x="28" y="71" width="184" height="14" rx="3" fill="#8a5a31" stroke="#241308" stroke-width="2.500"/><path d="M34 78h172" stroke="#5a3a1c"/><rect x="46" y="64" width="9" height="28" fill="url(#b1)" stroke="#3b2808"/><rect x="185" y="64" width="9" height="28" fill="url(#b1)" stroke="#3b2808"/>' +
+            '<circle cx="120" cy="78" r="17" fill="url(#b1)" stroke="#3b2808" stroke-width="2"/><circle cx="120" cy="74" r="4" fill="#120b04"/><path d="M118 76h4l2 11h-8z" fill="#120b04"/><rect width="240" height="150" fill="url(#v1)"/>'),
+        // Ngăn kéo: mặt gỗ óc chó mòn, quai đồng và lỗ khóa
+        desk: svg(defs(2) + '<rect width="240" height="150" fill="#3c2415"/><rect width="240" height="150" filter="url(#g2)"/><rect x="20" y="20" width="200" height="110" rx="4" fill="#4a2c18" stroke="#1d1008" stroke-width="3"/><rect x="32" y="32" width="176" height="86" fill="none" stroke="#2a1709" stroke-width="2"/><rect x="34" y="34" width="172" height="82" fill="none" stroke="#7a5230" stroke-width="1" opacity=".6"/>' +
+            '<path d="M88 62Q120 40 152 62" fill="none" stroke="url(#b2)" stroke-width="5" stroke-linecap="round"/><circle cx="88" cy="62" r="4.500" fill="url(#b2)"/><circle cx="152" cy="62" r="4.500" fill="url(#b2)"/>' +
+            '<path d="M120 76c-9 0-13 7-9 13l-3 15h24l-3-15c4-6 0-13-9-13z" fill="url(#b2)" stroke="#3b2808"/><circle cx="120" cy="87" r="3.500" fill="#120b04"/><path d="M118.500 89h3l1.500 9h-6z" fill="#120b04"/><path d="M40 108l30-10M150 44l40-6M170 100l20 8" stroke="#fff" stroke-opacity=".07"/><rect width="240" height="150" fill="url(#v2)"/>'),
+        // Hộp đồng: nắp xanh gỉ, đinh tán, bản lề
+        box: svg(defs(3, '<linearGradient id="z3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7aa090"/><stop offset=".6" stop-color="#3f6558"/><stop offset="1" stop-color="#26403a"/></linearGradient>') + '<rect width="240" height="150" fill="#1d2b26"/><rect x="24" y="26" width="192" height="100" rx="7" fill="url(#z3)" stroke="#101c18" stroke-width="3"/>' +
+            '<ellipse cx="60" cy="40" rx="30" ry="9" fill="#8fbfa9" opacity=".22"/><ellipse cx="180" cy="110" rx="34" ry="10" fill="#9ccbb4" opacity=".2"/><ellipse cx="150" cy="52" rx="14" ry="5" fill="#b4dcc8" opacity=".15"/><rect x="38" y="40" width="164" height="72" rx="3" fill="none" stroke="#0e1c17" stroke-width="2"/><rect x="40" y="42" width="160" height="68" rx="2" fill="none" stroke="#a9d3c0" stroke-opacity=".25"/>' +
+            nails([34, 120, 206], 34, 3.500, '#2a4a3f') + nails([34, 120, 206], 118, 3.500, '#2a4a3f') + '<rect x="58" y="22" width="30" height="9" fill="#2d4b41" stroke="#101c18"/><rect x="152" y="22" width="30" height="9" fill="#2d4b41" stroke="#101c18"/>' +
+            '<circle cx="120" cy="76" r="17" fill="url(#b3)" stroke="#3b2808" stroke-width="2"/><circle cx="120" cy="72" r="4" fill="#120b04"/><path d="M118 74h4l2 11h-8z" fill="#120b04"/><rect width="240" height="150" fill="url(#v3)"/>'),
+        // Gương cổ trong tủ: khung mạ vàng xỉn, mặt gương ố, vết nứt, bóng người mờ
+        cabinet: (function () {
+            var o = '', k, a;
+            for (k = 0; k < 14; k++) { a = k / 14 * 6.2832; o += '<circle cx="' + (120 + Math.cos(a) * 62).toFixed(1) + '" cy="' + (75 + Math.sin(a) * 68).toFixed(1) + '" r="4" fill="url(#b4)" stroke="#3b2808"/>'; }
+            return svg(defs(4, '<radialGradient id="m4" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#9fb0ad"/><stop offset=".6" stop-color="#4b5a58"/><stop offset="1" stop-color="#1b2222"/></radialGradient>') +
+                '<rect width="240" height="150" fill="#2a1a12"/><rect width="240" height="150" filter="url(#g4)"/><ellipse cx="120" cy="75" rx="64" ry="70" fill="url(#b4)" stroke="#2a1c06" stroke-width="2.500"/><ellipse cx="120" cy="75" rx="52" ry="58" fill="#3b2a1a" stroke="#1c1208" stroke-width="2"/>' + o +
+                '<ellipse cx="120" cy="75" rx="45" ry="51" fill="url(#m4)"/><ellipse cx="120" cy="64" rx="13" ry="16" fill="#cfd8d4" opacity=".09"/><path d="M96 118c2-22 12-30 24-30s22 8 24 30z" fill="#cfd8d4" opacity=".07"/>' +
+                '<path d="M104 42l10 26-6 14 14 22M114 68l22 6" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/><ellipse cx="96" cy="100" rx="9" ry="6" fill="#6f8a56" opacity=".22"/><ellipse cx="148" cy="52" rx="7" ry="5" fill="#6f8a56" opacity=".18"/><ellipse cx="102" cy="52" rx="24" ry="14" fill="#fff" opacity=".07" transform="rotate(-30 102 52)"/><rect width="240" height="150" fill="url(#v4)"/>');
+        })()
+    };
+    var ml = $('modal-lock'), hero = document.createElement('div'); hero.className = 'lock-hero'; ml.insertBefore(hero, ml.firstChild);
+    var ol0 = openLockModal;
+    openLockModal = function (id) {
+        ol0.apply(this, arguments);
+        if (!ml.classList.contains('hidden-ui') && HERO[id]) { ml.setAttribute('data-lock', id); hero.innerHTML = HERO[id]; }
+    };
+    // Cuộn số: nảy nhẹ khi đổi; sai mã thì rung ổ khóa
+    var ul0 = updateLockUI;
+    updateLockUI = function () {
+        ul0.apply(this, arguments);
+        for (var k = 0; k < 4; k++) {
+            var el = $('digit-' + k), v = +el.textContent, pv = el._v;
+            if (pv !== undefined && pv !== v && el.animate) { var dir = ((v - pv + 10) % 10 === 1) ? 1 : -1; el.animate([{ transform: 'translateY(' + (dir * 30) + '%)', opacity: .3 }, { transform: 'none', opacity: 1 }], { duration: 160, easing: 'ease-out' }); }
+            el._v = v;
+        }
+    };
+    var sf0 = sfx;
+    sfx = function (n) { if (n === 'unlockFail') { ml.classList.remove('shake'); void ml.offsetWidth; ml.classList.add('shake'); } return sf0.apply(this, arguments); };
+
+    // Sổ tay: bìa da, trang giấy kẻ dòng, băng keo, chữ viết tay
+    var nb = $('modal-notebook'), page = document.createElement('div'); page.className = 'nb-page';
+    var kids = Array.prototype.slice.call(nb.children).filter(function (e) { return !e.classList.contains('close-modal'); });
+    nb.insertBefore(page, nb.firstChild); kids.forEach(function (e) { page.appendChild(e); });
+    var sub = document.createElement('div'); sub.className = 'nb-sub'; sub.textContent = 'Trần Bảo · Hồ sơ #001 · Rằm tháng Bảy'; page.insertBefore(sub, page.children[1]);
+    var tp = document.createElement('div'); tp.className = 'nb-tape'; nb.appendChild(tp);
+})();
+
+/* ===== Nhân vật thông minh hơn: hiểu câu hỏi, nhớ ngữ cảnh, leo thang áp lực (không cần mạng, không cần AI) ===== */
+(function () {
+    function addKW(map, key, list) { var a = map[key] || (map[key] = []); list.forEach(function (k) { if (a.indexOf(k) < 0) a.push(k); }); }
+    var SYN = {
+        tonight: ['toi qua', 'dem qua', 'dem ram', 'luc do', 'khi do', 'hom do', 'dang lam gi', 'lam gi luc', 'o cho nao', 'co mat'],
+        victim: ['ong thac', 'quan he', 'than thiet', 'tinh cam', 'mau thuan', 'xich mich', 'thu han', 'yeu ghet'],
+        power: ['mat dien', 'cup dien', 'cau dao', 'tat den', 'den tat', 'toi om'],
+        tea: ['pha tra', 'chen tra', 'ly tra', 'bot trang', 'can tra'],
+        drug: ['an than', 'thuoc ngu', 'lieu thuoc', 'qua lieu', 'ngo doc', 'thuoc doc'],
+        money: ['xin tien', 'no nan', 'vay muon', 'tai chinh', 'tien bac', 'chi tieu'],
+        fight: ['cai nhau', 'tranh cai', 'to tieng', 'gay gat', 'cai va', 'lon tieng'],
+        cass: ['tieng hat', 'hat ru', 'bang cat set', 'cat set', 'cassette', 'tieng ru', 'giong hat', 'tieng khoc', 'tieng ma'],
+        ghost: ['am hon', 'linh hon', 'co hon', 'ma quai', 'vong linh', 'bong ma', 'ma am'],
+        lan: ['chi lan', 'nam 1996', 'nguoi ten lan', 'co lan', 'ba lan'],
+        well: ['cai gieng', 'ben gieng', 'mieng gieng', 'gieng nuoc'],
+        box: ['cai hop', 'hop go', 'hop khoa', 'chiec hop'],
+        door: ['ma cua', 'thu phong', 'cua thu phong', 'mat ma', 'so khoa', 'chia khoa'],
+        leave: ['roi di', 'ra ngoai', 'di dau', 'ra khoi', 'roi khoi', 'ra san', 'vang mat'],
+        phone: ['dien thoai', 'goi dien', 'cuoc goi', 'nhat ky cuoc goi', 'nhan tin'],
+        letter: ['la thu', 'thu de doa', 'thu nac danh', 'de doa', 'canh cao'],
+        suspect: ['nghi ngo', 'nghi ai', 'theo ban ai', 'hung thu', 'thu pham', 'ai giet', 'ke giet'],
+        body: ['thi the', 'tu thi', 'kham nghiem', 'phap y', 'nguyen nhan chet', 'chet khi nao'],
+        ritual: ['le cung', 'cung co hon', 'mam cung', 'cung ram', 'nghi le'],
+        bg: ['qua khu', 'chuyen cu', 'thoi xua', 'ngay xua', 'thoi tre'],
+        fake: ['gia vo', 'noi doi', 'bia dat', 'khong co mat']
+    };
+    Object.keys(SYN).forEach(function (k) { addKW(INTENTS, k, SYN[k]); });
+    var RAW = { ghost: ['ma', 'hồn', 'quỷ'], tea: ['trà'], drug: ['thuốc'], money: ['tiền', 'nợ'], well: ['giếng'], cass: ['băng'] };
+    Object.keys(RAW).forEach(function (k) { addKW(RAW_KW, k, RAW[k]); });
+
+    // Từ điển chịu lỗi gõ: sai một ký tự vẫn hiểu
+    var VOC = {};
+    Object.keys(INTENTS).forEach(function (id) { INTENTS[id].forEach(function (k) { if (k.indexOf(' ') < 0 && k.length >= 5) VOC[k] = id; }); });
+    function near(a, b) {
+        if (Math.abs(a.length - b.length) > 1) return false;
+        var i = 0, j = 0, d = 0;
+        while (i < a.length && j < b.length) {
+            if (a[i] === b[j]) { i++; j++; continue; }
+            if (++d > 1) return false;
+            if (a.length > b.length) i++; else if (a.length < b.length) j++; else { i++; j++; }
+        }
+        return d + (a.length - i) + (b.length - j) <= 1;
+    }
+    function score(q) {
+        var n = ' ' + norm(q) + ' ', toks = rawTokens(q), sc = {};
+        Object.keys(INTENTS).forEach(function (id) {
+            var v = 0;
+            INTENTS[id].forEach(function (k) { if (n.indexOf(' ' + k + ' ') >= 0) v += k.length; });
+            (RAW_KW[id] || []).forEach(function (k) { if (toks.indexOf(k) >= 0) v += k.length + 1; });
+            if (v) sc[id] = v;
+        });
+        if (!Object.keys(sc).length) {
+            n.trim().split(' ').forEach(function (w) {
+                if (w.length < 5 || VOC[w]) return;
+                for (var k in VOC) if (near(w, k)) { sc[VOC[k]] = (sc[VOC[k]] || 0) + w.length; break; }
+            });
+        }
+        return sc;
+    }
+    var REL = { tonight: ['see', 'who', 'leave'], who: ['see', 'witness'], see: ['cass', 'ghost', 'who'], victim: ['money', 'fight', 'letter'], power: ['tonight', 'see'], cass: ['ghost', 'well', 'box'], ghost: ['cass', 'well'], tea: ['drug', 'tonight'], drug: ['body', 'tea'], money: ['victim', 'fight'], fight: ['victim', 'money'], lan: ['bg', 'victim'], well: ['cass', 'ghost'], box: ['cass', 'door'], door: ['victim', 'box'], leave: ['tonight', 'phone'], letter: ['victim', 'suspect'], suspect: ['who', 'see'], body: ['drug', 'tea'], ritual: ['ghost', 'tonight'], witness: ['who', 'see'], fear: ['see', 'ghost'], bg: ['lan', 'victim'] };
+    // Mỗi người một giọng: nhắc lại điều đã hỏi (lung lay) và bị dồn nhiều lần (sắp vỡ)
+    var STAGE = {
+        quan: [['Anh hỏi lại làm gì... thôi thì nhắc lại: ', 'Lại hỏi nữa à... thì như tôi đã nói: '], ['Được rồi, được rồi, đừng dồn tôi nữa... ', 'Anh cứ gặng mãi thế này thì tôi... thôi, tôi nói lại: ']],
+        van: [['Tôi xin nhắc lại cho rõ: ', 'Như tôi đã trình bày: '], ['Anh hỏi đi hỏi lại một điều. Nhưng thôi, để anh yên tâm: ', 'Anh dồn như vậy thì tôi cũng khó giữ bình tĩnh. Tôi nhắc lại một lần nữa: ']],
+        khoa: [['Ôi dào, lại chuyện đó. Thì như tôi nói: ', 'Anh thám tử kỹ tính quá. Nhắc lại nhé: '], ['Anh gặng tôi hoài cũng thế thôi, tôi nói lại: ', 'Được rồi được rồi, anh muốn nghe thì tôi nói lại: ']],
+        cuu: [['Lời nói ra gió cuốn đi, tôi lặp lại vậy: ', 'Âm dương không nói hai lời, nhưng tôi nhắc lại: '], ['Anh hỏi mãi, người đã khuất cũng thấy phiền... nhưng thôi: ', 'Khấn mãi một câu thì thánh cũng mỏi. Tôi nói lại: ']],
+        hanh: [['Dạ, tôi đã thưa rồi, nhưng anh hỏi lại thì tôi xin thưa lại: ', 'Dạ, như tôi đã nói: '], ['Anh cứ hỏi mãi... tôi sợ nói sai lắm. Thì... tôi thưa lại: ', 'Tôi thấp cổ bé họng, anh dồn thế này tôi... thôi, tôi xin nhắc: ']]
+    };
+    var CONN = { quan: 'Mà thôi, nói luôn cho anh khỏi hỏi nữa: ', van: 'Nếu cần bổ sung thì: ', khoa: 'À, nói thêm cho anh khỏi mất công: ', cuu: 'Âm dương còn một điều nữa: ', hanh: 'Dạ, còn chuyện này tôi nhớ ra: ' };
+    var FOLLOW = {
+        quan: ['Sao anh cứ hỏi đi hỏi lại tôi? Anh nghi tôi à?', 'Tôi nói rồi mà... anh không tin thì thôi. Nhà này ai cũng có chuyện, sao chỉ soi mỗi tôi?', 'Hỏi nữa tôi cũng không có gì thêm. Mà anh hỏi vậy là có ý gì?'],
+        van: ['Câu hỏi đó chưa đủ rõ. Anh cần biết điều gì cụ thể, tôi sẽ trả lời theo hiểu biết của một người làm nghề y.', 'Tôi là con dâu của gia đình này, có những việc nói ra không hợp. Anh đặt câu hỏi cho đúng chỗ hơn.', 'Chuyện này tôi đã trình bày đủ rồi. Mọi suy diễn thêm, tôi đề nghị anh dựa vào chứng cứ.'],
+        khoa: ['Ôi anh thám tử, chuyện nó đã rõ như ban ngày. Anh nên hỏi người trong nhà thì hơn, tôi chỉ là khách.', 'Tôi thì sao cũng được, nhưng người sống chung mái nhà mới biết ai làm gì chứ. Anh nghĩ xem.', 'Anh cứ hỏi, tôi cứ nói, nhưng nói thật nhé, tôi đâu phải người giữ chìa khóa nhà này.'],
+        cuu: ['Âm dương có đường của nó, anh ạ. Người sống nghe thấy gì, người chết biết hết.', 'Đêm Rằm cửa âm mở, nghe thì nghe được, hiểu hay không là do cái tâm. Anh nghĩ kỹ tiếng ấy từ đâu ra.', 'Việc trần thế tôi không đoán định. Nhưng cái tiếng rè rè ấy, nó không giống tiếng người đâu...'],
+        hanh: ['Dạ, tôi phận làm thuê, anh hỏi gì tôi xin thưa nấy. Chỉ sợ tôi nói không đủ ý.', 'Việc bếp núc tôi nhớ rõ, còn chuyện trên nhà thì tôi đâu dám để ý, thưa anh.', 'Tôi thấp cổ bé họng, nói ra ai tin... Anh cứ hỏi cho đến khi anh yên tâm.']
+    };
+    var ctx = {};
+    function C(id) { return ctx[id] || (ctx[id] = { last: null, person: null, asked: {}, why: 0 }); }
+    function gated(key) { var ch = CHIPS.filter(function (c) { return c[1] === key; })[0]; return !ch || ch[2](); }
+    function flags(char, key) {
+        if (key === 'cass') state.ev.heard = true;
+        var k = char.id + '.' + key;
+        if (k === 'quan.door' || k === 'khoa.victim') state.ev.proud = true;
+        if (k === 'cuu.well' || k === 'cuu.lan') state.ev.lanTime = true;
+        save();
+    }
+    function isFollowUp(n) { return n.split(' ').filter(Boolean).length <= 5 && /^(tai sao|vi sao|sao|the a|that khong|sao lai|roi sao|va sao|vay a|co chac|chac khong|nghia la)/.test(n); }
+    function isMore(n) { return /^(con gi|ngoai ra|con nua|them gi|con dieu gi|co gi nua|noi them|noi tiep|ke tiep|roi sao nua)/.test(n); }
+    // Hiểu câu hỏi: ưu tiên cặp Người + Hành động, hiểu đại từ "ông ấy/chị ấy", chịu lỗi gõ
+    function understand(q, char, c) {
+        var sc = score(q), n = norm(q);
+        var persons = Object.keys(sc).filter(function (k) { return /^p_/.test(k) && char.a[k]; });
+        if (persons.length) { c.person = persons[0]; return persons[0]; }
+        var acts = Object.keys(sc).filter(function (k) { return !/^p_/.test(k) && char.a[k] && gated(k); }).sort(function (a, b) { return sc[b] - sc[a]; });
+        if (acts.length) return acts[0];
+        if (c.person && /(^| )(anh ay|chi ay|co ay|ong ay|ba ay|nguoi do|ho|han)( |$)/.test(n)) return c.person;
+        var g = guessIntent(q); if (g && char.a[g] && gated(g)) return g;
+        return null;
+    }
+    function answer(char, c, q, forced) {
+        var n = norm(q), key = forced || understand(q, char, c);
+        if (!key && isMore(n) && c.last) {
+            var next = (REL[c.last] || (/^p_/.test(c.last) ? ['tonight', 'see', 'who'] : [])).filter(function (k) { return char.a[k] && !c.asked[k] && gated(k); })[0];
+            if (next) { key = next; var v0 = pick(char.a[key]); c.asked[key] = 1; c.last = key; flags(char, key); return [(CONN[char.id] || '') + v0[0], v0[1]]; }
+        }
+        if (!key && c.last && (isFollowUp(n) || isMore(n))) { var L = FOLLOW[char.id] || char.fb; return L[(c.why++) % L.length]; }
+        if (!key) { var m = state.fb[char.id] = (state.fb[char.id] || 0) + 1; save(); return char.fb[(m - 1) % char.fb.length]; }
+        c.last = key; c.why = 0; flags(char, key);
+        var cnt = c.asked[key] = (c.asked[key] || 0) + 1, v = pick(char.a[key]);
+        if (cnt >= 2 && STAGE[char.id]) { var st = STAGE[char.id][cnt >= 3 ? 1 : 0]; return [st[(cnt - 2) % st.length] + v[0], v[1]]; }
+        return v;
+    }
+    processChat = function (text, forced) {
+        if (!activeCharacterId) return;
+        var inp = $('chat-input'), q = (text || inp.value).trim(), char = characters[activeCharacterId];
+        if (!q) return;
+        $('ev-panel').classList.add('hidden-ui'); bubbleU(q); inp.value = '';
+        reply(char, answer(char, C(char.id), q, forced));
+    };
+    // Dọn mọi ghi chú hành động trong ngoặc đơn còn sót: tâm lý chỉ thể hiện bằng lời nói
+    var pk0 = pick;
+    pick = function (v) { var r = pk0(v); if (typeof r[0] === 'string') r[0] = r[0].replace(/\s*\((?![^)]*\d)[^)]{2,40}\)/g, '').replace(/\s{2,}/g, ' ').trim(); return r; };
+    function tagBar() {
+        var m = $('modal-interrogation'), t = m.querySelector('.dos-tag');
+        if (!t) { t = document.createElement('div'); t.className = 'dos-tag'; t.innerHTML = '<span></span><span></span>'; m.insertBefore(t, m.firstChild); }
+        t.children[0].textContent = 'HỒ SƠ #001 · BIÊN BẢN HỎI CUNG'; t.children[1].textContent = 'TUYỆT MẬT';
+    }
+    var oi0 = openInterrogation;
+    openInterrogation = function (id) { ctx[id] = null; delete ctx[id]; oi0.apply(this, arguments); tagBar(); };
+})();
+
+</script>
+</body>
+</html>
