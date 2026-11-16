@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="./title_bg.jpg">
+    <link rel="preload" as="image" href="./bg_yard.jpg">
     <style>
         :root {
             --bg-color: #050505;
@@ -95,11 +97,11 @@
             #game-ui .nav-btn { padding: 0.4rem 0.4rem; }
         }
 
-        .bg-yard    { background: url('./bg_yard.png') center/cover no-repeat, linear-gradient(#0c1216, #1b2a2a); }
-        .bg-living  { background: url('./bg_living.png') center/cover no-repeat, linear-gradient(#17100c, #2a1d16); }
-        .bg-kitchen { background: url('./bg_kitchen.png') center/cover no-repeat, linear-gradient(#131412, #26291f); }
-        .bg-hallway { background: url('./bg_hallway.png') center/cover no-repeat, linear-gradient(#100c0c, #221a1a); }
-        .bg-study   { background: url('./bg_study.png') center/cover no-repeat, linear-gradient(#0f0d12, #1f1a26); }
+        .bg-yard    { background: url('./bg_yard.jpg') center/cover no-repeat, linear-gradient(#0c1216, #1b2a2a); }
+        .bg-living  { background: url('./bg_living.jpg') center/cover no-repeat, linear-gradient(#17100c, #2a1d16); }
+        .bg-kitchen { background: url('./bg_kitchen.jpg') center/cover no-repeat, linear-gradient(#131412, #26291f); }
+        .bg-hallway { background: url('./bg_hallway.jpg') center/cover no-repeat, linear-gradient(#100c0c, #221a1a); }
+        .bg-study   { background: url('./bg_study.jpg') center/cover no-repeat, linear-gradient(#0f0d12, #1f1a26); }
 
         .digit-scroller {
             width: 50px; height: 80px; font-size: 2.5rem;
@@ -1556,9 +1558,9 @@ Object.assign(characters.hanh.a, {
 });
 
 const UNLOCK_VIEW = {
-    desk:    { text: "Bạn tìm thấy một cuốn nhật ký và tấm ảnh cũ!", imgs: ["./clue_diary.png", "./clue_photo.png"] },
-    box:     { text: "Hộp gỗ mở ra: bên trong là một máy cassette gắn công tắc hẹn giờ, thành hộp có khe cho tiếng thoát ra. Bạn bấm thử, tiếng hát ru rè rè vang lên, đúng như lúc nửa đêm.", imgs: ["./clue_cassette.png"] },
-    cabinet: { text: "Tìm thấy vật chứng: Dụng cụ giả ma và vỏ lọ thuốc rỗng!", imgs: ["./clue_costume.png"] }
+    desk:    { text: "Bạn tìm thấy một cuốn nhật ký và tấm ảnh cũ!", imgs: ["./clue_diary.jpg", "./clue_photo.jpg"] },
+    box:     { text: "Hộp gỗ mở ra: bên trong là một máy cassette gắn công tắc hẹn giờ, thành hộp có khe cho tiếng thoát ra. Bạn bấm thử, tiếng hát ru rè rè vang lên, đúng như lúc nửa đêm.", imgs: ["./clue_cassette.jpg"] },
+    cabinet: { text: "Tìm thấy vật chứng: Dụng cụ giả ma và vỏ lọ thuốc rỗng!", imgs: ["./clue_costume.jpg"] }
 };
 
 const LOCK_CLUES = {
@@ -1645,6 +1647,19 @@ $('prologue-text').onclick = () => { if (i < story.length) finishPrologue(); };
 
 $('btn-mute').textContent = muted ? '🔇' : '🔊';
 $('btn-mute').onclick = toggleMute;
+
+// Tải trước (Preload) toàn bộ hình ảnh nền, manh mối và nghi phạm vào bộ nhớ đệm
+(function preloadGameAssets() {
+    const assets = [
+        './title_bg.jpg', './bg_yard.jpg', './bg_living.jpg', './bg_kitchen.jpg', './bg_hallway.jpg', './bg_study.jpg',
+        './clue_diary.jpg', './clue_photo.jpg', './clue_cassette.jpg', './clue_costume.jpg',
+        './quan.png', './van.png', './khoa.png', './cuu.png', './hanh.png'
+    ];
+    assets.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+})();
 
 const savedGame = loadSave();
 if (hasProgress(savedGame)) {
@@ -2486,7 +2501,7 @@ $('btn-accuse').onclick = () => {
     // 3. Cấu hình ánh sáng, luồng sáng thể tích & khói từng phòng
     const ROOM_FX = {
         frontYard: {
-            bg: "url('./bg_yard.png') center/cover no-repeat, linear-gradient(#0c1216, #1b2a2a)",
+            bg: "url('./bg_yard.jpg') center/cover no-repeat, linear-gradient(#0c1216, #1b2a2a)",
             rain: 1, fog: 0.24, dark: 0.52, flash: 0.75, parallax: 16,
             lights: [
                 [0.452, 0.385, 0.14, '255,95,45', 0.24], [0.782, 0.325, 0.14, '255,95,45', 0.24],
@@ -2497,7 +2512,7 @@ $('btn-accuse').onclick = () => {
             smoke: [{ x: 0.316, y: 0.56, spread: 0.025, h: 0.18, alpha: 0.22 }]
         },
         livingRoom: {
-            bg: "url('./bg_living.png') center/cover no-repeat, linear-gradient(#17100c, #2a1d16)",
+            bg: "url('./bg_living.jpg') center/cover no-repeat, linear-gradient(#17100c, #2a1d16)",
             rain: 0, fog: 0.10, dark: 0.56, flash: 0.55, parallax: 20,
             lights: [[0.346, 0.625, 0.24, '255,155,65', 0.34], [0.718, 0.545, 0.10, '255,150,60', 0.16]],
             volumetric: [
@@ -2507,7 +2522,7 @@ $('btn-accuse').onclick = () => {
             smoke: [{ x: 0.212, y: 0.36, spread: 0.015, h: 0.12, alpha: 0.14 }]
         },
         kitchen: {
-            bg: "url('./bg_kitchen.png') center/cover no-repeat, linear-gradient(#131412, #26291f)",
+            bg: "url('./bg_kitchen.jpg') center/cover no-repeat, linear-gradient(#131412, #26291f)",
             rain: 0, fog: 0.09, dark: 0.55, flash: 0.60, parallax: 18,
             lights: [[0.405, 0.115, 0.26, '255,165,70', 0.30], [0.372, 0.635, 0.22, '255,95,30', 0.38]],
             volumetric: [
@@ -2517,7 +2532,7 @@ $('btn-accuse').onclick = () => {
             smoke: [{ x: 0.35, y: 0.45, spread: 0.03, h: 0.16, alpha: 0.16 }]
         },
         hallway: {
-            bg: "url('./bg_hallway.png') center/cover no-repeat, linear-gradient(#100c0c, #221a1a)",
+            bg: "url('./bg_hallway.jpg') center/cover no-repeat, linear-gradient(#100c0c, #221a1a)",
             rain: 0, fog: 0.16, dark: 0.60, flash: 0.65, parallax: 22,
             lights: [[0.382, 0.185, 0.24, '255,155,60', 0.34]],
             volumetric: [
@@ -2527,7 +2542,7 @@ $('btn-accuse').onclick = () => {
             smoke: []
         },
         study: {
-            bg: "url('./bg_study.png') center/cover no-repeat, linear-gradient(#0f0d12, #1f1a26)",
+            bg: "url('./bg_study.jpg') center/cover no-repeat, linear-gradient(#0f0d12, #1f1a26)",
             rain: 0, fog: 0.07, dark: 0.62, flash: 0.65, parallax: 18,
             lights: [[0.255, 0.435, 0.24, '110,220,130', 0.32], [0.265, 0.495, 0.18, '255,215,140', 0.26]],
             volumetric: [
