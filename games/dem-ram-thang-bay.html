@@ -609,8 +609,9 @@ body.dread-glitch #app-container {
         <div id="modal-notebook" class="bg-[#2c2820] border border-[#5c4a30] w-11/12 max-w-md p-6 hidden-ui relative text-[#dcd0c0] font-sans max-h-full overflow-y-auto">
     <h2 class="text-2xl mb-4 font-bold border-b border-[#5c4a30] pb-2 font-serif text-[#e8dbce]">Sổ Tay Thám Tử</h2>
     <div id="nb-tabs" class="nb-tabs" role="tablist">
-        <button type="button" class="nb-tab active" data-nb-tab="physical">🔎 Manh mối vật lý (0)</button>
+        <button type="button" class="nb-tab active" data-nb-tab="physical">🔎 Vật lý (0)</button>
         <button type="button" class="nb-tab" data-nb-tab="statement">🗣️ Lời khai (0)</button>
+        <button type="button" class="nb-tab" data-nb-tab="timeline">⏱️ Thời gian (0)</button>
     </div>
     <ul id="clue-list" class="list-disc pl-5 space-y-2 max-h-[40vh] overflow-y-auto text-sm">
         <li class="italic text-gray-400">Chưa ghi nhận manh mối nào...</li>
@@ -1874,6 +1875,30 @@ function normalizeClues() {
         .filter(Boolean);
 }
 
+function extractTimelineEntries(clues) {
+    const entries = [];
+    const re = /\b(\d{1,2})\s*(?:h|:|giờ)\s*(\d{2})\b/gi;
+    clues.forEach(text => {
+        const matches = [...text.matchAll(re)];
+        if (!matches.length) return;
+        let minTime = Infinity, label = '';
+        matches.forEach(m => {
+            let hh = parseInt(m[1], 10);
+            const mm = parseInt(m[2], 10);
+            if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) {
+                if (hh <= 11 && /đêm|khuya|tối/i.test(text)) hh += 12;
+                const mins = hh * 60 + mm;
+                if (mins < minTime) {
+                    minTime = mins;
+                    label = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+                }
+            }
+        });
+        if (minTime < Infinity) entries.push({ mins: minTime, label, text });
+    });
+    return entries.sort((a, b) => a.mins - b.mins);
+}
+
 function renderClues() {
     normalizeClues();
     const list = $('clue-list');
@@ -1881,17 +1906,35 @@ function renderClues() {
 
     const physicalList = state.clues.filter(t => inferClueType(t) === 'physical');
     const statementList = state.clues.filter(t => inferClueType(t) === 'statement');
+    const timelineList = extractTimelineEntries(state.clues);
 
     document.querySelectorAll('#nb-tabs .nb-tab').forEach(btn => {
         const tab = btn.dataset.nbTab;
         btn.classList.toggle('active', tab === activeNbTab);
-        btn.textContent = tab === 'physical'
-            ? `🔎 Manh mối vật lý (${physicalList.length})`
-            : `🗣️ Lời khai (${statementList.length})`;
+        if (tab === 'physical') btn.textContent = `🔎 Vật lý (${physicalList.length})`;
+        else if (tab === 'statement') btn.textContent = `🗣️ Lời khai (${statementList.length})`;
+        else btn.textContent = `⏱️ Thời gian (${timelineList.length})`;
     });
 
-    const filtered = activeNbTab === 'physical' ? physicalList : statementList;
     list.innerHTML = '';
+    if (activeNbTab === 'timeline') {
+        if (!timelineList.length) {
+            list.innerHTML = `<li class="italic text-gray-400">Chưa ghi nhận mốc thời gian nào...</li>`;
+            return;
+        }
+        timelineList.forEach(item => {
+            const li = document.createElement('li');
+            const badge = document.createElement('span');
+            badge.className = 'inline-block font-bold text-amber-400 mr-2';
+            badge.textContent = `[${item.label}]`;
+            li.appendChild(badge);
+            li.appendChild(document.createTextNode(item.text));
+            list.appendChild(li);
+        });
+        return;
+    }
+
+    const filtered = activeNbTab === 'physical' ? physicalList : statementList;
     if (!filtered.length) {
         list.innerHTML = `<li class="italic text-gray-400">${
             activeNbTab === 'physical'
@@ -2441,14 +2484,15 @@ $('btn-accuse').onclick = () => {
             ? 'Đúng hung thủ. Lập luận trọn vẹn: động cơ, phương tiện và cơ hội đều khớp.'
             : `Đúng hung thủ, nhưng lập luận còn hổng ở phần ${miss.join(', ')}. Hạnh vẫn nhận tội, song hồ sơ của bạn chưa thật kín kẽ.`;
         gameEnded = true; clearSave();
-        proText.innerHTML = `${head}<br><br>Chị Tư Hạnh là em gái của Lan, cô hầu gái bị ông Thạc đẩy xuống giếng năm 1996 rồi dàn dựng thành "tự tử". Năm ấy ông đuổi cô bé về quê trong đêm, chẳng buồn hỏi tên. Mười hai năm làm giúp việc trong nhà, chị chờ đúng đêm Rằm này.<br><br><div class="text-base text-left inline-block">Chiều: giấu chiếc cassette hẹn giờ vào hộp gỗ cạnh giếng.<br>21h10: bỏ thuốc an thần lấy từ chính lọ của ông Thạc vào chén, rồi mới rót trà.<br>23h15: bỏ dở mâm bát, mặc áo dài trắng hiện ra ở hành lang cho người khác nhìn thấy.<br>23h30: hạ cầu dao trong bếp, băng hát ru cất lên. Cả nhà tin là oan hồn về đòi mạng.</div><br><br>Lúc ấy Quân, Vân và Thầy Cửu đều ở ngoài sân, Khoa đang gọi video. Chỉ có một người ở một mình trong bếp.<br><br>Hạnh mỉm cười: "Tôi không hối hận."<br><br>Vụ án khép lại. Nhưng đêm đó, máy cassette trong kho vật chứng dù không có pin vẫn tự động hát ru...<br><br><span class="text-red-500 font-bold text-2xl">${full ? 'HOÀN THÀNH XUẤT SẮC!' : 'PHÁ ÁN THÀNH CÔNG'}</span><br><br>Lập luận: ${okC.length}/3<br>Gợi ý đã dùng: ${totalHints()}<br>Số lần buộc tội sai: ${state.wrong}<br><button onclick="restartGame()" class="btn mt-4">Chơi lại</button>`;
+        try { localStorage.setItem('drtb_solved_v1', '1'); } catch (e) {}
+        proText.innerHTML = `${head}<br><br>Chị Tư Hạnh là em gái của Lan, cô hầu gái bị ông Thạc đẩy xuống giếng năm 1996 rồi dàn dựng thành "tự tử". Năm ấy ông đuổi cô bé về quê trong đêm, chẳng buồn hỏi tên. Mười hai năm làm giúp việc trong nhà, chị chờ đúng đêm Rằm này.<br><br><div class="text-base text-left inline-block">Chiều: giấu chiếc cassette hẹn giờ vào hộp gỗ cạnh giếng.<br>21h10: bỏ thuốc an thần lấy từ chính lọ của ông Thạc vào chén, rồi mới rót trà.<br>23h15: bỏ dở mâm bát, mặc áo dài trắng hiện ra ở hành lang cho người khác nhìn thấy.<br>23h30: hạ cầu dao trong bếp, băng hát ru cất lên. Cả nhà tin là oan hồn về đòi mạng.</div><br><br>Lúc ấy Quân, Vân và Thầy Cửu đều ở ngoài sân, Khoa đang gọi video. Chỉ có một người ở một mình trong bếp.<br><br>Hạnh mỉm cười: "Tôi không hối hận."<br><br>Vụ án khép lại. Nhưng đêm đó, máy cassette trong kho vật chứng dù không có pin vẫn tự động hát ru...<br><br><span class="text-red-500 font-bold text-2xl">${full ? 'HOÀN THÀNH XUẤT SẮC!' : 'PHÁ ÁN THÀNH CÔNG'}</span><br><br>Lập luận: ${okC.length}/3<br>Gợi ý đã dùng: ${totalHints()}<br>Số lần buộc tội sai: ${state.wrong}<br><div class="flex flex-wrap justify-center gap-3 mt-4"><button onclick="restartGame()" class="btn">Chơi lại</button><a href="../index.html#kho-ho-so" class="btn btn-red">← Về Kho Hồ Sơ Dấu Đỏ</a></div>`;
     } else {
         state.wrong++;
         pr.classList.add('ending');
         sfx('lose');
         if (state.wrong >= MAX_WRONG) {
             gameEnded = true; clearSave();
-            proText.innerHTML = `Bạn đã chỉ điểm sai lần thứ hai.<br><br>Đèn tắt phụt. Tiếng hát ru rè rè lại vọng lên từ phía giếng, lần này không có máy nào bật cả. Cả nhà rời đi trong im lặng, và kẻ thủ ác vẫn thản nhiên dọn mâm dưới bếp.<br><br>Vụ án khép lại mà không ai bị trừng phạt.<br><br><span class="text-red-600 font-bold text-3xl">GAME OVER</span><br><br><button onclick="restartGame()" class="btn mt-4">Chơi lại từ đầu</button>`;
+            proText.innerHTML = `Bạn đã chỉ điểm sai lần thứ hai.<br><br>Đèn tắt phụt. Tiếng hát ru rè rè lại vọng lên từ phía giếng, lần này không có máy nào bật cả. Cả nhà rời đi trong im lặng, và kẻ thủ ác vẫn thản nhiên dọn mâm dưới bếp.<br><br>Vụ án khép lại mà không ai bị trừng phạt.<br><br><span class="text-red-600 font-bold text-3xl">GAME OVER</span><br><div class="flex flex-wrap justify-center gap-3 mt-4"><button onclick="restartGame()" class="btn">Chơi lại từ đầu</button><a href="../index.html#kho-ho-so" class="btn btn-red">← Về Kho Hồ Sơ Dấu Đỏ</a></div>`;
         } else {
             save();
             proText.innerHTML = `Bạn đã chỉ điểm sai người.<br><br>Đột nhiên đèn tắt... Tiếng cười lạnh lẽo vang lên. Cửa thư phòng khóa sập lại.<br><br>Bạn chỉ còn <b>${MAX_WRONG - state.wrong}</b> lần buộc tội nữa.<br><br><span class="text-red-600 font-bold text-3xl">SAI NGƯỜI</span><br><br><button onclick="backToGame()" class="btn mt-4 mr-2">Quay lại điều tra</button><button onclick="restartGame()" class="btn mt-4">Chơi lại từ đầu</button>`;
