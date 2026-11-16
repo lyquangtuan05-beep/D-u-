@@ -337,9 +337,10 @@
         #title-3d, #title-fallback, #title-vignette, #title-flash, #title-fade { position:absolute; inset:0; width:100%; height:100%; }
         #title-fallback { z-index:0; transition:opacity 1.2s ease; }
         #title-fallback svg { width:100%; height:100%; display:block; }
-        #title-3d { z-index:1; display:block; opacity:0; transition:opacity 1.4s ease; }
-        #audio-overlay.t3d-ready #title-3d { opacity:1; }
-        #audio-overlay.t3d-ready #title-fallback { opacity:0; }
+        #title-photo { position:absolute; inset:-3%; width:106%; height:106%; z-index:1; background:url('./title_bg.jpg') center/cover no-repeat, #05070a; transform-origin:50% 72%; transform:scale(1.04); will-change:transform, opacity; transition:opacity .45s ease .15s; }
+        #title-3d { z-index:1; display:block; opacity:0; transition:opacity .4s ease; }
+        #audio-overlay.diving #title-photo { transform:scale(5.2) !important; opacity:0; transition:transform .75s cubic-bezier(.4,0,.85,1), opacity .45s ease .18s; }
+        #audio-overlay.diving #title-3d { opacity:1; }
         #title-vignette { z-index:2; pointer-events:none; background:
             radial-gradient(ellipse 80% 70% at 50% 60%, transparent 45%, rgba(2,3,5,.8) 100%),
             linear-gradient(180deg, rgba(3,4,6,.82) 0%, rgba(3,4,6,.3) 24%, transparent 42%, transparent 66%, rgba(3,4,6,.88) 100%); }
@@ -491,6 +492,7 @@ body.dread-glitch #app-container {
             </svg>
             <div class="rain"></div>
         </div>
+        <div id="title-photo" aria-hidden="true"></div>
         <canvas id="title-3d" aria-hidden="true"></canvas>
         <div id="title-vignette"></div>
         <div id="title-flash"></div>
@@ -565,6 +567,7 @@ body.dread-glitch #app-container {
                     <input type="text" id="chat-input" class="flex-1 min-w-0 bg-black border border-[#555] text-white p-2 rounded focus:outline-none focus:border-red-500" placeholder="Hỏi bất kỳ điều gì..." autocomplete="off">
                     <button id="btn-send-chat" class="btn btn-red">HỎI</button>
                     <button id="btn-evidence" class="btn text-sm">📎 ĐƯA CHỨNG CỨ</button>
+                    <button id="btn-clear-chat" class="btn text-sm" title="Xóa lịch sử trò chuyện với nghi phạm này">🗑️ XÓA</button>
                 </div>
             </div>
             <button class="absolute top-2 right-2 text-gray-500 hover:text-white close-modal px-3 py-1 text-2xl font-bold">&times;</button>
@@ -1083,6 +1086,7 @@ const state = {
     lockInput: [0,0,0,0],
     ev: {},
     fb: {},
+    chats: {},
     hints: {},
     wrong: 0
 };
@@ -1095,7 +1099,7 @@ function save() {
         const solved = {};
         Object.keys(state.locks).forEach(k => solved[k] = state.locks[k].solved);
         localStorage.setItem(SAVE_KEY, JSON.stringify({
-            room: state.room, clues: state.clues, solved, ev: state.ev, hints: state.hints, wrong: state.wrong
+            room: state.room, clues: state.clues, solved, ev: state.ev, chats: state.chats, hints: state.hints, wrong: state.wrong
         }));
     } catch (e) {}
 }
@@ -1107,12 +1111,13 @@ function loadSave() {
 }
 function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
 function hasProgress(s) {
-    return !!s && ((s.clues && s.clues.length) || Object.values(s.solved || {}).some(Boolean) || Object.keys(s.ev || {}).length > 0);
+    return !!s && ((s.clues && s.clues.length) || Object.values(s.solved || {}).some(Boolean) || Object.keys(s.ev || {}).length > 0 || Object.keys(s.chats || {}).length > 0);
 }
 function applySave(s) {
     state.clues = Array.isArray(s.clues) ? s.clues : [];
     Object.keys(state.locks).forEach(k => state.locks[k].solved = !!(s.solved && s.solved[k]));
     state.ev = s.ev || {};
+    state.chats = (s.chats && typeof s.chats === 'object') ? s.chats : {};
     state.hints = s.hints || {};
     state.wrong = s.wrong || 0;
     state.room = s.room || 'frontYard';
@@ -1655,9 +1660,9 @@ function titleExit(next) {
     if (titleLeaving) return;
     titleLeaving = true;
     const ov = $('audio-overlay');
-    ov.classList.add('leaving');
+    ov.classList.add('leaving', 'diving');
     setTimeout(() => sfx('dive'), 60);
-    const finish = () => { next(); ov.classList.remove('leaving'); titleLeaving = false; };
+    const finish = () => { next(); ov.classList.remove('leaving', 'diving'); titleLeaving = false; };
     if (window.TITLE3D && window.TITLE3D.ready) window.TITLE3D.dive(finish);
     else { $('title-fade').style.opacity = 1; setTimeout(finish, 650); }
 }
@@ -1978,33 +1983,52 @@ $('modal-bg').addEventListener('click', (e) => { if (e.target === $('modal-bg'))
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });
 
 $('btn-notebook').onclick = () => { sfx('paper'); renderClues(); fillChain(); openModal('modal-notebook'); };
-function bubbleU(t) {
-    sfx('send');
-    const hist = $('chat-history');
+function appendBubbleEl(hist, msg, char) {
     const el = document.createElement('div');
-    el.className = 'text-right text-gray-300 text-sm bg-black/40 p-2 rounded-l self-end max-w-[80%] border-r-2 border-gray-500 mt-2';
-    el.textContent = t;
-    hist.appendChild(el);
-    hist.scrollTop = hist.scrollHeight;
-}
-function bubbleC(char, t, newClue) {
-    sfx('msgIn');
-    const hist = $('chat-history');
-    const el = document.createElement('div');
-    el.className = 'text-left text-stone-200 text-sm bg-stone-900/85 p-2.5 rounded-r self-start max-w-[90%] border-l-2 border-amber-700/80 mt-2';
-    const nm = document.createElement('span');
-    nm.className = 'font-bold mr-1 text-amber-500';
-    nm.textContent = char.name.split(' ').pop() + ':';
-    el.appendChild(nm);
-    el.appendChild(document.createTextNode(t));
-    if (newClue) {
-        const tag = document.createElement('div');
-        tag.className = 'text-xs text-amber-400/90 mt-1';
-        tag.textContent = '📔 Đã ghi vào Sổ tay';
-        el.appendChild(tag);
+    if (msg.role === 'u') {
+        el.className = 'text-right text-gray-300 text-sm bg-black/40 p-2 rounded-l self-end max-w-[80%] border-r-2 border-gray-500 mt-2';
+        el.textContent = msg.text;
+    } else {
+        el.className = 'text-left text-stone-200 text-sm bg-stone-900/85 p-2.5 rounded-r self-start max-w-[90%] border-l-2 border-amber-700/80 mt-2';
+        const nm = document.createElement('span');
+        nm.className = 'font-bold mr-1 text-amber-500';
+        nm.textContent = char.name.split(' ').pop() + ':';
+        el.appendChild(nm);
+        el.appendChild(document.createTextNode(msg.text));
+        if (msg.newClue) {
+            const tag = document.createElement('div');
+            tag.className = 'text-xs text-amber-400/90 mt-1';
+            tag.textContent = '📔 Đã ghi vào Sổ tay';
+            el.appendChild(tag);
+        }
     }
     hist.appendChild(el);
     hist.scrollTop = hist.scrollHeight;
+}
+function renderChatHistory(char) {
+    const hist = $('chat-history');
+    hist.innerHTML = `<div class="text-gray-500 text-sm text-center">-- Bắt đầu thẩm vấn --<br>Gõ câu hỏi tự do bằng tiếng Việt, bấm gợi ý bên dưới, hoặc đưa vật chứng ra.</div>`;
+    const list = state.chats[char.id] || [];
+    list.forEach(msg => appendBubbleEl(hist, msg, char));
+    hist.scrollTop = hist.scrollHeight;
+}
+function bubbleU(t) {
+    sfx('send');
+    const msg = { role: 'u', text: t };
+    if (activeCharacterId) {
+        if (!Array.isArray(state.chats[activeCharacterId])) state.chats[activeCharacterId] = [];
+        state.chats[activeCharacterId].push(msg);
+        save();
+    }
+    appendBubbleEl($('chat-history'), msg, null);
+}
+function bubbleC(char, t, newClue) {
+    sfx('msgIn');
+    const msg = { role: 'c', text: t, newClue: !!newClue };
+    if (!Array.isArray(state.chats[char.id])) state.chats[char.id] = [];
+    state.chats[char.id].push(msg);
+    save();
+    appendBubbleEl($('chat-history'), msg, char);
 }
 function pick(v) {
     let [t, c] = Array.isArray(v) ? v : [v];
@@ -2045,12 +2069,23 @@ function openInterrogation(charId) {
     $('suspect-name').innerText = char.name;
     $('suspect-role').innerText = char.role;
     $('suspect-bio').innerText = char.bio;
-    $('chat-history').innerHTML = `<div class="text-gray-500 text-sm text-center">-- Bắt đầu thẩm vấn --<br>Gõ câu hỏi tự do bằng tiếng Việt, bấm gợi ý bên dưới, hoặc đưa vật chứng ra.</div>`;
+    renderChatHistory(char);
     $('chat-input').value = '';
     $('ev-panel').classList.add('hidden-ui');
     renderChips();
     openModal('modal-interrogation');
 }
+$('btn-clear-chat').onclick = () => {
+    if (!activeCharacterId) return;
+    const char = characters[activeCharacterId];
+    const list = state.chats[activeCharacterId];
+    if (!list || !list.length) return;
+    if (!confirm('Xóa toàn bộ lịch sử trò chuyện với ' + char.name + '?')) return;
+    delete state.chats[activeCharacterId];
+    save();
+    sfx('click');
+    renderChatHistory(char);
+};
 function processChat(text, forcedIntent) {
     if (!activeCharacterId) return;
     const inputEl = $('chat-input');
@@ -3407,6 +3442,7 @@ function buildTitle(T) {
     }
     const flashDiv = document.getElementById('title-flash');
     const fadeDiv = document.getElementById('title-fade');
+    const photoEl = document.getElementById('title-photo');
 
     // ---------- Lao xuống giếng ----------
     let diving = false, diveT = 0, diveDone = null, diveFrom = new T.Vector3(), dead = false;
@@ -3477,6 +3513,7 @@ function buildTitle(T) {
             px += (tx - px) * 0.04; py += (ty - py) * 0.04;
             cam.position.set(BASE.x + px * 1.1, BASE.y - py * 0.5 + Math.sin(t * 0.5) * 0.03, BASE.z);
             cam.lookAt(LOOK);
+            if (photoEl) photoEl.style.transform = `translate3d(${(-px * 14).toFixed(1)}px, ${(py * 8).toFixed(1)}px, 0) scale(1.04)`;
         }
 
         renderer.render(scene, cam);
