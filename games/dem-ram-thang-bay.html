@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đêm Rằm Tháng Bảy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Patrick+Hand&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="./title_bg.jpg">
     <link rel="preload" as="image" href="./bg_yard.jpg">
     <style>
@@ -24,7 +23,7 @@
             margin: 0; padding: 0;
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Courier Prime', monospace;
+            font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
             height: 100%;
             overflow: hidden;
             user-select: none;
@@ -165,7 +164,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s ease-in-out;
-            font-family: 'Courier Prime', monospace;
+            font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
         }
         .interactive-item:hover::after, .interactive-item:focus-visible::after { opacity: 1; }
         @keyframes hotspot-pulse {
@@ -209,20 +208,20 @@
         @keyframes hs-pulse { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,.35), 0 2px 10px rgba(0,0,0,.6); } 70%, 100% { box-shadow: 0 0 0 12px rgba(212,175,55,0), 0 2px 10px rgba(0,0,0,.6); } }
 
         /* ===== Văn bản kiểu hồ sơ vụ án ===== */
-        .dos-tag { display:flex; justify-content:space-between; gap:12px; padding:12px 24px 10px; border-bottom:1.5px solid #1b1613; font-family:'Courier Prime',monospace; font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#1b1613; }
+        .dos-tag { display:flex; justify-content:space-between; gap:12px; padding:12px 24px 10px; border-bottom:1.5px solid #1b1613; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#1b1613; }
         .dos-tag span:last-child { color:#8a0303; }
         .dossier { position:relative; width:100%; max-width:42rem; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.7); animation:dosIn .5s cubic-bezier(.2,.8,.2,1) both; }
-        .dossier #prologue-text { min-height:300px; padding:22px 24px 40px; font-family:'Courier Prime',monospace; font-size:clamp(.92rem,2.4vw,1.08rem); line-height:1.85; color:#1b1613; text-align:left; }
+        .dossier #prologue-text { min-height:300px; padding:22px 24px 40px; font-family:'Be Vietnam Pro',sans-serif; font-size:clamp(.95rem,2.4vw,1.08rem); line-height:1.85; color:#1b1613; text-align:left; }
         #prologue-text:not(:empty)::after { content:"▌"; color:#8a0303; animation:caret 1s steps(1) infinite; }
         #prologue:has(#btn-skip.hidden-ui) #prologue-text::after { display:none; }
-        .dossier::after { content:"CHƯA GIẢI"; position:absolute; right:18px; bottom:14px; border:3px solid #8a0303; color:#8a0303; font-family:'Courier Prime',monospace; font-weight:700; letter-spacing:.16em; padding:2px 12px; transform:rotate(-9deg) scale(1.6); opacity:0; transition:opacity .25s, transform .35s cubic-bezier(.2,.9,.3,1.1); pointer-events:none; }
+        .dossier::after { content:"CHƯA GIẢI"; position:absolute; right:18px; bottom:14px; border:3px solid #8a0303; color:#8a0303; font-family:'IBM Plex Mono',monospace; font-weight:700; letter-spacing:.16em; padding:2px 12px; transform:rotate(-9deg) scale(1.6); opacity:0; transition:opacity .25s, transform .35s cubic-bezier(.2,.9,.3,1.1); pointer-events:none; }
         #prologue:has(#btn-skip.hidden-ui) .dossier::after { opacity:.85; transform:rotate(-9deg) scale(1); }
         @keyframes caret { 50% { opacity:0; } }
         @keyframes dosIn { from { opacity:0; transform:translateY(14px); } }
         @keyframes stampIn { from { opacity:0; transform:rotate(-3deg) scale(1.7); } }
-        #objective::before { content:"MỤC TIÊU"; display:inline-block; margin-right:10px; padding:1px 8px; border:1px solid #8a0303; color:#ff8a7a; font-size:.66rem; font-weight:700; letter-spacing:.14em; vertical-align:1px; }
-        #modal-clue, #modal-message { position:relative; padding:0; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border:0; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.65); font-family:'Courier Prime',monospace; text-align:left; align-items:stretch; animation:dosIn .35s cubic-bezier(.2,.8,.2,1) both; }
-        #modal-clue > :not(.dos-tag), #modal-message > :not(.dos-tag) { margin-left:24px; margin-right:24px; width:auto; }
+        #objective::before { content:"HỒ SƠ #001"; display:inline-block; margin-right:10px; padding:1px 8px; border:1px solid #8a0303; color:#ff8a7a; font-size:.66rem; font-weight:700; letter-spacing:.14em; vertical-align:1px; }
+        #modal-clue, #modal-message, #modal-howto { position:relative; padding:0; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border:0; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.65); font-family:'IBM Plex Mono',monospace; text-align:left; align-items:stretch; animation:dosIn .35s cubic-bezier(.2,.8,.2,1) both; }
+        #modal-clue > :not(.dos-tag), #modal-message > :not(.dos-tag), #modal-howto > :not(.dos-tag) { margin-left:24px; margin-right:24px; width:auto; }
         #clue-icon { width:46px; height:46px; display:grid; place-items:center; margin-top:18px; margin-bottom:10px; border:2px solid #8a0303; border-radius:50%; color:#8a0303; align-self:center; }
         #clue-icon svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
         #clue-title { font-size:1.7rem; line-height:1.2; color:#1b1613; text-align:center; }
@@ -234,11 +233,17 @@
         #clue-text { padding:10px 14px; background:repeating-linear-gradient(transparent 0 1.7rem, rgba(27,22,19,.13) 1.7rem calc(1.7rem + 1px)); border:0; border-radius:0; color:#1b1613; line-height:1.7rem; font-size:clamp(.95rem,2.2vw,1.05rem); }
         #msg-content { font-size:1rem; line-height:1.7; padding-top:16px; color:#1b1613; }
         #dynamic-img-container { margin-top:16px; }
-        #modal-clue .btn, #modal-message .btn { align-self:center; margin-bottom:22px; background:#1b1613; color:#d8cdb9; border-color:#1b1613; font-family:'Courier Prime',monospace; letter-spacing:.12em; }
-        #modal-clue .btn:hover, #modal-message .btn:hover { background:#8a0303; border-color:#8a0303; }
+        #modal-clue .btn, #modal-message .btn, #modal-howto .btn { align-self:center; margin-bottom:22px; background:#1b1613; color:#d8cdb9; border-color:#1b1613; font-family:'IBM Plex Mono',monospace; letter-spacing:.12em; }
+        #modal-clue .btn:hover, #modal-message .btn:hover, #modal-howto .btn:hover { background:#8a0303; border-color:#8a0303; }
+        .howto-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 14px; margin:14px 0; text-align:left; }
+        @media (max-width:600px) { .howto-grid { grid-template-columns:1fr; } }
+        .howto-item { display:flex; gap:10px; align-items:flex-start; padding:8px 10px; background:rgba(27,22,19,.06); border-left:2.5px solid #8a0303; font-size:.82rem; line-height:1.45; }
+        .howto-item svg { width:20px; height:20px; flex:none; stroke:#8a0303; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; margin-top:2px; }
+        .howto-item b { display:block; color:#8a0303; font-size:.76rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:2px; }
+        #coach-tip { position:fixed; top:52px; left:50%; transform:translateX(-50%); z-index:60; max-width:min(92vw,390px); padding:9px 14px; background:rgba(12,10,9,.92); color:#f5e6c4; border:1px solid #d4af37; border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:.8rem; line-height:1.45; box-shadow:0 8px 24px rgba(0,0,0,.75); cursor:pointer; text-align:center; }
         #clue-list { list-style:none; padding-left:0; counter-reset:c; }
         #clue-list li { counter-increment:c; position:relative; padding:8px 0 8px 3.2rem; border-bottom:1px dashed rgba(92,74,48,.7); line-height:1.55; }
-        #clue-list li::before { content:"Nº " counter(c,decimal-leading-zero); position:absolute; left:0; top:10px; font-family:'Courier Prime',monospace; font-size:.7rem; font-weight:700; letter-spacing:.06em; color:#d24a3f; }
+        #clue-list li::before { content:"Nº " counter(c,decimal-leading-zero); position:absolute; left:0; top:10px; font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:700; letter-spacing:.06em; color:#d24a3f; }
         #clue-list li.italic { padding-left:0; counter-increment:none; }
         #clue-list li.italic::before { content:none; }
         @media (prefers-reduced-motion: reduce) { .dossier, #modal-clue, #modal-message, #clue-status.is-new, #prologue-text::after { animation:none; } }
@@ -270,7 +275,7 @@
         #modal-lock .shake, #modal-lock.shake { animation:lockShake .4s; }
         @keyframes lockShake { 20%,60% { transform:translateX(-7px); } 40%,80% { transform:translateX(7px); } }
         /* ===== Sổ tay thám tử ===== */
-        #modal-notebook { display:flex; flex-direction:column; overflow:hidden; max-height:calc(100dvh - 24px); padding:14px 14px 14px 22px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .08 0 0 0 0 .05 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"), linear-gradient(145deg,#4a2a18,#26150b); border:0; border-radius:6px 14px 14px 6px; box-shadow:0 24px 56px rgba(0,0,0,.7), inset 0 0 0 2px rgba(0,0,0,.5); color:#2a2218; font-family:'Patrick Hand','Courier Prime',cursive; }
+        #modal-notebook { display:flex; flex-direction:column; overflow:hidden; max-height:calc(100dvh - 24px); padding:14px 14px 14px 22px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .08 0 0 0 0 .05 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"), linear-gradient(145deg,#4a2a18,#26150b); border:0; border-radius:6px 14px 14px 6px; box-shadow:0 24px 56px rgba(0,0,0,.7), inset 0 0 0 2px rgba(0,0,0,.5); color:#2a2218; font-family:'Be Vietnam Pro',sans-serif; }
         #modal-notebook::before { content:""; position:absolute; inset:5px 5px 5px 12px; border:1.5px dashed rgba(224,190,130,.35); border-radius:4px; pointer-events:none; }
         #modal-notebook::after { content:""; position:absolute; left:0; top:0; bottom:0; width:14px; background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(255,255,255,.06) 60%,transparent); pointer-events:none; }
         #modal-notebook .close-modal { z-index:6; color:#5a4630; right:26px; top:18px; }
@@ -278,7 +283,7 @@
             background:radial-gradient(circle at 86% 9%,transparent 0 26px,rgba(110,70,20,.16) 27px 30px,transparent 32px), linear-gradient(90deg,transparent 35px,rgba(180,50,40,.5) 35px,rgba(180,50,40,.5) 36.5px,transparent 36.5px), repeating-linear-gradient(transparent 0 1.74rem,rgba(70,100,140,.2) 1.74rem calc(1.74rem + 1px)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"), #e6dcc3; background-attachment:local; }
         .nb-tape { position:absolute; top:8px; left:70px; width:76px; height:22px; background:rgba(235,225,170,.72); transform:rotate(-4deg); box-shadow:0 1px 3px rgba(0,0,0,.3); z-index:4; pointer-events:none; }
         #modal-notebook h2 { font-family:'Patrick Hand',cursive; font-size:2rem; color:#2a2218; border-color:#2a2218; margin-top:8px; }
-        .nb-sub { font-family:'Courier Prime',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#8a0303; margin:-10px 0 14px; }
+        .nb-sub { font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#8a0303; margin:-10px 0 14px; }
         #modal-notebook h3 { font-family:'Patrick Hand',cursive; font-size:1.3rem; color:#8a0303; text-decoration:underline wavy rgba(138,3,3,.5); text-underline-offset:4px; }
         #modal-notebook #clue-list li { font-size:1.2rem; line-height:1.5; border-bottom:0; padding:3px 0 3px 3.2rem; }
         #modal-notebook #clue-list li::before { font-family:'Patrick Hand',cursive; font-size:1rem; left:-2px; top:5px; }
@@ -286,7 +291,7 @@
         #modal-notebook #clue-list { max-height:none; overflow:visible; }
         #modal-notebook select { background:rgba(255,250,235,.5); border:0; border-bottom:1.5px solid #2a2218; border-radius:0; color:#2a2218; font-family:inherit; font-size:1.05rem; padding:4px; }
         #modal-notebook option { background:#e6dcc3; color:#2a2218; }
-        #modal-notebook .btn { background:#2a2218; color:#e6dcc3; border:0; border-radius:2px; font-family:'Courier Prime',monospace; letter-spacing:.12em; }
+        #modal-notebook .btn { background:#2a2218; color:#e6dcc3; border:0; border-radius:2px; font-family:'IBM Plex Mono',monospace; letter-spacing:.12em; }
         #modal-notebook .btn:hover { background:#5c3b00; }
         #modal-notebook #btn-accuse { background:#8a0303; color:#fff; }
         #modal-notebook #btn-accuse:hover { background:#a30505; }
@@ -295,7 +300,7 @@
         @media (prefers-reduced-motion: reduce) { #modal-lock.shake { animation:none; } }
 
         /* ===== Biên bản hỏi cung + cài đặt AI ===== */
-        #modal-interrogation { padding-top:36px; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border:0; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.7); font-family:'Courier Prime',monospace; }
+        #modal-interrogation { padding-top:36px; background:#d8cdb9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .15 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E"); color:#1b1613; border:0; border-top:4px solid #8a0303; box-shadow:0 22px 50px rgba(0,0,0,.7); font-family:'IBM Plex Mono',monospace; }
         #modal-interrogation > .dos-tag { position:absolute; top:0; left:0; right:0; padding-right:52px; }
         #modal-interrogation > div:nth-child(2) { background:#cfc3aa; border-color:rgba(27,22,19,.35); }
         #modal-interrogation > div:nth-child(3) { background:transparent; }
@@ -310,8 +315,12 @@
         #chat-history > div.self-start .text-yellow-500 { color:#8a5a00; }
         #chat-history > .text-gray-500 { color:#6b6256; }
         #chat-chips, #ev-panel { border-color:rgba(27,22,19,.35); }
-        #modal-interrogation .btn { background:transparent; border:1px solid #1b1613; color:#1b1613; border-radius:0; font-family:'Courier Prime',monospace; }
+        #modal-interrogation .btn { background:transparent; border:1px solid #1b1613; color:#1b1613; border-radius:0; font-family:'IBM Plex Mono',monospace; }
         #modal-interrogation .btn:hover { background:#1b1613; color:#d8cdb9; }
+        #modal-interrogation .chip-more { border-style:dashed; opacity:.88; }
+        #modal-interrogation .chip-asked-toggle { font-size:.7rem; padding:3px 8px; opacity:.75; border-style:dotted; }
+        #modal-interrogation .chip-asked-list { width:100%; display:flex; flex-wrap:wrap; gap:6px; padding-top:4px; border-top:1px dashed rgba(27,22,19,.25); }
+        #modal-interrogation .chip-asked-list .btn { opacity:.68; font-size:.7rem; padding:3px 8px; }
         #modal-interrogation #btn-send-chat { background:#8a0303; border-color:#8a0303; color:#fff; }
         #modal-interrogation #btn-send-chat:hover { background:#a30505; }
         #chat-input { background:#f1ece0; border:0; border-bottom:2px solid #1b1613; border-radius:0; color:#1b1613; }
@@ -328,9 +337,32 @@
         #modal-notebook #chain select { flex:1; min-width:0; }
 	/* ===== Tab phân loại Manh mối vật lý & Lời khai ===== */
 .nb-tabs { display:flex; gap:6px; border-bottom:2px solid #2a2218; margin:0 0 12px; padding-bottom:6px; }
-.nb-tab { background:rgba(42,34,24,.1); color:#5a4630; border:1px solid rgba(42,34,24,.35); padding:4px 10px; font-family:'Courier Prime',monospace; font-size:.78rem; font-weight:700; cursor:pointer; border-radius:2px; transition:all .15s; }
+.nb-tab { background:rgba(42,34,24,.1); color:#5a4630; border:1px solid rgba(42,34,24,.35); padding:4px 10px; font-family:'IBM Plex Mono',monospace; font-size:.78rem; font-weight:700; cursor:pointer; border-radius:2px; transition:all .15s; }
 .nb-tab:hover { background:rgba(42,34,24,.2); color:#2a2218; }
 .nb-tab.active { background:#2a2218; color:#e6dcc3; border-color:#2a2218; }
+/* Lá thư máu Hồi 1: giấy vàng ố, nếp gấp, chữ viết tay hơi nguệch ngoạc màu mực đỏ thẫm */
+#modal-letter {
+    background:
+        radial-gradient(circle at 18% 22%, rgba(120, 12, 12, 0.14) 0 18px, transparent 36px),
+        radial-gradient(circle at 82% 76%, rgba(110, 75, 25, 0.22) 0 42px, transparent 85px),
+        linear-gradient(180deg, transparent 49.2%, rgba(70, 48, 22, 0.18) 50%, transparent 51.2%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .24 0 0 0 0 .10 0 0 0 .14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        linear-gradient(155deg, #e5d2a2 0%, #d4ba82 52%, #c3a368 100%);
+    border: 1px solid #7d6235;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), inset 0 0 48px rgba(82, 54, 18, 0.42);
+    color: #5c0909;
+}
+.blood-letter-body {
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(1.22rem, 3.3vw, 1.48rem);
+    line-height: 1.75;
+    letter-spacing: 0.03em;
+    color: #6b0909;
+    transform: rotate(-0.7deg);
+    text-shadow: 0.5px 0.5px 0 rgba(90, 10, 10, 0.22);
+}
+.blood-letter-body .l-shaky { display: inline-block; transform: rotate(0.9deg) skewX(-4deg); }
+.blood-letter-body .l-main { font-size: 1.18em; font-weight: 700; color: #7e0606; transform: rotate(-1.2deg) skewX(-5deg); display: inline-block; }
 
 
 
@@ -351,14 +383,14 @@
         #title-ui { position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center;
             padding:clamp(26px,7vh,80px) 20px clamp(22px,5.5vh,60px); pointer-events:none; transition:opacity .45s ease, transform .7s ease; }
         #title-ui .ttl-top, #title-ui .ttl-bottom { pointer-events:auto; }
-        .ttl-kicker { font-family:'Courier Prime',monospace; font-size:.7rem; font-weight:700; letter-spacing:.32em; text-transform:uppercase; color:#b9a77f; margin-bottom:18px; }
+        .ttl-kicker { font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:700; letter-spacing:.32em; text-transform:uppercase; color:#b9a77f; margin-bottom:18px; }
         .ttl-kicker::before, .ttl-kicker::after { content:""; display:inline-block; width:28px; height:1px; background:currentColor; vertical-align:middle; margin:0 12px; opacity:.6; }
         #audio-overlay h1 { font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(2.6rem,7.8vw,6.2rem); line-height:1.12; letter-spacing:.01em; color:#b3170f; margin:0; transition:color .12s, text-shadow .12s; }
         #audio-overlay h1 em { display:block; font-style:italic; font-size:.6em; letter-spacing:.2em; color:#e3d6bf; text-shadow:0 2px 18px rgba(0,0,0,.95); }
         #audio-overlay.struck h1 { color:#f0f2f8; text-shadow:0 0 36px rgba(210,225,255,.9), 0 0 6px rgba(255,255,255,.8); }
-        .ttl-tag { margin:18px auto 0; max-width:36rem; font-family:'Courier Prime',monospace; font-size:clamp(.82rem,1.6vw,1rem); line-height:1.65; color:#cfc3ad; text-shadow:0 1px 10px #000, 0 0 2px #000; }
+        .ttl-tag { margin:18px auto 0; max-width:36rem; font-family:'IBM Plex Mono',monospace; font-size:clamp(.82rem,1.6vw,1rem); line-height:1.65; color:#cfc3ad; text-shadow:0 1px 10px #000, 0 0 2px #000; }
         .ttl-bottom { display:flex; flex-direction:column; align-items:center; gap:12px; }
-        #audio-overlay .btn { min-width:min(290px,80vw); padding:14px 30px; font-family:'Courier Prime',monospace; font-weight:700; font-size:1rem; letter-spacing:.24em;
+        #audio-overlay .btn { min-width:min(290px,80vw); padding:14px 30px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:1rem; letter-spacing:.24em;
             color:#e8d9a8; background:rgba(8,6,6,.55); border:1px solid rgba(212,175,55,.45); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); cursor:pointer;
             transition:background .25s, border-color .25s, color .25s, transform .25s, box-shadow .25s; }
         #audio-overlay .btn:hover, #audio-overlay .btn:focus-visible { background:rgba(138,3,3,.88); border-color:#e8d9a8; color:#fff; transform:translateY(-2px); box-shadow:0 10px 26px rgba(138,3,3,.45); outline:none; }
@@ -379,29 +411,31 @@
 }
 #items-layer { inset: -3.5% !important; width: 107% !important; height: 107% !important; will-change: transform; }
 
-/* Hotspot Kiểu A: Mờ trong tối, bừng sáng khi rọi đèn pin */
+/* Hotspot Kiểu A: Ẩn hoàn toàn trong bóng tối, chỉ hiện mờ vừa đủ khi soi thẳng tâm đèn pin vào */
 .fx-on .interactive-item {
-    opacity: 0.48; transform: scale(0.88);
-    border-color: rgba(212, 175, 55, 0.3); background: rgba(10, 8, 8, 0.42);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.85); animation: none;
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, background 0.3s, box-shadow 0.3s;
+    opacity: 0.015; transform: scale(0.8);
+    border-color: transparent; background: transparent;
+    box-shadow: none; animation: none;
+    transition: opacity 0.24s ease, transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.24s, background 0.24s, box-shadow 0.24s;
 }
 .fx-on .interactive-item.lit,
-.fx-on .interactive-item:hover,
 .fx-on .interactive-item:focus-visible {
-    opacity: 1; transform: scale(1.06);
-    border-color: rgba(232, 217, 168, 0.92); background: rgba(26, 16, 12, 0.8);
-    box-shadow: 0 0 20px rgba(255, 180, 90, 0.55), inset 0 0 8px rgba(255, 210, 140, 0.25);
+    opacity: 0.78; transform: scale(0.96);
+    border-color: rgba(232, 217, 168, 0.55); background: rgba(18, 13, 10, 0.62);
+    box-shadow: 0 0 12px rgba(255, 180, 90, 0.28), inset 0 0 6px rgba(255, 210, 140, 0.14);
 }
-.fx-on .interactive-item:hover { background: rgba(138, 3, 3, 0.88); border-color: #fff; box-shadow: 0 0 24px rgba(220, 40, 30, 0.85); }
+.fx-on .interactive-item.lit:hover { opacity: 1; transform: scale(1.04); background: rgba(138, 3, 3, 0.78); border-color: rgba(255, 255, 255, 0.85); box-shadow: 0 0 16px rgba(220, 40, 30, 0.55); }
 .fx-on .interactive-item.lit::after { opacity: 0.92; }
-@media (hover: none) { .fx-on .interactive-item { opacity: 0.72; transform: scale(0.96); } }
+@media (hover: none) {
+    .fx-on .interactive-item { opacity: 0.08; transform: scale(0.86); }
+    .fx-on .interactive-item:not(.lit)::after { opacity: 0; }
+}
 
 /* Hậu kỳ điện ảnh: Film grain & quang sai viền */
 #cine-post {
     position: fixed; inset: 0; pointer-events: none; z-index: 60;
     box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.72), inset 0 0 18px rgba(138, 3, 3, 0.14);
-    transition: box-shadow 0.8s ease;
+    transition: box-shadow 2.8s ease-out;
 }
 #cine-post::before {
     content: ""; position: absolute; inset: -50%; width: 200%; height: 200%; opacity: 0.045;
@@ -450,7 +484,7 @@ body.dread-glitch #app-container {
     position: fixed; inset: auto 0 0 0; z-index: 55;
     background: linear-gradient(180deg, transparent, rgba(5, 4, 4, 0.94) 28%);
     padding: 36px 20px 26px; text-align: center; color: #e8dcc8;
-    font-family: 'Courier Prime', monospace; pointer-events: auto;
+    font-family: 'IBM Plex Mono', monospace; pointer-events: auto;
 }
 #recon-cinema .rc-time { color: #d24a3f; font-weight: 700; letter-spacing: 0.18em; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 6px; }
 #recon-cinema .rc-line { max-width: 44rem; margin: 0 auto 14px; font-size: clamp(0.95rem, 2vw, 1.15rem); line-height: 1.65; text-shadow: 0 2px 8px #000; }
@@ -508,6 +542,7 @@ body.dread-glitch #app-container {
                 <p id="net-warn" class="hidden-ui">Không tải được giao diện (Tailwind). Hãy kiểm tra kết nối mạng rồi tải lại trang.</p>
                 <button id="btn-continue" class="btn btn-red hidden-ui">TIẾP TỤC VỤ ÁN</button>
                 <button id="btn-start-audio" class="btn pulsate">VÀO NHÀ CHÍNH</button>
+                <button id="btn-howto-title" type="button" class="btn">CÁCH CHƠI</button>
                 <p class="ttl-note">Game có âm thanh và hiệu ứng hù dọa nhẹ. Đeo tai nghe để có trải nghiệm tốt nhất.</p>
             </div>
         </div>
@@ -518,6 +553,7 @@ body.dread-glitch #app-container {
         <div id="prologue-text" class="text-lg md:text-xl max-w-2xl leading-loose min-h-[300px] cursor-pointer"></div>
         <button id="btn-skip" class="btn text-sm mt-4">BỎ QUA ▶</button>
         <button id="btn-start-game" class="btn btn-red mt-8 hidden-ui">TIẾP TỤC ĐIỀU TRA</button>
+        <button id="btn-howto-pro" type="button" class="text-xs text-[#b9a77f] underline mt-3 bg-transparent border-0 cursor-pointer">Xem cách chơi</button>
     </div>
 
     <div id="game-ui" class="w-full h-full max-w-5xl relative hidden-ui flex flex-col lightning-bg">
@@ -526,8 +562,10 @@ body.dread-glitch #app-container {
             <div id="room-name" class="font-bold">Sân Trước</div>
             <div class="flex gap-2">
                 <button id="btn-mute" class="btn text-sm" title="Bật/tắt âm thanh">🔊</button>
-                <button id="btn-hint-global" class="btn text-sm">💡 GỢI Ý</button>
+                <button id="btn-hint-global" class="btn text-sm hidden-ui">💡 GỢI Ý</button>
+                <button id="btn-letter" class="btn text-sm">✉️ XEM LÁ THƯ</button>
                 <button id="btn-notebook" class="btn text-sm">📓 SỔ TAY</button>
+                <button id="btn-howto" type="button" class="btn text-sm" title="Cách chơi" aria-label="Cách chơi">?</button>
             </div>
         </div>
 
@@ -572,6 +610,7 @@ body.dread-glitch #app-container {
                     <button id="btn-clear-chat" class="btn text-sm" title="Xóa lịch sử trò chuyện với nghi phạm này">🗑️ XÓA</button>
                 </div>
             </div>
+            <button id="btn-howto-chat" type="button" class="absolute top-2 right-12 text-gray-500 hover:text-white px-2 py-1 text-base font-bold" title="Cách chơi" aria-label="Cách chơi">?</button>
             <button class="absolute top-2 right-2 text-gray-500 hover:text-white close-modal px-3 py-1 text-2xl font-bold">&times;</button>
         </div>
 
@@ -601,9 +640,42 @@ body.dread-glitch #app-container {
             </div>
             <button id="btn-unlock" class="btn btn-red w-full">MỞ KHÓA</button>
             <div id="lock-error" class="text-red-500 mt-2 text-sm h-5"></div>
-            <button id="btn-hint" class="btn w-full mt-2">💡 GỢI Ý (0/3)</button>
-            <div id="lock-hint" class="text-yellow-200 text-sm mt-3 min-h-[3rem] text-center"></div>
+            <button id="btn-hint" class="btn w-full mt-2 hidden-ui">💡 GỢI Ý (0/3)</button>
+            <div id="lock-hint" class="text-yellow-200 text-sm mt-3 min-h-[3rem] text-center hidden-ui"></div>
             <button class="absolute top-1 right-2 text-gray-500 hover:text-white close-modal text-2xl font-bold">&times;</button>
+        </div>
+
+        <div id="modal-report" class="bg-[#1b1613] border border-[#8a0303] p-6 w-11/12 max-w-md hidden-ui relative text-[#e6dcc3]" role="dialog" aria-modal="true">
+            <h3 class="text-xl font-bold mb-2 title-font text-[#e8d9a8]">Báo Cáo Qua Khe Cửa</h3>
+            <p class="text-sm text-[#c8bba4] mb-4 leading-relaxed">Giọng ông Thạc vọng ra từ sau cánh cửa khóa chặt:<br><i>"Anh đã hỏi chuyện họ xong rồi chứ? Theo anh, ai là kẻ đã gửi lá thư máu kia?"</i></p>
+            <select id="report-suspect" class="w-full bg-[#0e0c0b] border border-[#5c4a30] p-2.5 mb-4 text-[#e6dcc3] outline-none">
+                <option value="">-- Chọn người bạn nghi ngờ --</option>
+                <option value="quan">Lương Minh Quân</option>
+                <option value="van">Triệu Thanh Vân</option>
+                <option value="khoa">Phạm Đức Khoa</option>
+                <option value="cuu">Thầy Cửu</option>
+                <option value="hanh">Chị Tư Hạnh</option>
+            </select>
+            <button id="btn-report-submit" class="btn btn-red w-full">BÁO CÁO VỚI ÔNG THẠC</button>
+            <div id="report-error" class="text-yellow-400 text-sm mt-2 min-h-[1.25rem]"></div>
+            <button class="absolute top-1 right-2 text-gray-500 hover:text-white close-modal text-2xl font-bold">&times;</button>
+        </div>
+
+        <div id="modal-letter" class="w-11/12 max-w-md p-7 md:p-9 hidden-ui relative rounded-sm" role="dialog" aria-modal="true" aria-label="Lá thư đe dọa">
+            <div class="text-xs uppercase tracking-widest mb-4 pb-2 border-b border-[#7d6235]/50 text-[#5c4320] flex justify-between" style="font-family:'IBM Plex Mono',monospace;">
+                <span>Vật chứng · Lá thư gửi chiều 15/7</span>
+                <span>Mực đỏ</span>
+            </div>
+            <div class="blood-letter-body space-y-4">
+                <p>Gửi Lương Văn Thạc,</p>
+                <p><span class="l-shaky">Ba mươi năm rồi, ông tưởng chuẩn bị lấp cái giếng đi</span><br>là chôn được chuyện năm Bính Tý sao?</p>
+                <p><span class="l-main">Đêm Rằm tháng Bảy này,<br>tao về lấy mạng.</span></p>
+                <p class="text-right pr-2 pt-2"><span class="l-shaky">— Người dưới giếng</span></p>
+            </div>
+            <div class="mt-6 text-center">
+                <button class="btn close-modal text-xs" style="background:#3a2815;color:#e5d2a2;border-color:#5c4320;">GẤP LÁ THƯ LẠI</button>
+            </div>
+            <button class="absolute top-2 right-3 text-[#5c4320] hover:text-[#2a1a0a] close-modal text-2xl font-bold">&times;</button>
         </div>
 
         <div id="modal-notebook" class="bg-[#2c2820] border border-[#5c4a30] w-11/12 max-w-md p-6 hidden-ui relative text-[#dcd0c0] font-sans max-h-full overflow-y-auto">
@@ -617,7 +689,7 @@ body.dread-glitch #app-container {
         <li class="italic text-gray-400">Chưa ghi nhận manh mối nào...</li>
     </ul>
     <button class="absolute top-2 right-3 text-[#5c4a30] hover:text-[#e8dbce] close-modal text-3xl font-bold">&times;</button>
-            <div class="mt-6 border-t border-[#5c4a30] pt-4">
+            <div id="notebook-phase2" class="mt-6 border-t border-[#5c4a30] pt-4 hidden-ui">
                 <h3 class="font-bold text-yellow-300 mb-2">Dựng lại hiện trường: 23:30</h3><div id="recon-rows" class="space-y-1 mb-2"></div><button id="btn-recon" class="btn w-full mb-1">KIỂM TRA</button><div id="recon-msg" class="text-sm min-h-[1.25rem] mb-4"></div>
                 <h3 class="font-bold text-red-400 mb-2">Kết Án</h3>
                 <select id="accuse-suspect" class="w-full bg-[#1a1712] border border-[#5c4a30] p-2 mb-2 text-[#dcd0c0] outline-none">
@@ -653,7 +725,27 @@ body.dread-glitch #app-container {
             <div id="msg-content" class="mb-4 text-base md:text-lg">Message</div>
             <button class="btn close-modal">ĐÓNG</button>
         </div>
+
+        <div id="modal-howto" class="w-11/12 max-w-2xl hidden-ui flex flex-col max-h-full overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+            <div class="dos-tag"><span id="howto-title">HỒ SƠ #001 · HƯỚNG DẪN</span><span>TUYỆT MẬT</span></div>
+            <div class="howto-grid">
+                <div class="howto-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg><div><b>Mục tiêu</b>Tìm ra hung thủ sát hại ông Thạc cùng động cơ, phương tiện và cơ hội. Chọn các phòng ở thanh dưới để di chuyển.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M21 21l-6-6"/></svg><div><b>Khám xét</b>Rọi đèn pin qua từng góc phòng để làm lộ vật chứng phát sáng. Bấm vào vật chứng để thu thập manh mối.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div><b>Ổ khóa</b>Tìm manh mối liên quan rồi xoay bánh số mở khóa. Trên máy tính có thể gõ số trực tiếp và nhấn Enter.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div><b>Thẩm vấn</b>Gõ câu hỏi tự do bằng tiếng Việt hoặc bấm chip gợi ý. Dùng nút 📎 để đưa vật chứng và lời khai ra đối chất.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><div><b>Sổ tay</b>Gồm 3 tab: Vật lý, Lời khai và Thời gian để đối chiếu. Đủ lời khai 23:30 hãy dựng lại hiện trường rồi mới kết án.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg><div><b>Kết án</b>Chỉ mặt hung thủ và ghép đủ 3 mảnh Động cơ, Phương tiện, Cơ hội. Buộc tội sai 2 lần vụ án sẽ khép lại.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/></svg><div><b>Lưu game</b>Tiến trình và lịch sử hỏi cung tự động lưu trên trình duyệt. Lần sau mở lại có thể bấm Tiếp tục vụ án.</div></div>
+                <div class="howto-item"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg><div><b>Mẹo</b>Đeo tai nghe để nghe tiếng động hiện trường và nhịp tim. Soi kỹ mâu thuẫn giờ giấc trong tab Thời gian.</div></div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2 mb-3">
+                <button id="btn-tips-toggle" type="button" class="btn text-xs">Tắt gợi ý</button>
+                <button id="btn-tips-reset" type="button" class="btn text-xs">Xem lại gợi ý</button>
+            </div>
+            <button class="btn close-modal">ĐÓNG</button>
+        </div>
     </div>
+    <div id="coach-tip" role="status" aria-live="polite" class="hidden-ui"></div>
 </div>
 
 <script>
@@ -664,11 +756,11 @@ try { muted = localStorage.getItem('drtb_muted') === '1'; } catch (e) {}
 const AMB = { profile: null, nextEvent: 0, tock: false, thTimer: null };
 
 const ROOM_AUDIO = {
-    frontYard:  { rain: 0.031, rainLP: 9000, roof: 0.05, wind: 0.065, drone: 0.009, indoor: false, clock: false, drip: false, whisper: false, creak: 0.10 },
-    livingRoom: { rain: 0.034, rainLP: 1400, roof: 0.07, wind: 0.020, drone: 0.014, indoor: true,  clock: true,  drip: false, whisper: false, creak: 0.35 },
-    kitchen:    { rain: 0.034, rainLP: 1500, roof: 0.07, wind: 0.015, drone: 0.014, indoor: true,  clock: false, drip: true,  whisper: false, creak: 0.20 },
-    hallway:    { rain: 0.028, rainLP: 1100, roof: 0.06, wind: 0.017, drone: 0.020, indoor: true,  clock: false, drip: false, whisper: true,  creak: 0.45 },
-    study:      { rain: 0.024, rainLP:  900, roof: 0.05, wind: 0.010, drone: 0.016, indoor: true,  clock: true,  drip: false, whisper: true,  creak: 0.25 }
+    frontYard:  { rain: 0.017, rainLP: 7500, roof: 0.025, wind: 0.036, drone: 0.006, indoor: false, clock: false, drip: false, whisper: false, creak: 0.10 },
+    livingRoom: { rain: 0.016, rainLP: 1300, roof: 0.032, wind: 0.012, drone: 0.009, indoor: true,  clock: true,  drip: false, whisper: false, creak: 0.35 },
+    kitchen:    { rain: 0.016, rainLP: 1400, roof: 0.032, wind: 0.010, drone: 0.009, indoor: true,  clock: false, drip: true,  whisper: false, creak: 0.20 },
+    hallway:    { rain: 0.014, rainLP: 1050, roof: 0.028, wind: 0.010, drone: 0.012, indoor: true,  clock: false, drip: false, whisper: true,  creak: 0.45 },
+    study:      { rain: 0.012, rainLP:  850, roof: 0.024, wind: 0.008, drone: 0.010, indoor: true,  clock: true,  drip: false, whisper: true,  creak: 0.25 }
 };
 
 function makeNoiseBuffer(sec) {
@@ -702,6 +794,7 @@ function initAudio() {
 
     ambBus = ac.createGain(); ambBus.connect(masterGain);
     sfxBus = ac.createGain(); sfxBus.connect(masterGain);
+    window._musicBus = ac.createGain(); window._musicBus.gain.value = 1.18; window._musicBus.connect(masterGain);
 
     const conv = ac.createConvolver();
     conv.buffer = makeReverbIR(2.8, 3);
@@ -713,6 +806,103 @@ function initAudio() {
     AMB.nextEvent = performance.now() + 8000;
     startAmbience();
     setInterval(ambientTick, 1000);
+    setInterval(raindropTick, 420);
+}
+
+const MUSIC = { mode: 'off', timer: null, step: 0, padG: null };
+function playPianoNote(freq, vol, dur, delay) {
+    if (!audioCtx || muted || audioCtx.state !== 'running' || !window._musicBus) return;
+    const ac = audioCtx, t = ac.currentTime + (delay || 0);
+    const lp = ac.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(Math.min(2400, freq * 4.2), t);
+    lp.frequency.exponentialRampToValueAtTime(Math.max(380, freq * 1.4), t + dur);
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.022);
+    g.gain.exponentialRampToValueAtTime(vol * 0.35, t + Math.min(0.65, dur * 0.35));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+    const o1 = ac.createOscillator(); o1.type = 'triangle'; o1.frequency.setValueAtTime(freq, t);
+    const o2 = ac.createOscillator(); o2.type = 'sine'; o2.frequency.setValueAtTime(freq * 2, t);
+    const g2 = ac.createGain(); g2.gain.value = 0.22;
+    o1.connect(lp); o2.connect(g2); g2.connect(lp);
+    lp.connect(g); g.connect(window._musicBus);
+    if (reverbIn) { const rv = ac.createGain(); rv.gain.value = 0.72; g.connect(rv); rv.connect(reverbIn); }
+    o1.start(t); o2.start(t); o1.stop(t + dur + 0.05); o2.stop(t + dur + 0.05);
+}
+function ensureMusicPad() {
+    if (!audioCtx || MUSIC.padG || !window._musicBus) return;
+    const ac = audioCtx;
+    MUSIC.padG = ac.createGain(); MUSIC.padG.gain.value = 0;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 340;
+    lp.connect(MUSIC.padG); MUSIC.padG.connect(window._musicBus);
+    if (reverbIn) { const rv = ac.createGain(); rv.gain.value = 0.6; MUSIC.padG.connect(rv); rv.connect(reverbIn); }
+    [[73.42, 'sine', 0.55], [110.0, 'triangle', 0.28], [146.83, 'sine', 0.22]].forEach(([f, type, v]) => {
+        const o = ac.createOscillator(); o.type = type; o.frequency.value = f;
+        const g = ac.createGain(); g.gain.value = v;
+        o.connect(g); g.connect(lp); o.start();
+    });
+}
+function setMusicMode(mode) {
+    if (!audioCtx) return;
+    ensureMusicPad();
+    MUSIC.mode = mode;
+    MUSIC.step = 0;
+    clearTimeout(MUSIC.timer);
+    const t = audioCtx.currentTime;
+    const padLevel = mode === 'prologue' ? 0.085 : mode === 'ending' ? 0.075 : mode === 'act2' ? 0.048 : mode === 'act1' ? 0.036 : 0;
+    if (MUSIC.padG) MUSIC.padG.gain.setTargetAtTime(padLevel, t, 1.0);
+    if (mode === 'off') return;
+
+    const PROLOGUE_SEQ = [
+        [146.83, 220.00, 349.23], [329.63], [293.66],
+        [116.54, 174.61, 293.66], [261.63], [220.00],
+        [98.00,  146.83, 233.08], [220.00], [174.61],
+        [110.00, 164.81, 277.18], [220.00], [146.83]
+    ];
+    const ACT1_NOTES = [146.83, 174.61, 220.00, 261.63, 293.66, 329.63, 349.23];
+    const ACT2_NOTES = [110.00, 146.83, 155.56, 207.65, 220.00, 233.08, 293.66];
+    const END_SEQ = [
+        [146.83, 293.66], [349.23], [329.63], [220.00],
+        [116.54, 233.08], [293.66], [261.63], [174.61],
+        [98.00,  220.00], [174.61], [164.81], [146.83]
+    ];
+
+    function nextNote() {
+        if (MUSIC.mode !== mode) return;
+        if (!document.hidden && !muted && audioCtx.state === 'running') {
+            if (mode === 'prologue' || mode === 'ending') {
+                const seq = mode === 'prologue' ? PROLOGUE_SEQ : END_SEQ;
+                const chord = seq[MUSIC.step % seq.length];
+                chord.forEach((f, idx) => playPianoNote(f, mode === 'prologue' ? 0.088 : 0.082, 3.8, idx * 0.22));
+                MUSIC.step++;
+                MUSIC.timer = setTimeout(nextNote, mode === 'prologue' ? 2350 : 2700);
+                return;
+            }
+            const pool = mode === 'act2' ? ACT2_NOTES : ACT1_NOTES;
+            const n1 = pool[Math.floor(Math.random() * pool.length)];
+            playPianoNote(n1, mode === 'act2' ? 0.062 : 0.052, 3.2, 0);
+            if (Math.random() < 0.45) {
+                const n2 = pool[Math.floor(Math.random() * pool.length)];
+                playPianoNote(n2, 0.038, 2.8, 0.75);
+            }
+        }
+        MUSIC.timer = setTimeout(nextNote, (mode === 'act2' ? 3800 : 5200) + Math.random() * 2400);
+    }
+    MUSIC.timer = setTimeout(nextNote, mode === 'prologue' ? 450 : 1200);
+}
+function duckAmbience(on) {
+    if (!audioCtx || !ambBus) return;
+    ambBus.gain.setTargetAtTime(on ? 0.48 : 1.0, audioCtx.currentTime, 0.28);
+}
+function raindropTick() {
+    if (!audioCtx || audioCtx.state !== 'running' || muted || document.hidden) return;
+    if ($('game-ui').classList.contains('hidden-ui') && $('prologue').classList.contains('hidden-ui')) return;
+    const p = AMB.profile || ROOM_AUDIO.frontYard;
+    if (Math.random() > (p.indoor ? 0.45 : 0.78)) return;
+    const f = p.indoor ? (900 + Math.random() * 1100) : (1600 + Math.random() * 2600);
+    noiseHit({ dur: 0.014 + Math.random() * 0.016, vol: p.indoor ? 0.006 : 0.010, type: 'bandpass', f, q: 4.5, attack: 0.002, rev: 0.25, bus: ambBus });
 }
 
 function startAmbience() {
@@ -991,6 +1181,26 @@ const SFX = {
         noiseHit({ dur: 0.3, vol: 0.28, type: 'lowpass', f: 700, f2: 90, attack: 0.004, rev: 0.4 });
         [233.08, 246.94, 277.18].forEach(f => tone({ t: 0.5, type: 'sawtooth', f, f2: f * 0.94, dur: 3.2, vol: 0.04, attack: 0.8, lp: 600, rev: 0.8 }));
         noiseHit({ t: 0.45, dur: 0.15, vol: 0.3, type: 'lowpass', f: 500, attack: 0.004 });
+    },
+    scream() {
+        const synthFallback = () => {
+            tone({ t: 0, type: 'sawtooth', f: 390, f2: 260, dur: 0.95, vol: 0.11, attack: 0.04, lp: 1350, rev: 0.85 });
+            tone({ t: 0.02, type: 'triangle', f: 780, f2: 510, dur: 0.85, vol: 0.06, attack: 0.05, lp: 1600, rev: 0.85 });
+            noiseHit({ t: 0.02, dur: 0.75, vol: 0.08, type: 'bandpass', f: 1100, q: 2.2, attack: 0.04, rev: 0.8 });
+            noiseHit({ t: 0.92, dur: 0.18, vol: 0.28, type: 'lowpass', f: 260, attack: 0.004, rev: 0.5 });
+        };
+        try {
+            const a = new Audio('./sfx_scream.mp3');
+            a.volume = 0.28;
+            const p = a.play();
+            if (p && p.catch) p.catch(synthFallback);
+        } catch (e) { synthFallback(); }
+    },
+    voice(charId) {
+        const map = { quan: 265, van: 430, khoa: 205, cuu: 155, hanh: 345 };
+        const f = map[charId] || 300;
+        tone({ t: 0, type: 'sine', f, f2: f * 0.94, dur: 0.075, vol: 0.032, attack: 0.008, rev: 0.18 });
+        tone({ t: 0.085, type: 'triangle', f: f * 1.06, f2: f * 0.98, dur: 0.06, vol: 0.02, attack: 0.006, rev: 0.15 });
     }
 };
 function sfx(name, ...args) {
@@ -1077,6 +1287,7 @@ function playCassetteSound(opts) {
 }
 
 const state = {
+    phase: 1,
     room: 'frontYard',
     clues: [],
     locks: {
@@ -1090,8 +1301,17 @@ const state = {
     ev: {},
     fb: {},
     chats: {},
+    clueIds: {},
+    p1Spots: {},
     hints: {},
     wrong: 0
+};
+
+const CLUE_ID_MIGRATE = {
+    hanh_tea: 'Chị Tư khai: để khay trà ở bàn phòng khách từ 21h10 đến 21h30 rồi mới mang vào thư phòng.',
+    cuu_alibi: 'Thầy Cửu nghe rõ giọng khấn của Quân và Vân ngay sau lưng lúc 23h30, nên cả hai đang ở sân.',
+    khoa_alibi: 'Khoa có alibi lúc cầu dao sập: gọi video với vợ từ 23:28 đến 23:41 ngoài cổng.',
+    hanh_alone: 'Chị Tư khai ở một mình trong bếp lúc mất điện, tự bật cầu dao lại lúc đèn sáng, không ai xác nhận.'
 };
 
 const SAVE_KEY = 'drtb_save_v1';
@@ -1102,7 +1322,7 @@ function save() {
         const solved = {};
         Object.keys(state.locks).forEach(k => solved[k] = state.locks[k].solved);
         localStorage.setItem(SAVE_KEY, JSON.stringify({
-            room: state.room, clues: state.clues, solved, ev: state.ev, chats: state.chats, hints: state.hints, wrong: state.wrong
+            phase: state.phase, room: state.room, clues: state.clues, solved, ev: state.ev, chats: state.chats, clueIds: state.clueIds, p1Spots: state.p1Spots, hints: state.hints, wrong: state.wrong
         }));
     } catch (e) {}
 }
@@ -1120,11 +1340,18 @@ function applySave(s) {
     state.clues = Array.isArray(s.clues) ? s.clues : [];
     Object.keys(state.locks).forEach(k => state.locks[k].solved = !!(s.solved && s.solved[k]));
     state.ev = s.ev || {};
+    state.phase = s.phase || ((state.locks.box.solved || state.locks.door.solved || state.ev.tea) ? 2 : 1);
     state.chats = (s.chats && typeof s.chats === 'object') ? s.chats : {};
+    state.clueIds = (s.clueIds && typeof s.clueIds === 'object') ? s.clueIds : {};
+    state.p1Spots = (s.p1Spots && typeof s.p1Spots === 'object') ? s.p1Spots : {};
+    Object.keys(CLUE_ID_MIGRATE).forEach(id => {
+        if (!state.clueIds[id] && state.clues.includes(CLUE_ID_MIGRATE[id])) state.clueIds[id] = true;
+    });
     state.hints = s.hints || {};
     state.wrong = s.wrong || 0;
     state.room = s.room || 'frontYard';
     renderClues();
+    if (typeof updatePhaseUI === 'function') updatePhaseUI();
 }
 function restartGame() { clearSave(); location.reload(); }
 
@@ -1206,27 +1433,31 @@ const EVID = {
     diary:     { type: 'physical',  n: 'Nhật ký ông Thạc', ok: () => F.photo() },
     photo:     { type: 'physical',  n: 'Tấm ảnh Lan & em gái, 1996', ok: () => F.photo() },
     cassette:  { type: 'physical',  n: 'Máy cassette có hẹn giờ', ok: () => F.cass() },
-    hanky:     { type: 'physical',  n: 'Khăn tay thêu chữ H', ok: () => F.cass() },
+    hanky:     { type: 'physical',  n: 'Khăn tay cũ thêu chữ L & nhành hoa dại', ok: () => F.cass() },
     costume:   { type: 'physical',  n: 'Áo dài trắng và tóc giả', ok: () => F.cab() },
     pills:     { type: 'physical',  n: 'Lọ thuốc an thần rỗng', ok: () => F.cab() },
-    cuu_lan:   { type: 'statement', n: 'Lời khai Thầy Cửu: Giờ Lan chết', ok: () => state.ev.lanTime, match: '23h15' },
-    hanh_tea:  { type: 'statement', n: 'Lời khai Chị Tư: Khay trà để ở sảnh 21h10–21h30', ok: () => state.clues.includes('Chị Tư khai: để khay trà ở bàn sảnh từ 21h10 đến 21h30 rồi mới mang lên thư phòng.'), match: '21h10 đến 21h30' },
-    cuu_alibi: { type: 'statement', n: 'Lời khai Thầy Cửu: Nghe giọng Quân & Vân khấn lúc 23h30', ok: () => state.clues.includes('Thầy Cửu nghe rõ giọng khấn của Quân và Vân ngay sau lưng lúc 23h30, nên cả hai đang ở sân.'), match: 'nghe rõ giọng khấn' }
+    cuu_lan:   { type: 'statement', n: 'Lời khai Thầy Cửu: Giờ Lan chết', ok: () => state.ev.lanTime },
+    hanh_tea:  { type: 'statement', n: 'Lời khai Chị Tư: Khay trà để ở phòng khách 21h10–21h30', ok: () => !!state.clueIds.hanh_tea },
+    cuu_alibi: { type: 'statement', n: 'Lời khai Thầy Cửu: Nghe giọng Quân & Vân khấn lúc 23h30', ok: () => !!state.clueIds.cuu_alibi },
+    khoa_alibi:{ type: 'statement', n: 'Nhật ký cuộc gọi của Khoa: 23:28–23:41 ngoài cổng', ok: () => !!state.clueIds.khoa_alibi },
+    hanh_alone:{ type: 'statement', n: 'Lời khai Chị Tư: Ở một mình dưới bếp lúc mất điện', ok: () => !!state.clueIds.hanh_alone }
 };
 const CHIPS = [
-    ['Tối nay ở đâu?', 'tonight', () => true],
+    ['Bạn là ai?', 'self', () => state.phase < 2],
+    ['Nghề nghiệp', 'job', () => state.phase < 2],
+    ['Mã cửa thư phòng', 'door', () => state.phase >= 2 && !state.locks.door.solved],
     ['Quan hệ với ông Thạc', 'victim', () => true],
-    ['Chuyện mất điện', 'power', () => true],
     ['Lá thư đe dọa', 'letter', () => true],
-    ['Tiếng hát ru', 'cass', () => true],
-    ['Ai có mặt lúc đó?', 'who', () => true],
+    ['Lúc 23:30 ở đâu?', 'tonight', () => state.phase >= 2],
+    ['Chuyện mất điện', 'power', () => state.phase >= 2],
+    ['Ai có mặt lúc đó?', 'who', () => state.phase >= 2],
+    ['Tiếng hát ru', 'cass', () => state.phase >= 2],
     ['Có thấy gì lạ?', 'see', () => true],
     ['Cái giếng', 'well', () => true],
-    ['Mã cửa thư phòng', 'door', () => state.locks.box.solved],
     ['Chén trà', 'tea', () => state.ev.tea],
     ['Thuốc an thần', 'drug', () => state.ev.tea],
     ['Lan, năm 1996', 'lan', () => F.photo()],
-    ['Nguyên nhân tử vong', 'body', () => true]
+    ['Nguyên nhân tử vong', 'body', () => state.phase >= 2 && state.locks.door.solved]
 ];
 
 const characters = {
@@ -1237,37 +1468,42 @@ const characters = {
             self: "Lương Minh Quân, con trai ông Thạc. Cha tôi nhờ anh đến, vậy mà anh không biết tôi là ai à?",
             job: "Làm ăn... buôn bán qua lại thôi. Ba tôi vẫn bảo tôi là đồ vô dụng, nên anh đừng hỏi kỹ quá. Mà nghề của tôi thì liên quan gì tới cái chết của ông?",
             age: "Ba mươi tám. Anh hỏi tuổi tôi để làm gì? Đủ lớn để biết mình đang nói gì, anh yên tâm.",
-            home: "Ở ngay trong căn nhà này, từ nhỏ tới giờ. Chỗ nào trong nhà tôi cũng thuộc, thì sao?",
+            home: "Ở ngay trong căn nhà này, từ nhỏ tới giờ. Gần đây nghe ba tôi bảo tính bán căn nhà cổ này để dọn lên phố... nhưng chưa chốt. Chỗ nào trong nhà tôi cũng thuộc, thì sao?",
             family: "Tôi có vợ rồi, Vân đấy, anh gặp rồi mà. Chuyện nhà tôi thì liên quan gì tới ba tôi?",
             bye: "Anh hỏi xong rồi à? Vậy thì... nếu có gì nữa anh biết tôi ở đâu.",
             victim: "Ông ấy là cha tôi. Anh hỏi vậy là có ý gì? Nghiêm khắc, keo kiệt... cha nào chẳng vậy. Nhưng hại ông thì tôi chưa bao giờ nghĩ tới, anh đừng có suy diễn.",
-            money: ["Anh muốn nghe thật không? Rồi, tôi nợ nần đấy, và 22h30 tôi có xin ông ấy tiền. Ông mắng tôi là đồ vô dụng, nên tôi bỏ ra sân. Nhưng giết cha mình thì... anh nghĩ tôi là loại người nào hả?", "Quân cãi cha lúc 22h30 vì tiền, rồi ra sân cúng cùng cả xóm."],
-            tonight: "Cả đêm tôi khấn ngoài sân cùng cả xóm, từ 19 giờ. Anh cứ hỏi thầy Cửu, ổng làm chứng cho tôi! Mà sao anh lại hỏi tôi trước?",
-            leave: "Tôi á? Tôi đứng khấn ngoài sân từ đầu tới cuối, nói rồi mà. Anh định bắt tôi nhắc lại bao nhiêu lần nữa?",
+            money: ["Anh muốn nghe thật không? Rồi, tôi nợ nần đấy, và 22h30 tôi có lên gõ cửa xin ông ấy tiền. Ông không mở cửa, chỉ mắng vọng ra rằng tôi là đồ vô dụng, nên tôi tức bỏ xuống phòng khách ngồi, tới hơn 23 giờ mới ra sân khấn. Nhưng giết cha mình thì... anh nghĩ tôi là loại người nào hả?", "22h30: Quân cãi cha qua cửa thư phòng vì tiền, xuống phòng khách ngồi rồi hơn 23h mới ra sân cúng."],
+            tonight: ["Từ 23 giờ tôi đã ra sân khấn cùng cả xóm rồi. Lúc cúp điện 23h30 tôi vẫn đứng ngoài sân, anh cứ hỏi thầy Cửu, ổng làm chứng cho tôi!", "Quân khai sau 23 giờ đã ra sân khấn cùng cả xóm; lúc mất điện 23h30 vẫn đứng ở sân."],
+            leave: "Tôi á? Từ hơn 23 giờ tôi đứng khấn ngoài sân cùng cả xóm, nói rồi mà. Anh định bắt tôi nhắc lại bao nhiêu lần nữa?",
             power: ["Lúc cúp điện, 23h30 đó, tôi đang khấn ngoài sân cùng cả xóm. Tối om... ai cũng nghe tiếng hát ru vọng từ phía giếng. Lạnh cả người. Trong cái tối đó thì ai làm được gì chứ?", "Lúc mất điện 23h30, Quân đang ở ngoài sân cùng cả xóm."],
-            tea: "Trà tối của ba thì chị Tư lo, mà ba chỉ uống khi trà nguội bớt nên khay hay để ở bàn sảnh một lúc. Lúc đó tôi đang khấn ngoài sân, ai ra vào thì làm sao tôi biết được. Anh hỏi tôi chuyện này làm gì?",
+            tea: "Trà tối của ba thì chị Tư lo, mà ba chỉ uống khi trà nguội bớt nên khay hay để ở bàn phòng khách một lúc. Khoảng 21h10–21h30 tôi còn trên phòng chưa xuống phòng khách, ai ra vào thì làm sao tôi biết được.",
             drug: "Ba thỉnh thoảng uống thuốc ngủ thì tôi biết, chứ liều lượng với giờ giấc thì... hỏi Vân đi, cô ấy là y tá mà.",
             letter: "Chiều nay ba cho tôi xem lá thư đó. Tôi tưởng trò đùa của đám đòi nợ... Mà khoan, sao anh hỏi tôi trước? Tôi thì có gì phải sợ một lá thư?",
             door: "Mã cửa thư phòng chỉ mình ba biết. Có lần tôi hỏi, ông chửi tôi cả buổi, đến giờ còn nhớ. Ông chỉ nói đặt theo thứ ông tự hào nhất, là cái nhà này.",
             cass: "Tiếng cát xét hát ru đó... nghe quen lắm. Hình như hồi nhỏ tôi từng nghe trong nhà này. Mà thôi, anh đừng hỏi tôi nữa.",
             lan: () => F.photo() ? "Lan à? Giờ tôi mới nhớ... đúng là cô hầu gái hồi nhỏ người lớn cấm nhắc tên. Hồi đó tôi mới tám tuổi, biết gì đâu. Mà sao ba còn giữ ảnh cô ấy, anh nói tôi nghe xem?" : "Lan? Nghe quen mà không nhớ ra... Hồi nhỏ trong nhà có một cô hầu gái người lớn cấm nhắc tên, nhưng chắc không phải đâu. Anh hỏi tên này làm gì?",
-            well: "Cái giếng đó từ nhỏ tôi bị cấm lại gần. Không ai giải thích vì sao... mà anh nghĩ tôi dám lại gần chắc?",
+            well: "Cái giếng đó từ nhỏ tôi bị cấm lại gần. Hồi tám tuổi, một đêm mưa tôi từng nghe tiếng khóc ngoài đó rồi bị ba quát mắng cấm nhắc lại. Tháng trước ông còn bảo thợ tới đo để chuẩn bị lấp luôn cái giếng trước khi bán nhà... anh nghĩ tôi dám lại gần chắc?",
             ghost: ["Tôi không tin ma. Nhưng tiếng hát với cái bóng áo trắng tối nay thì... tôi thấy thật, anh hiểu không?", "Quân nói đã thấy bóng áo trắng tối nay, trong khi khai cả đêm chỉ ở ngoài sân."],
-            box: "Hộp gỗ cạnh bia à? Tôi tưởng đồ lễ của thầy Cửu. Sao, anh nghi nó có gì à?",
+            box: "Hộp đồng cạnh bia à? Tôi tưởng đồ lễ của thầy Cửu. Sao, anh nghi nó có gì à?",
             suspect: "Tôi không dám đoán... đoán sai là mang họa. Chỉ biết ai ở gần ba nhất tối nay thì biết nhiều nhất. Còn anh, anh nghi ai?"
         },
         ev: {
             tea: "Nếu có ai bỏ thuốc vào trà thì phải là người đụng vào khay trà. Tôi thì không... lúc đó tôi ngoài sân, anh hỏi cả xóm đi!",
             diary: "Ba viết nhật ký à?... Ba đẩy một cô hầu gái xuống giếng?! Cả nhà bảo cô ấy tự tử mà... Không, không thể nào. Anh có chắc đây là chữ ba tôi không?",
-            photo: "Cô gái lớn là Lan? Còn cô bé bên cạnh... trông quen quen. Mà nhớ không ra, hồi đó tôi nhỏ lắm.",
-            costume: ["Áo dài trắng! Đúng cái bóng tôi thấy ở hành lang. Mà khoan... sao anh lại biết cái áo này... Thôi được rồi, tôi nói thật: lúc 23h15 tôi lẻn vào nhà tìm ba xin tiền thêm lần nữa. Cuối hành lang có bóng áo trắng đứng im. Tôi chạy ra sân, 23h25 đã quay lại chỗ khấn. Tôi không dám nói vì sợ mang tiếng.", "Quân thú nhận đã lẻn vào nhà lúc 23h15 và thấy bóng áo trắng ở hành lang (là người mặc đồ giả ma, không phải ma). Lúc 23h30 thì ông ở sân."],
+            photo: "Cô gái lớn là Lan? Còn cô bé bên cạnh mặt nhòe quá, nhưng nhìn cái dáng gầy gầy cúi đầu... trông quen quen, mà hồi đó tôi mới tám tuổi nên nhớ không ra.",
+            costume: ["Áo dài trắng! Đúng cái bóng tôi thấy ở hành lang. Mà khoan... sao anh lại biết cái áo này... Thôi được rồi, tôi nói thật: lúc 23h15 tôi lẻn vào nhà định xin tiền ba thêm lần nữa. Cuối hành lang có bóng áo trắng đứng im nên tôi hoảng quá chạy biến ra sân, 23h25 đã quay lại chỗ khấn. Tôi không dám nói vì sợ mang tiếng.", "Quân thú nhận đã lẻn vào nhà lúc 23h15 và thấy bóng áo trắng ở hành lang (là người mặc đồ giả ma). Lúc 23h30 ông đã quay lại sân."],
             cassette: "Máy cát xét! Hồi nhỏ trong nhà có một cái y như vậy. Mà anh lôi nó ra làm gì, nó thì liên quan gì tới tôi?",
-            hanky: "Chữ H thêu tay... mẹ tôi tên Hoa, nhưng cái khăn này không phải của bà. Của ai thì tôi không biết, anh đừng hỏi tôi.",
+            hanky: "Khăn thêu chữ L... chữ L là họ Lương nhà tôi, hay là tên cô Lan hồi đó? Nhưng cái khăn này không phải của mẹ tôi, anh đừng gán bừa cho nhà tôi!",
             breaker: "Cầu dao ở bếp à? Tôi có bao giờ vào bếp đâu mà biết. Anh hỏi chị Tư đi, chỗ đó là của chị ấy.",
             stele: "Bia đá đó... từ nhỏ tôi đã bị cấm hỏi. Rằm tháng Bảy, trùng đúng đêm nay, anh nghĩ tôi không nhận ra chắc?",
             pills: "Lọ thuốc của ba? Sao nó rỗng... mà sao anh đưa tôi xem, tôi có đụng vào đâu."
         },
-        fb: ["Anh hỏi gì mà khó vậy. Hỏi về đêm nay, về ba tôi, hay về mấy người trong nhà thì tôi trả lời.", "Anh nói rõ hơn đi. Tôi trả lời được chuyện tôi đã thấy và đã nghe. Còn anh nghi gì thì cứ nói thẳng!", "Chuyện đó tôi không rõ. Anh cứ hỏi thẳng vào việc đi."]
+        fb: [
+            "Anh hỏi gì mà lan man vậy. Hỏi thẳng tôi về ba tôi, chuyện tiền bạc, hay tối nay tôi ở đâu thì tôi trả lời.",
+            "Chuyện ngoài lề tôi không để ý. Anh cần biết về lá thư dọa, cái giếng hay từng người trong nhà thì cứ hỏi đúng chỗ đó.",
+            "Anh nói rõ hơn đi — anh đang nghi chuyện nợ nần của tôi, chuyện đồ cổ của ông Khoa, hay chuyện gì khác?",
+            "Tôi chỉ trả lời những gì liên quan tới ba tôi và đêm nay. Anh thử hỏi về lá thư, chén trà hoặc mã cửa xem."
+        ]
     },
     van: {
         id: 'van', name: "Triệu Thanh Vân", role: "Con dâu, 35 tuổi (Y tá)", avatar: "./van.png",
@@ -1283,27 +1519,32 @@ const characters = {
             drug: "Tôi là y tá, ở trạm xá thiếu gì thuốc. Nhưng cha chồng tôi ít khi dùng thuốc an thần. Hôm nay tôi không đưa thuốc nào cho ông.",
             leave: ["Lúc 23h10 tôi ra xe ngoài cổng lấy cái túi y tế cá nhân, 15 phút sau tôi quay lại sân. Chỉ vậy, không có gì khác.", "Vân rời sân lúc 23h10 và quay lại lúc 23h25."],
             body: ["Tôi kiểm tra sơ bộ: ông mất khoảng 23h30 đến nửa đêm. Môi tím, đồng tử giãn. Giống quá liều thuốc an thần hơn là bệnh tim. Loại này ngấm chậm, ông phải uống từ khoảng một đến hai tiếng trước đó.", "Pháp y sơ bộ (Vân): ông Thạc mất khoảng 23h30–00h, nghi quá liều thuốc an thần ngấm chậm, uống trước đó 1–2 giờ (khoảng 21h30–22h30)."],
-            money: "Tôi có xin ba ít tiền chữa bệnh cho mình, nhưng ông không đồng ý. Việc đó thuộc về riêng tôi, tôi không muốn chồng biết, mong anh giữ kín.",
+            money: ["Tôi có xin ba ít tiền chữa bệnh cho mình lúc 22h50, trước đó có ghé bếp lấy cốc nước ấm, nhưng ông không đồng ý. Việc đó thuộc về riêng tôi, tôi không muốn chồng biết, mong anh giữ kín.", "Vân từng ghé bếp lúc 22h50 rồi lên xin tiền ông Thạc nhưng bị từ chối."],
             power: "Lúc mất điện tôi đã quay lại sân rồi, đứng cạnh mấy bà hàng xóm. Họ có thể xác nhận.",
-            tonight: "Tôi cúng ngoài sân với mọi người, chỉ ra xe một lát lúc 23h10. Thời gian cụ thể tôi đã nói.",
-            tea: ["Trà ba tối nào cũng do chị Tư pha, rót xong để ở bàn sảnh cho nguội. 21h20 tôi có vào sảnh lấy khăn lau tay, đi ngang qua khay trà, nhưng tôi không đụng vào. Đó là sự thật, tôi chỉ nói một lần cho rõ.", "Vân thừa nhận có đi ngang khay trà ở sảnh lúc 21h20."],
+            tonight: "Sau khi phụ dọn mâm xong tôi ra sân cúng cùng mọi người từ trước 23 giờ, chỉ ra xe một lát lúc 23h10 rồi 23h25 quay lại ngay.",
+            tea: ["Trà ba tối nào cũng do chị Tư pha, rót xong để ở bàn phòng khách cho nguội. 21h20 tôi có vào phòng khách lấy khăn lau tay, đi ngang qua khay trà, nhưng tôi không đụng vào. Đó là sự thật, tôi chỉ nói một lần cho rõ.", "Vân thừa nhận có đi ngang khay trà ở phòng khách lúc 21h20."],
             cass: "Tiếng ru đó tôi nghe thấy từ phía giếng. Lạnh sống lưng, dù tôi biết mình nên bình tĩnh.",
-            box: "Hộp gỗ cạnh bia à? Tôi không để ý.",
-            lan: () => F.photo() ? "Tôi về làm dâu mới tám năm, không biết Lan. Nhưng cô bé đứng cạnh trong ảnh có nét giống chị Tư lắm." : "Không biết ai tên Lan. Tôi về làm dâu tám năm, chuyện cũ của nhà này tôi không nắm.",
+            box: "Hộp đồng cạnh bia à? Tôi không để ý.",
+            lan: () => F.photo() ? "Tôi về làm dâu mới tám năm, không biết Lan. Trong ảnh góc mặt cô em gái đã ố mờ, không nhận ra được ai — chỉ thấy trên tay cô bé nắm một chiếc khăn thêu nhành hoa dại rất cũ." : "Không biết ai tên Lan. Tôi về làm dâu tám năm, chuyện cũ của nhà này tôi không nắm.",
             suspect: "Tôi chỉ tin dấu vết. Chén trà là chỗ đầu tiên tôi sẽ xem, rồi mới đến người."
         },
         ev: {
             tea: "Cặn bột trắng trong chén... đúng đặc điểm thuốc an thần tan trong nước. Về mặt logic, ai tiếp cận được chén trà trước khi rót thì người đó làm được.",
             diary: "Trà đắng, uống cạn rồi người nặng trĩu... đúng triệu chứng thuốc an thần ngấm chậm. Còn chuyện cô hầu gái thì tôi không có ý kiến, tôi mới về làm dâu tám năm.",
-            photo: "Cô bé đứng cạnh Lan... có nét giống chị Tư hồi trẻ. Tôi nói là có nét giống, chưa phải kết luận, anh đừng ghi thành lời khai.",
-            pills: "Lọ an thần của ba, nhãn còn ghi tên ông. Tuần trước tôi còn thấy nó gần đầy. Rỗng thế này thì có nghĩa là đã có người lấy dần, hoặc lấy hết một lần.",
+            photo: "Góc mặt cô bé đứng cạnh Lan đã ố nhòe, không thể nhận diện mặt được. Chỉ thấy trên tay cô bé cầm một chiếc khăn thêu hoa dại rất cũ — dữ kiện chỉ có vậy.",
+            pills: "Lọ an thần dự phòng của ba, nhãn còn ghi tên ông — thường để ngay tủ thuốc nhỏ dưới bếp cho tiện pha với trà ấm. Tuần trước tôi đã thấy nó vơi đi bất thường... Tôi giấu kín vì sợ Quân đang túng quẫn rồi làm liều. Không ngờ lại thành ra thế này.",
             breaker: "Cầu dao tổng ở bếp. Muốn hạ nó thì phải đứng trong bếp lúc đó, đó là điều kiện cần.",
             cassette: "Máy có hẹn giờ... thì người đặt nó đâu cần có mặt lúc 23h30. Chuẩn bị từ trước là đủ.",
-            costume: "Áo dài trắng, tóc giả... lại nằm trong tủ có khóa số của chị Tư. Tôi không dám nói thêm, chứng cứ thì anh tự đánh giá.",
+            costume: "Áo dài trắng, tóc giả... lại nằm trong tủ có khóa số ở bếp. Nhưng tôi chỉ nói dữ kiện: muốn mặc bộ này lúc cần dọa người thì người đó phải rời vị trí từ trước đó.",
             stele: "Bia đá khắc Rằm tháng Bảy, năm Bính Tý... Tôi về làm dâu muộn, chuyện thời đó tôi không có thông tin.",
-            hanky: "Khăn thêu chữ H. Trong nhà này người có chữ H thì... tôi không muốn suy diễn khi chưa đủ dữ kiện."
+            hanky: "Khăn cũ thêu chữ L và nhành hoa dại. Chữ L có thể là tên Lan, cũng có thể là họ Lương — tôi không kết luận khi chưa đủ dữ kiện."
         },
-        fb: ["Anh hỏi cụ thể hơn đi. Về thuốc, về giờ giấc hay về mọi người trong nhà thì tôi trả lời được.", "Tôi sẽ nói những gì tôi chắc chắn. Anh muốn hỏi chuyện gì?", "Tôi chỉ là y tá, anh hỏi đúng việc đi."]
+        fb: [
+            "Anh hỏi cụ thể hơn đi. Về thuốc an thần, giờ giấc đêm nay hay chén trà thì tôi trả lời chính xác được.",
+            "Chuyện ngoài phạm vi chuyên môn tôi xin phép không suy đoán. Anh muốn hỏi về ba chồng tôi, chồng tôi hay các mốc giờ thì cứ nêu rõ.",
+            "Tôi chỉ nói những dữ kiện mình chắc chắn. Anh thử hỏi về lọ thuốc, chuyện tôi rời sân, hoặc từng người trong nhà xem.",
+            "Câu hỏi hơi chung quá. Anh cần đối chiếu lời khai lúc 21h20 hay khung 23h10–23h30 thì nói rõ giúp tôi."
+        ]
     },
     khoa: {
         id: 'khoa', name: "Phạm Đức Khoa", role: "Khách buôn đồ cổ, 45 tuổi", avatar: "./khoa.png",
@@ -1316,16 +1557,16 @@ const characters = {
             family: "Có vợ rồi, tối nay gọi video cho cô ấy lúc cúp điện, nhật ký cuộc gọi còn đây. Anh cần xác minh gì thì cứ gọi.",
             bye: "Xong rồi hả? Vậy tôi xin phép, mong chuyện này sớm xong để tôi còn về.",
             fake: "Đồ cổ thì nhìn nhầm là chuyện thường! Tôi và lão Thạc cãi nhau xong là thôi, tôi đã hoàn tiền lại cho lão rồi, hai bên hết nợ. Chuyện làm ăn mà anh, có cãi thì cũng như cơm bữa.",
-            phone: ["Tôi ra cổng hút thuốc từ 23h10, rồi gọi video cho vợ. Nhật ký cuộc gọi: 23:28 đến 23:41 đây, anh xem đi, rõ như ban ngày!", "Khoa có alibi lúc cầu dao sập: gọi video với vợ từ 23:28 đến 23:41 ngoài cổng."],
-            leave: ["Tôi ra cổng hút thuốc từ 23h10, thấy cô Vân ở chỗ xe, khoảng 23h25 thì cô ấy đi vào sân. Rồi tôi gọi video cho vợ. Anh hỏi người trong nhà thì hơn, họ ra vào lúc nào họ tự biết.", "Khoa thấy Vân ở chỗ xe từ 23h10 đến khoảng 23h25 rồi vào sân lại."],
+            phone: ["Tôi ra cổng hút thuốc từ 23h10, rồi gọi video cho vợ. Nhật ký cuộc gọi: 23:28 đến 23:41 đây, anh xem đi, rõ như ban ngày!", "Khoa có alibi lúc cầu dao sập: gọi video với vợ từ 23:28 đến 23:41 ngoài cổng.", "khoa_alibi"],
+            leave: ["Tôi ra cổng hút thuốc từ 23h10, thấy cô Vân ở chỗ xe, khoảng 23h25 thì cô ấy đi vào sân. À, trước đó khoảng 22h50 tôi cũng thấy cô ấy lúi húi gần tủ thuốc dưới bếp rồi đi về phía thư phòng, chắc xin ông Thạc chuyện gì đó.", "Khoa thấy Vân ghé gần tủ thuốc bếp lúc 22h50 và ở chỗ xe từ 23h10 đến khoảng 23h25."],
             tonight: "Tôi ngồi sảnh uống trà tới hơn 23 giờ, rồi ra cổng hút thuốc, gọi cho vợ lúc 23h28. Anh thấy đấy, khách thì chỉ có thế, đâu như người trong nhà.",
-            power: ["Lúc mất điện tôi đang ngoài cổng gọi video cho vợ. Người trong nhà mới biết cầu dao ở đâu, khách như tôi thì biết gì.", "Khoa có alibi lúc cầu dao sập: gọi video với vợ từ 23:28 đến 23:41 ngoài cổng."],
+            power: ["Lúc mất điện tôi đang ngoài cổng gọi video cho vợ — nhìn vào sân vẫn thấy thầy Cửu đứng đọc kinh bên bàn cúng. Người trong nhà mới biết cầu dao ở đâu, khách như tôi thì biết gì.", "Khoa có alibi lúc cầu dao sập: gọi video với vợ từ 23:28 đến 23:41 ngoài cổng (và thấy thầy Cửu ở sân).", "khoa_alibi"],
             victim: "Đối tác lâu năm. Lão hay khoe cái nhà đời Bảo Đại này. Lão sành sỏi nhưng không sạch sẽ... Nghe đồn lão có nguồn hàng không rõ xuất xứ từ mấy chục năm trước, nghe đồn thôi nhé.",
             lan: "Lan? Tôi chỉ quen lão Thạc hơn mười năm. Chuyện nhà này trước đó tôi không biết, anh hỏi người ở lâu thì rõ hơn.",
-            tea: ["Tôi ngồi uống trà ngay sảnh, khay trà của lão Thạc để ở bàn bên cạnh mười mấy phút, ai ngồi đó cũng với tay tới được. Nhưng tôi thề là tôi không đụng vào, mà ngồi gần nhất thì đâu phải chỉ mình tôi.", "Khoa ngồi sát khay trà ở sảnh lúc trà để nguội (khoảng 21h10–21h30), nói không đụng vào."],
+            tea: ["Tôi ngồi uống trà ngay phòng khách, khay trà của lão Thạc để ở bàn bên cạnh mười mấy phút, ai ngồi đó cũng với tay tới được. Nhưng tôi thề là tôi không đụng vào, mà ngồi gần nhất thì đâu phải chỉ mình tôi.", "Khoa ngồi sát khay trà ở phòng khách lúc trà để nguội (khoảng 21h10–21h30), nói không đụng vào."],
             cass: "Cát xét? Thời này còn ai dùng. Tiếng đó nghe từ phía giếng ngoài sân, rè rè như băng cũ.",
-            box: "Hộp gỗ? Không biết. Tôi chỉ ngồi sảnh rồi ra cổng, đồ ngoài sân đâu phải việc của khách.",
-            money: "Tôi không thiếu tiền. Giết lão thì tôi được gì? Anh nên tính xem ai là người được lợi.",
+            box: "Hộp đồng? Không biết. Tôi chỉ ngồi sảnh rồi ra cổng, đồ ngoài sân đâu phải việc của khách.",
+            money: "Tôi không thiếu tiền. Thậm chí thỉnh thoảng cậu Quân túng quá còn mang vài món đồ nhỏ trong nhà ra bán lại cho tôi, tôi giữ giùm chứ đâu ép ai. Giết lão Thạc thì tôi được gì? Hỏi người thừa kế ấy.",
             letter: "Thư dọa? Lão có kẻ thù khắp nơi, đâu riêng tôi. Anh tính từ người thừa kế mà tính trở đi.",
             suspect: "Tôi chỉ là khách. Nhưng người ở nhà này lâu nhất thì biết nhiều nhất, anh nghĩ xem."
         },
@@ -1335,12 +1576,17 @@ const characters = {
             tea: "Trà có thuốc? Tôi chưa chạm vào chén trà đó. Người rót trà, người mang trà, anh tính cho đủ chứ.",
             breaker: "Cầu dao à? Lúc đó tôi đang gọi video, nhật ký cuộc gọi có hết, anh cứ kiểm tra. Còn ai ở gần bếp thì anh nghĩ thử xem.",
             cassette: "Máy cát xét có hẹn giờ? Hay đấy, người làm ra cái này kỹ tính lắm. Kỹ tính như vậy chắc là người trong nhà, khách như tôi làm sao biết cái hộp để chỗ nào.",
-            hanky: "Khăn thêu chữ H? Thêu tay đấy, đồ có công. Mà đồ đàn bà, tôi thì dùng làm gì.",
+            hanky: "Khăn thêu chữ L với cành hoa dại? Thêu tay kiểu cũ lắm, phải hơn hai ba chục năm rồi. Đồ của nhà họ Lương hay của cô hầu gái năm xưa chứ tôi thì dùng làm gì.",
             costume: "Áo dài với tóc giả? Giả ma à... cái tủ đó của ai thì anh biết rồi đấy, tôi không nói.",
             pills: "Lọ thuốc rỗng à? Tôi chỉ là khách, thuốc men trong nhà này tôi đâu quản.",
             stele: "Cái bia đó tôi thấy đứng ngoài sân từ lâu rồi, tưởng đồ trang trí của lão. Đồ cổ thì tôi rành, nhưng cái này thì không phải đồ cổ."
         },
-        fb: ["Anh cứ hỏi thẳng. Về lão Thạc, về đêm nay, hay về những người ở đây, tôi nói được.", "Tôi là khách nên biết có hạn, nhưng cái gì thấy tôi sẽ nói.", "Việc đó không liên quan đến tôi, anh hỏi người trong nhà đi."]
+        fb: [
+            "Anh hỏi thẳng vào việc đi. Về lão Thạc, chuyện làm ăn đồ cổ, hay nhật ký cuộc gọi của tôi thì tôi nói được.",
+            "Tôi là khách, mấy chuyện vặt ngoài lề tôi không rành. Anh muốn hỏi về tối nay, khay trà ở phòng khách hay lúc tôi ra cổng thì cứ hỏi.",
+            "Nói rõ chút đi anh thám tử — anh đang muốn hỏi về cậu Quân, cô Vân, hay lá thư đe dọa?",
+            "Chuyện đó tôi không quản. Anh thử hỏi về khoảng thời gian 21h10–21h30 hoặc 23h28 trở đi xem."
+        ]
     },
     cuu: {
         id: 'cuu', name: "Thầy Cửu", role: "Thầy cúng, 62 tuổi", avatar: "./cuu.png",
@@ -1355,27 +1601,32 @@ const characters = {
             ghost: "Oan hồn không tan! Đêm Rằm tháng Bảy cửa ngục mở, kẻ ác ác báo! Khặc khặc... nhưng cái gì đã vọng ra từ giếng thì cậu nên nghe cho kỹ.",
             cass: ["Lúc cúp điện... ta nghe rõ lắm. Tiếng hát ru từ phía cái giếng vọng lên, rè rè như tiếng cát xét cũ. Mà ma nào lại dùng cát xét?", "Thầy Cửu nghe tiếng ru từ phía giếng, rè rè như cát xét cũ."],
             well: ["Giếng đó từng có người chết, một cô hầu gái, đêm Rằm, gần nửa đêm, khoảng 11 giờ 15. Dân làng không ai dám lại gần vào ban đêm... nước giếng ấy, uống vào là nghe tiếng khóc.", "Thầy Cửu khai: cô hầu gái chết dưới giếng đêm Rằm, gần nửa đêm, khoảng 11 giờ 15."],
-            box: "Cái hộp gỗ cạnh bia có từ chiều nay, trước giờ cúng. Ta tưởng nhà chủ đặt làm hộp lễ, khóa số nên không ai mở. Ai đặt thì ta không thấy, mắt ta chỉ nhìn về phía bàn thờ.",
+            box: "Cái hộp đồng cạnh bia có từ chiều nay, trước giờ cúng. Ta tưởng nhà chủ đặt làm hộp lễ, khóa số nên không ai mở. Ai đặt thì ta không thấy, mắt ta chỉ nhìn về phía bàn thờ.",
             ritual: "Ta cúng cô hồn từ 19 giờ, không rời sân nửa bước. Cả xóm chứng kiến, cậu cứ hỏi.",
             leave: ["Cô Vân có ra cổng lấy gì đó khoảng 23h10, mười lăm phút sau thì về. Còn cậu Quân... lúc đó ta mải đọc kinh, trời lại mưa, không để ý cậu ấy có đứng đó không. Kinh đọc thì phải một lòng, cậu hiểu chứ.", "Thầy Cửu không chắc Quân có ở sân lúc 23h10–23h25 (mải đọc kinh, trời mưa)."],
             lan: () => F.photo() ? "Hai chị em... đứa em nhỏ khóc ở đầu giếng. Nó đi đâu rồi, ta cũng không rõ. Chỉ biết tiếng khóc ấy ta nghe mãi không quên." : "Lan... tên đó lâu lắm không ai nhắc. Cô hầu gái chết dưới giếng, người ta bảo “tự tử”. Chuyện xảy ra đêm Rằm, gần nửa đêm, khoảng 11 giờ 15. Người ta bảo thế, còn ta bảo... oan.",
             letter: "Ta không viết thư. Ta chỉ cảnh báo họ: nợ âm thì phải trả.",
             tonight: "Lúc cúp điện, ta đang đọc kinh, quay lưng vào nhà. Thứ ta không thấy bằng mắt thì ta nghe bằng tai.",
-            power: ["Lúc cúp điện ta đang đọc kinh ngoài sân. Cả cậu Quân lẫn cô Vân đều đứng ngay sau lưng ta, ta nghe rõ giọng khấn của họ. Giọng khấn thì không dối được.", "Thầy Cửu nghe rõ giọng khấn của Quân và Vân ngay sau lưng lúc 23h30, nên cả hai đang ở sân."],
+            power: ["Lúc cúp điện ta đang đọc kinh ngoài sân. Cả cậu Quân lẫn cô Vân đều đứng ngay sau lưng ta, ta nghe rõ giọng khấn của họ. Giọng khấn thì không dối được.", "Thầy Cửu nghe rõ giọng khấn của Quân và Vân ngay sau lưng lúc 23h30, nên cả hai đang ở sân.", "cuu_alibi"],
             suspect: "Người sống mới đáng sợ hơn ma. Cậu muốn tìm kẻ ác thì đừng tìm ở cõi âm."
         },
         ev: {
             stele: "Bia đó đặt cho người chết dưới giếng. Rằm tháng Bảy... chính là hôm nay. Hồn chưa yên thì còn về.",
-            photo: "Hai cô gái này... ta nhớ rồi. Cô chị chết, cô em thì khóc suốt, khóc ở đầu giếng.",
+            photo: "Hai cô gái này... ta nhớ rồi. Cô chị chết, cô em thì khóc suốt, khóc ở đầu giếng. Đứa em lớn lên ra sao ta không biết; ngay cả người giúp việc trong nhà suốt mười hai năm nay lúc nào cũng cúi mặt dưới bếp, ta chưa từng nhìn kỹ.",
             diary: "Hóa ra lão Thạc đã làm chuyện đó... Nợ âm thì phải trả, ta đã bảo rồi mà không ai nghe.",
             cassette: "Đúng cái tiếng ta nghe! Vậy ra không phải ma... mà người còn đáng sợ hơn ma.",
             costume: "Áo trắng tóc dài... thì ra là người giả ma. Ma giả đóng ma thật, trò này ta thấy nhiều rồi.",
             breaker: "Cầu dao ở bếp? Vậy kẻ hạ nó lúc đó phải đang đứng trong bếp.",
             tea: "Chén trà có cặn... Thuốc bỏ vào trà là việc của người sống, âm hồn không đụng được vào chén.",
-            hanky: "Khăn thêu chữ H... nhìn là biết bàn tay đàn bà thêu, thêu từ lâu rồi. Ai cất giữ lâu như thế, hỏi lòng người ấy.",
+            hanky: "Khăn cũ thêu chữ L và hoa dại... Ta nhận ra nét chỉ này. Đêm năm chín sáu, đứa em nhỏ ngồi khóc bên miệng giếng cứ nắm chặt một chiếc khăn y hệt. Ai đem đặt nó ở đây là để cúng cho người dưới giếng, chứ không phải đánh rơi.",
             pills: "Lọ thuốc rỗng... ma quỷ nào cần thuốc ngủ. Người sống mới dùng đến."
         },
-        fb: ["Cậu hỏi cho rõ. Về tiếng hát, về cái giếng, về những người quanh đây thì ta nói được.", "Chuyện âm dương ta rành, chuyện trần gian ta chỉ biết những gì mắt thấy tai nghe.", "Đừng động vào đồ cúng của ta!"]
+        fb: [
+            "Cậu hỏi cho rành mạch. Về cái giếng, bia đá, tiếng hát ru hay lễ cúng đêm Rằm thì ta nói được.",
+            "Chuyện trần thế vụn vặt ta không màng. Cậu muốn hỏi về lão Thạc, chuyện năm Bính Tý hay những người đứng ngoài sân thì cứ nêu tên.",
+            "Lời hỏi mập mờ khó đáp lắm. Cậu thử hỏi về hộp đồng dưới bia, tiếng hát hay lúc cúp điện xem.",
+            "Âm dương có đường của nó — cậu cứ hỏi thẳng chuyện đêm nay hoặc chuyện của cô Lan năm xưa."
+        ]
     },
     hanh: {
         id: 'hanh', name: "Chị Tư Hạnh", role: "Giúp việc, 46 tuổi", avatar: "./hanh.png",
@@ -1387,48 +1638,91 @@ const characters = {
             home: "Dạ, tôi ở quê lên, nhà nghèo. Giờ ở luôn trong nhà ông chủ, mười hai năm nay coi như nhà rồi.",
             family: "Dạ, tôi không có gia đình riêng, ở nhà ông chủ mười hai năm nay coi như nhà. Anh hỏi chuyện đó làm chi, chuyện cũ có gì đáng nói đâu.",
             bye: "Dạ, anh cần gì cứ gọi tôi. Tôi xuống bếp đây.",
-            tea: ["Dạ, tôi pha trà như mọi tối. 21h10 tôi rót ra chén, để khay ở bàn sảnh cho nguội bớt vì ông chủ chỉ uống trà ấm, đến 21h30 mới bưng lên thư phòng. Tối nào cũng thế, thưa anh, trà phải pha đúng nước, rót đúng chén, chuyện nhỏ vậy mà tôi nhớ rõ lắm.", "Chị Tư khai: để khay trà ở bàn sảnh từ 21h10 đến 21h30 rồi mới mang lên thư phòng."],
-            power: ["Dạ, lúc 23h30 cúp điện, tôi đang ở trong bếp. Sợ quá nên không dám ra ngoài... mâm cúng còn dọn dở, tôi đứng đó, tới khi bớt sợ thì tự mò bật cầu dao lên cho đèn sáng lại.", "Chị Tư khai ở một mình trong bếp lúc mất điện, tự bật cầu dao lại lúc đèn sáng, không ai xác nhận."],
+            leave: "Tối nay tôi chỉ rời bếp để mang trà ra phòng khách rồi mang vào thư phòng lúc 21h30, còn lại ở dưới bếp suốt.",
+            tea: ["Dạ, tôi pha trà như mọi tối. 21h10 tôi rót ra chén, để khay ở bàn phòng khách cho nguội bớt vì ông chủ chỉ uống trà ấm, đến 21h30 mới mang vào thư phòng. Tối nào cũng thế, thưa anh, trà phải pha đúng nước, rót đúng chén, chuyện nhỏ vậy mà tôi nhớ rõ lắm.", "Chị Tư khai: để khay trà ở bàn phòng khách từ 21h10 đến 21h30 rồi mới mang vào thư phòng.", "hanh_tea"],
+            power: ["Dạ, lúc 23h30 cúp điện, tôi đang ở trong bếp. Sợ quá nên không dám ra ngoài... mâm cúng còn dọn dở, tôi đứng đó, tới khi bớt sợ thì tự mò bật cầu dao lên cho đèn sáng lại.", "Chị Tư khai ở một mình trong bếp lúc mất điện, tự bật cầu dao lại lúc đèn sáng, không ai xác nhận.", "hanh_alone"],
             tonight: "Dạ, tôi ở dưới bếp dọn mâm cúng gần như cả tối, chỉ lên sảnh bưng trà thôi, từ chiều đến khuya, chén bát cả đống, rửa mãi không xong.",
-            lan: () => F.photo() ? "Tôi... tôi không nhớ có ai tên Lan... Mà thời đó người tên Lan nhiều lắm, anh biết đấy, nhiều lắm..." : "...Anh hỏi gì lạ vậy? Ở cái làng này, làm gì có ai tên Lan. Tôi không quen ai tên Lan cả.",
+            lan: () => F.photo() ? "Cô gái lớn tên Lan... tên này hồi xưa nhiều người đặt lắm, nhưng tôi mới vào làm mười hai năm nên chuyện năm chín sáu tôi không rành." : "Dạ tôi ở quê lên mới mười hai năm nay, chuyện người cũ trước đó trong nhà tôi không rõ lắm, thưa anh.",
             victim: "Ông chủ khó tính, nhưng tôi ở đây mười hai năm rồi, quen việc, quen cả tính ông. Phận làm thuê, ông mắng thì mình nghe thôi.",
             drug: "Dạ, thuốc men là việc của cô Vân, tôi không biết. Tôi chỉ pha trà thôi, thưa anh.",
             door: "Cửa thư phòng tự khóa mỗi khi đóng, mã thì tôi không biết. Mỗi lần mang trà tôi chỉ gõ cửa, ông chủ tự ra mở.",
             cass: () => F.cass() ? "Cái máy đó... ai bỏ ở đó vậy? Mà nó... nó còn chạy được không anh?" : "Tôi không biết gì về tiếng hát. Tôi sợ lắm.",
-            well: "Cái giếng đó chẳng ai dám lại gần, tôi cũng không... nhìn thôi đã thấy lạnh người.",
-            box: "Hộp gỗ ngoài sân à? Tôi ít khi ra sân, thưa anh, tôi không biết.",
+            well: "Cái giếng đó chẳng ai dám lại gần, tôi cũng không... Nghe nói tháng sau ông chủ định cho thợ lấp cái giếng đó đi trước khi bán nhà. Nhìn thôi đã thấy lạnh người rồi.",
+            box: "Hộp đồng ngoài sân à? Tôi ít khi ra sân, thưa anh, tôi không biết.",
             ghost: "Mấy chuyện ma quỷ tôi không dám nói. Sợ lắm, nhà này đêm Rằm nào cũng vậy.",
             bg: "Tôi ở quê lên, nhà nghèo. Xin vào làm theo lời người quen giới thiệu. Chuyện cũ có gì đáng nói đâu, thưa anh.",
             letter: "Thư dọa à? Tôi không rõ. Chỉ thấy ông chủ tái mặt chiều nay, tôi mang nước lên mà ông cũng chẳng uống.",
             suspect: "Dạ, tôi phận làm thuê, mong thám tử sớm tìm ra thủ phạm, để nhà này yên ổn."
         },
         ev: {
-            tea: "Trà tôi pha đúng giờ như mọi tối. Khay để ở sảnh cho nguội, ai đi ngang cũng đụng được, tôi không rõ.",
+            tea: "Trà tôi pha đúng giờ như mọi tối. Khay để ở phòng khách cho nguội, ai đi ngang cũng đụng được, tôi không rõ.",
             breaker: "Cầu dao ở bếp... nghe cạch một cái là tối om. Tôi sợ lắm, đứng im không dám nhúc nhích.",
-            diary: ["...Ông chủ viết gì, tôi đâu có biết. Tôi chỉ biết pha trà, mang trà... ông chủ có nói chuyện gì với tôi đâu.", "Chị Tư im lặng rất lâu khi nghe về cuốn nhật ký của ông Thạc."],
-            photo: ["...Tấm ảnh này anh lấy ở đâu? Hồi đó chụp ở sân đình, có hai người thôi mà... Thôi, tôi không có gì để nói.", "Chị Tư phản ứng rất lạ khi thấy tấm ảnh Lan và em gái năm 1996."],
+            diary: "Ông chủ có chuyện gì giấu kín trong nhật ký thì phận giúp việc như tôi đâu dám tò mò... Tôi chỉ biết tối nào ông cũng uống hết chén trà tôi pha thôi.",
+            photo: "Tấm ảnh cũ quá rồi, mặt mũi lại ố mờ hết, nhìn không rõ ai với ai cả, thưa anh.",
             cassette: "Cái máy đó... không phải của tôi. Tôi có đụng vào đâu. Của ai thì... tôi không biết.",
-            hanky: "Chữ H... nhiều người tên bắt đầu bằng H mà. Hoa, Hà, Hương... đâu phải mỗi mình tôi.",
-            costume: ["...Anh đã tìm ra rồi sao? Cái áo ấy tôi cất kỹ lắm mà... Vậy là... tôi cũng chẳng giấu được nữa.", "Chị Tư gần như thừa nhận khi thấy áo dài trắng và tóc giả."],
+            hanky: "...Chiếc khăn cũ này... người quê hồi xưa hay thêu hoa dại như vậy thôi, thưa anh. Tôi... tôi không nhớ rõ nữa.",
+            costume: "Cái tủ ở bếp để đồ cũ của nhà chủ từ nhiều năm nay, ai tiện tay cất gì vào đó tôi cũng không kiểm hết được... Mà sao anh lại hỏi tôi về mấy thứ đồ diễn đó ạ?",
             pills: "...Lọ đó... tôi không biết nữa. Thuốc men là việc của người có học, tôi nào dám đụng.",
             stele: "Chỗ đó người ta kiêng, tôi không ra... Tôi có bao giờ ra đó đâu."
         },
-        fb: ["Dạ, thám tử hỏi rõ hơn giúp tôi. Việc bếp núc, trà nước hay giờ giấc thì tôi nhớ.", "Tôi phận làm thuê, chuyện gì thấy tận mắt tôi xin thưa.", "Dạ... tôi không rõ, thưa anh."]
+        fb: [
+            "Dạ, thám tử hỏi rõ hơn giúp tôi. Việc bếp núc, pha trà lúc 21h10 hay lúc tôi dọn mâm dưới bếp thì tôi nhớ.",
+            "Tôi phận làm thuê, chỉ biết chuyện trà nước với giờ giấc trong nhà. Anh muốn hỏi về ông chủ, cô Vân hay cậu Quân thì cứ hỏi thẳng.",
+            "Dạ tôi nghe chưa rõ ý anh lắm. Anh định hỏi về chén trà, cầu dao điện hay lá thư chiều nay ạ?",
+            "Chuyện ngoài bếp tôi ít để ý. Thám tử cứ hỏi về tối nay, cái giếng hay việc nhà để tôi thưa cho đúng."
+        ]
     }
 };
 characters.quan.a.fight = characters.quan.a.money;
+Object.assign(characters.quan, { a1: {
+    tonight: "Lúc 22h30 tôi có lên gõ cửa xin ba ít tiền nhưng ông ấy khóa cửa mắng vọng ra. Giờ tôi ngồi tạm ngoài phòng khách cho nguôi giận, lát nữa ra sân khấn.",
+    victim: "Ba tôi đang tự nhốt mình trong thư phòng cuối hành lang. Nhận được lá thư dọa rồi đâm ra đa nghi, ngay cả tôi ông ấy cũng không cho vào.",
+    who: "Ngoài sân có thầy Cửu đang cúng. Tôi với ông Khoa đang ở phòng khách, còn vợ tôi xuống bếp phụ chị Tư dọn mâm.",
+    see: "Ngoài sân cạnh bia đá tự nhiên có một chiếc hộp đồng khóa số từ chiều, thầy Cửu bảo không biết ai đặt.",
+    tea: "Trà tối của ba thì chị Tư pha lúc 21h10, để ở phòng khách một lúc rồi mới mang vào thư phòng lúc 21h30. Lúc đó tôi còn chưa ra sân."
+}});
+Object.assign(characters.van, { a1: {
+    tonight: "Tôi đang phụ chị Tư dọn mâm dưới bếp cho xong, lát nữa mới ra sân đứng khấn cùng thầy Cửu.",
+    victim: "Ba chồng tôi vẫn ở trong thư phòng khóa kín từ lúc anh chưa tới. Ông ấy sợ lá thư máu chiều nay nên không tiếp ai.",
+    who: "Thầy Cửu đang cúng ngoài sân. Chồng tôi với ông Khoa ở phòng khách, còn tôi đang ở bếp với chị Tư.",
+    see: "Lúc 21h20 tôi đi ngang sảnh lấy khăn lau tay, thấy ông Khoa ngồi sát khay trà của ba. Còn lại không thấy gì lạ.",
+    tea: "Trà ba tối nào cũng do chị Tư pha rồi để nguội ở bàn phòng khách. Tôi chỉ đi ngang qua lúc 21h20, không đụng vào."
+}});
+Object.assign(characters.khoa, { a1: {
+    tonight: "Tôi đang ngồi uống trà ngay phòng khách chờ hết mưa rồi về. Đêm Rằm mà nhà này căng thẳng quá.",
+    victim: "Lão Thạc đang trốn trong thư phòng cuối hành lang. Lúc chiều lão cho xem lá thư dọa rồi đóng cửa im ỉm, đúng là có tật giật mình.",
+    who: "Ngoài sân chỉ có thầy Cửu đang cúng. Trong phòng khách có tôi với cậu Quân vừa từ hành lang đi ra; còn cô Vân đang phụ chị giúp việc dưới bếp.",
+    see: "Tôi ngồi sảnh thấy cô Vân đi ngang bàn trà lúc 21h20. Thỉnh thoảng còn nghe tiếng bước chân ngoài hành lang.",
+    tea: "Khay trà của lão Thạc để ở bàn phòng khách từ 21h10 tới 21h30 rồi chị Tư mang vào thư phòng. Tôi ngồi bên cạnh nhưng không đụng vào."
+}});
+Object.assign(characters.cuu, { a1: {
+    tonight: "Ta đang làm lễ cúng cô hồn ngoài sân từ 19 giờ, không rời nửa bước.",
+    ritual: "Ta đang cúng cô hồn ngoài sân từ 19 giờ, gần 23 giờ cả nhà mới ra khấn cùng.",
+    victim: "Lão Thạc đang tự nhốt mình trong thư phòng vì sợ. Kẻ sống gây nghiệp thì nghe tiếng gió cũng giật mình.",
+    who: "Ngoài sân hiện chỉ có mình ta đứng cúng. Cậu Quân và ông Khoa ở phòng khách, cô Vân đang phụ bà Tư dưới bếp.",
+    see: "Từ chiều ta thấy cạnh bia đá có thêm chiếc hộp đồng khóa số. Ai đặt thì ta không rõ, mắt ta chỉ nhìn bàn thờ.",
+    well: "Giếng đó từng có một cô hầu gái chết oan đêm Rằm năm Bính Tý. Chính ta hồi đó làm lễ dựng tấm bia nhỏ cạnh giếng để trấn."
+}});
+Object.assign(characters.hanh, { a1: {
+    tonight: "Dạ, từ chiều tới giờ tôi vẫn dọn mâm cúng và rửa bát dưới bếp cùng cô Vân thôi, thưa anh.",
+    ritual: "Dạ mâm cúng tôi đang dọn dở dưới bếp cùng cô Vân, lát nữa mới xong hết.",
+    victim: "Ông chủ đang ở trong thư phòng cuối hành lang, dặn không ai được gõ cửa. 21h30 tôi mang trà vào gõ cửa, ông chỉ hé lấy khay rồi đóng sập lại.",
+    who: "Dạ ngoài sân có thầy Cửu đang cúng. Cậu Quân với ông Khoa ngồi phòng khách, còn cô Vân đang phụ tôi dưới bếp.",
+    see: "Dạ trời mưa to quá, tôi chỉ ở dưới bếp nên không để ý ngoài sân có gì lạ.",
+    tea: "Dạ tối nay 21h10 tôi pha trà để ở phòng khách cho nguội bớt, tới 21h30 thì mang vào cho ông chủ uống như mọi bữa."
+}});
 Object.assign(characters.quan.ev, {
     cuu_lan: "Lão thầy cúng đó chuyên bịa chuyện dọa ma để vòi thêm tiền lễ! Hồi 1996 tôi mới tám tuổi, người lớn bảo cô hầu gái đó tự nhảy xuống giếng, giờ lão lại lôi ra hù dọa nhà tôi à?",
-    hanh_tea: "Thì tối nào trà của ba tôi chẳng để ở sảnh cho nguội! Lúc đó tôi đang khấn ngoài sân, ai đi ngang sảnh làm gì sao tôi biết. Anh hỏi lão Khoa ấy, lão ngồi ngay cạnh bàn trà!",
+    hanh_tea: "Thì tối nào trà của ba tôi chẳng để ở phòng khách cho nguội! Lúc 21h10–21h30 tôi chưa xuống phòng khách, ai đi ngang sảnh làm gì sao tôi biết. Anh hỏi lão Khoa ấy, lão ngồi ngay cạnh bàn trà!",
     cuu_alibi: "Đấy, thầy Cửu cũng làm chứng cho tôi rồi nhé! Cả xóm đứng ngay sau lưng thầy, tôi mà bỏ đi đâu được thì ai khấn thay tôi?",
     costume: ["Áo dài trắng! Đúng cái bóng tôi thấy ở hành lang... Thôi được, tôi khai thật: 23h15 tôi có lẻn vào nhà định xin tiền ba thêm lần nữa, thấy bóng trắng đứng im cuối hành lang nên hoảng quá chạy biến ra sân, 23h25 đã đứng lại chỗ khấn rồi!", "Quân thú nhận đã lẻn vào nhà lúc 23h15 và thấy bóng áo trắng ở hành lang (là người mặc đồ giả ma). Lúc 23h30 ông đã quay lại sân."]
 });
 
 Object.assign(characters.van.ev, {
     cuu_lan: ["Thầy Cửu nói cô ấy mất lúc 23h15... Khoan đã, chiếc đồng hồ treo tường trong thư phòng ba chồng tôi cũng dừng đúng 11 giờ 15, và ông cấm tuyệt đối không ai được chỉnh lại.", "Vân nhận ra giờ chết của Lan (23h15) trùng khớp với chiếc đồng hồ dừng trong thư phòng ông Thạc."],
-    hanh_tea: "21h20 tôi có đi ngang bàn sảnh thật, nhưng chỉ lấy cái khăn rồi đi ngay. Trong khoảng hai mươi phút đó, ông Khoa ngồi uống trà ngay sát bên, còn chị Tư thì ra vào bếp liên tục.",
+    hanh_tea: "21h20 tôi có đi ngang bàn phòng khách thật, nhưng chỉ lấy cái khăn rồi đi ngay. Trong khoảng hai mươi phút đó, ông Khoa ngồi uống trà ngay sát bên, còn chị Tư thì ra vào bếp liên tục.",
     cuu_alibi: "Tôi đã khai rõ từ đầu: 23h10 tôi ra xe lấy túi y tế, 23h25 quay lại đứng cạnh hàng xóm và thầy Cửu. Lời thầy ấy hoàn toàn khớp với tôi.",
-    costume: "Áo dài trắng, tóc giả... lại cất trong tủ bếp của chị Tư. Nhưng tôi chỉ nói dữ kiện: muốn mặc bộ này dọa người lúc 23h15 thì người đó phải rời vị trí từ trước đó."
+    costume: "Áo dài trắng, tóc giả... lại nằm trong tủ bếp. Nhưng tôi chỉ nói dữ kiện: muốn mặc bộ này lúc cần dọa người thì người đó phải rời vị trí từ trước đó."
 });
 
 Object.assign(characters.khoa.ev, {
@@ -1439,7 +1733,7 @@ Object.assign(characters.khoa.ev, {
 });
 
 Object.assign(characters.cuu.ev, {
-    cuu_lan: "Chính miệng ta vừa nói với cậu điều đó. Đêm Rằm năm Bính Tý, tiếng khóc đầu giếng vang cả xóm, giờ khắc ấy người trong làng còn nhớ, hà cớ gì cậu lại đem hỏi ngược lại ta?",
+    cuu_lan: ["Cậu hỏi cho tới cùng thì ta cũng chẳng giấu nữa... Năm chín sáu, chính lão Thạc đã bỏ một khoản tiền lớn thuê ta làm lễ trấn yểm và phao tin khắp làng rằng con bé Lan tự tử vì oan nghiệp, để bịt miệng thiên hạ. Ba mươi năm rồi, ta chưa một đêm ngủ yên...", "Thầy Cửu thú nhận năm 1996 đã nhận tiền của ông Thạc để làm lễ trấn yểm và phao tin Lan tự tử nhằm bịt miệng dân làng."],
     hanh_tea: "Chuyện trà nước trong nhà ta không bước chân vào nên không thấy. Nhưng thuốc độc không tự rơi vào chén, người pha và người đi ngang đều có phần.",
     cuu_alibi: "Tai ta nghe rõ giọng cậu Quân và cô Vân khấn ngay sau lưng lúc đèn tắt. Âm dương chứng giám, ta không nói sai nửa lời.",
     photo: "Hai chị em... cô chị nằm dưới đáy giếng, còn đứa em năm ấy khóc đến khàn giọng rồi bị đuổi đi ngay trong đêm. Liệu nó có thật sự bỏ xứ mà đi không..."
@@ -1447,7 +1741,7 @@ Object.assign(characters.cuu.ev, {
 
 Object.assign(characters.hanh.ev, {
     cuu_lan: "Dạ... chuyện ma quỷ thầy Cửu nói nghe rợn người lắm, nhưng tôi phận làm thuê mới vào nhà này mười hai năm, chuyện năm chín sáu tôi không được biết, thưa anh.",
-    hanh_tea: "Dạ đúng lời tôi thưa lúc nãy. Tối nào tôi cũng pha trà đúng 21h10, để sảnh cho nguội rồi 21h30 bưng lên. Lúc đó ở sảnh còn có ông Khoa ngồi uống nước, cô Vân cũng đi ngang qua đó một lượt.",
+    hanh_tea: "Dạ đúng lời tôi thưa lúc nãy. Tối nào tôi cũng pha trà đúng 21h10, để ở phòng khách cho nguội rồi 21h30 mang vào thư phòng. Lúc đó ở phòng khách còn có ông Khoa ngồi uống nước, cô Vân cũng đi ngang qua đó một lượt.",
     cuu_alibi: "Dạ, ngoài sân có thầy Cửu với bà con đứng cùng nhau thì ai cũng yên tâm, chỉ có dưới bếp một mình tôi lúc tối om là sợ đến cứng người...",
     diary: "Ông chủ có chuyện gì giấu kín trong thư phòng thì phận giúp việc như tôi đâu dám tò mò... Tôi chỉ biết tối nào ông cũng uống hết chén trà tôi pha thôi.",
     photo: "Tấm ảnh cũ quá rồi, thưa anh... Thời đó con gái quê ai cũng để tóc dài mặc áo bà ba giống nhau, tôi nhìn không ra ai với ai cả.",
@@ -1455,7 +1749,7 @@ Object.assign(characters.hanh.ev, {
 });
 Object.assign(characters.quan.a, {
     who: "Ngoài sân có thầy Cửu, hàng xóm, và Vân lúc đầu. Khoa ngồi sảnh rồi ra cổng. Chị Tư thì ở dưới bếp. Sao, anh định kiểm tra xem tôi nhớ có đúng không à?",
-    see: "Tôi thấy cái bóng áo trắng và nghe tiếng hát từ phía giếng. Mà thôi... tôi không dám nghĩ thêm.",
+    see: "Tôi chỉ nghe tiếng hát rè rè từ phía giếng. Mà thôi... tôi không dám nghĩ thêm.",
     witness: "Thầy Cửu và cả xóm thấy tôi ở sân. Lúc cúp điện Vân đứng ngay cạnh tôi, không tin thì anh hỏi cô ấy.",
     fear: "Sợ chứ... mà anh đừng nói là tôi nhát. Nhà này đêm nay có ma hay có người, tôi chưa phân biệt nổi.",
     hello: "Anh thám tử đây à. Cha tôi nhờ anh, vậy mà... thôi, vào việc đi.",
@@ -1471,12 +1765,12 @@ Object.assign(characters.van.a, {
     fear: "Tôi là y tá nên ít tin ma, nhưng đêm nay thật sự lạnh sống lưng. Điều đó không có nghĩa là tôi mất bình tĩnh.",
     hello: "Chào anh. Có gì anh cứ hỏi, tôi hợp tác.",
     p_quan: "Chồng tôi nóng tính và nợ nần, nhưng anh ấy sợ ba. Tôi không tin anh ấy giết ai, anh đừng ghi suy diễn.",
-    p_khoa: "Ông Khoa lanh lợi, ăn nói khéo. Ông ngồi sát khay trà ở sảnh một lúc, đó là dữ kiện, còn kết luận thì anh tự rút.",
+    p_khoa: "Ông Khoa lanh lợi, ăn nói khéo. Ông ngồi sát khay trà ở phòng khách một lúc, đó là dữ kiện, còn kết luận thì anh tự rút.",
     p_cuu: "Thầy Cửu tin chuyện âm dương lắm, nói gì cũng dọa. Nhưng tôi thấy thầy ở sân suốt.",
     p_hanh: "Chị Tư pha trà và mang lên cho ba mỗi tối, việc nhà nào chị cũng nhận."
 });
 Object.assign(characters.khoa.a, {
-    who: "Tôi ngồi sảnh với lão Thạc một lúc, thấy Quân, Vân, thầy Cửu ngoài sân. Chị giúp việc thì lui cui dưới bếp.",
+    who: "Tôi ngồi phòng khách một mình một lúc, thấy cậu Quân ở đó rồi ra sân, thầy Cửu ngoài sân, còn chị giúp việc và cô Vân dưới bếp.",
     see: "Tôi thấy cô Vân ra chỗ xe lúc 23h10. Tiếng hát ru thì ai cũng nghe, rè rè như băng cũ.",
     witness: "Nhật ký cuộc gọi video của tôi đây, 23:28 đến 23:41. Vợ tôi làm chứng, anh gọi hỏi cũng được.",
     fear: "Tôi làm nghề đồ cổ, thấy nhiều thứ lạ rồi. Nhưng đêm nay tôi cũng thấy rờn rợn... mà thôi, nói chuyện khác đi.",
@@ -1498,21 +1792,21 @@ Object.assign(characters.cuu.a, {
     p_hanh: "Bà Tư ta ít để ý, chỉ biết bà hay ở bếp và rất sợ cái giếng."
 });
 Object.assign(characters.hanh.a, {
-    who: "Dạ, ngoài sân có thầy Cửu, cậu Quân, cô Vân và bà con. Ông Khoa ngồi sảnh rồi ra cổng. Tôi thì ở dưới bếp.",
+    who: "Tôi ở dưới bếp dọn mâm nên không nhìn thấy ngoài sân có ai. Chỉ thấy cậu Quân với ông Khoa ở phòng khách lúc tôi đi ngang bưng trà, còn cô Vân phụ bếp xong rồi cũng ra ngoài.",
     see: "Tôi ở bếp, chỉ nghe tiếng mưa với tiếng hát từ phía sân. Sợ lắm.",
     witness: "Ở bếp chỉ có một mình tôi, chắc chẳng ai làm chứng được... mà tôi có làm gì đâu thưa anh.",
     fear: "Dạ sợ. Nhà này đêm Rằm nào cũng nặng nề.",
     hello: "Dạ chào thám tử. Cần gì cứ gọi tôi.",
     p_quan: "Cậu Quân từ nhỏ nóng tính, bị ông chủ mắng hoài.",
     p_van: "Cô Vân hiền, tốt bụng, hay giúp tôi dọn mâm.",
-    p_khoa: "Ông Khoa là khách của ông chủ, uống trà ngoài sảnh.",
+    p_khoa: "Ông Khoa là khách của ông chủ, uống trà ngoài phòng khách.",
     p_cuu: "Thầy Cửu cúng từ chiều. Thầy nói nhiều chuyện ma lắm."
 });
 Object.assign(characters.quan.a, {
     body: "Ba tôi nằm đó... tôi không dám nhìn lâu. Chuyện thân thể thì hỏi Vân, cô ấy là y tá, hiểu hơn tôi.",
-    ritual: "Cúng từ 19 giờ, tôi khấn cùng cả xóm. Anh hỏi ai cũng thấy tôi ở đó.",
+    ritual: "Đêm Rằm thầy Cửu cúng từ 19 giờ, còn tôi tới hơn 23 giờ mới ra sân khấn cùng mọi người. Anh hỏi ai cũng thấy tôi ở đó lúc cúp điện.",
     bg: "Chuyện cũ của nhà này... tôi nhỏ, người lớn có kể gì đâu. Mà sao anh lại hỏi chuyện đó?",
-    fake: "Vụ đồ giả của ba với ông Khoa à? Tôi nghe loáng thoáng thôi, ba tôi không kể chuyện làm ăn cho tôi.",
+    fake: "Vụ đồ giả của ba với ông Khoa à? Hai người đó cãi nhau rồi thôi... Còn chuyện tôi kẹt tiền mang vài món đồ cũ ra bán lại cho ông Khoa thì có liên quan gì tới cái chết của ba tôi?",
     phone: "Điện thoại tôi tối nay không đụng tới. Anh muốn kiểm tra thì cứ kiểm tra, mà anh nghi gì tôi?"
 });
 Object.assign(characters.van.a, {
@@ -1522,7 +1816,7 @@ Object.assign(characters.van.a, {
     ghost: "Tôi là y tá, tôi tin vào triệu chứng và dấu vết, không tin ma. Tiếng hát có nguồn của nó, chỉ là chưa biết ở đâu.",
     fight: "Cha chồng với Quân hay to tiếng vì chuyện tiền. Tối nay thế nào thì anh hỏi anh ấy.",
     phone: "Điện thoại tôi tối nay không gọi cho ai. Anh cần kiểm tra thì cứ kiểm tra.",
-    ritual: "Tôi cúng cùng mọi người ngoài sân, chỉ ra xe một lúc lúc 23h10.",
+    ritual: "Sau khi phụ bếp xong tôi ra sân cúng cùng mọi người, chỉ ra xe một lúc lúc 23h10 rồi quay lại trước 23h30.",
     bg: "Chuyện cũ của nhà này tôi về làm dâu tám năm, không nắm được. Anh hỏi người ở lâu thì rõ hơn.",
     fake: "Chuyện đồ cổ là việc của ba chồng với ông Khoa, tôi không tham dự."
 });
@@ -1560,53 +1854,72 @@ Object.assign(characters.hanh.a, {
 
 const UNLOCK_VIEW = {
     desk:    { text: "Bạn tìm thấy một cuốn nhật ký và tấm ảnh cũ!", imgs: ["./clue_diary.jpg", "./clue_photo.jpg"] },
-    box:     { text: "Hộp gỗ mở ra: bên trong là một máy cassette gắn công tắc hẹn giờ, thành hộp có khe cho tiếng thoát ra. Bạn bấm thử, tiếng hát ru rè rè vang lên, đúng như lúc nửa đêm.", imgs: ["./clue_cassette.jpg"] },
+    box:     { text: "Hộp đồng mở ra: bên trong là một máy cassette gắn công tắc hẹn giờ, thành hộp có khe cho tiếng thoát ra. Bạn bấm thử, tiếng hát ru rè rè vang lên, đúng như lúc nửa đêm.", imgs: ["./clue_cassette.jpg"] },
     cabinet: { text: "Tìm thấy vật chứng: Dụng cụ giả ma và vỏ lọ thuốc rỗng!", imgs: ["./clue_costume.jpg"] }
 };
 
 const LOCK_CLUES = {
     desk: "Trong ngăn kéo: Nhật ký ông Thạc. Một trang cũ ghi: 'Rằm tháng Bảy năm Bính Tý, ta đẩy con bé Lan xuống giếng sau trận cãi vã, rồi bắt cả nhà nói nó tự tử. Đứa em nó ta đuổi về quê ngay trong đêm, chưa từng nhìn rõ mặt, tên gì cũng chẳng buồn hỏi.' Trang gần nhất ghi: '21h45: Trà tối nay đắng hơn mọi bữa, vậy mà ta vẫn uống cạn.' Cùng một tấm ảnh cũ, mặt sau ghi: 'Lan & em gái, 1996'.",
-    box: "Trong hộp gỗ cạnh giếng: một máy cassette đã chạy hết băng, gắn công tắc hẹn giờ lên dây cót, kim chỉ 23:30, thành hộp có khe cho tiếng thoát ra. Cùng chiếc khăn tay thêu chữ H. Người đặt máy không cần có mặt lúc 23:30.",
-    cabinet: "Trong chiếc tủ gỗ ở bếp, lẫn giữa mấy bộ đồ cũ của chị Tư: áo dài trắng, tóc giả, và lọ thuốc an thần rỗng có nhãn tên ông Lương Văn Thạc."
+    box: "Trong hộp đồng dưới chân bia đá: một máy cassette chạy pin đã chạy hết băng, gắn công tắc hẹn giờ lên dây cót, kim chỉ 23:30, thành hộp có khe cho tiếng thoát ra. Cùng chiếc khăn tay cũ thêu chữ L và nhành hoa dại đặt ngay ngắn bên cạnh như một món lễ vật. Người đặt máy không cần có mặt lúc 23:30.",
+    cabinet: "Trong chiếc tủ gỗ chứa đồ cũ dưới bếp — ổ khóa số mới do chính Hạnh lắp riêng với mã 1996: áo dài trắng, tóc giả, và lọ thuốc an thần dự phòng của ông Thạc vốn để trong tủ thuốc bếp (vỏ đã rỗng, đáy lọ còn dính ít bột trắng mịn giống hệt cặn dưới chén trà)."
 };
 
+function markSpot(id) {
+    if (state.phase < 2 && id && !state.p1Spots[id]) {
+        state.p1Spots[id] = true;
+        save();
+        updateObjective();
+    }
+}
 const rooms = {
     frontYard: {
         name: "Sân Trước", class: "bg-yard", rain: true,
         items: [
-            { id: 'bia', icon: '🪦', label: 'Bia Đá Cổ', x: 80, y: 70, action: () => addClue("Bia đá nhỏ cạnh giếng ghi: 'Người quá cố, Rằm tháng Bảy, năm Bính Tý'. Nắp chiếc hộp gỗ bên cạnh khắc nhỏ: '15 - 7'.", 'stele') },
-            { id: 'box', icon: '🔒', label: 'Hộp Gỗ Bằng Đồng', x: 90, y: 80, action: () => openLockModal('box', 'Hộp Gỗ Dưới Bia') },
-            { id: 'cung', icon: '🕯️', label: 'Bàn Cúng Cô Hồn', x: 25, y: 65, action: () => addClue("Bàn cúng cô hồn. Thầy Cửu đã đứng đây suốt đêm.") }
+            { id: 'bia', icon: '🪦', label: 'Bia Đá Cổ', x: 80, y: 70, action: () => { markSpot('bia'); addClue("Bia đá nhỏ cạnh giếng khắc dòng chữ mờ: 'Người quá cố, Rằm tháng Bảy, năm Bính Tý'.", 'stele'); } },
+            { id: 'box', phase: 2, icon: '🔒', label: 'Hộp Đồng Dưới Bia', x: 90, y: 80, action: () => openLockModal('box', 'Hộp Đồng Dưới Bia') },
+            { id: 'cung', icon: '🕯️', label: 'Bàn Cúng Cô Hồn', x: 25, y: 65, action: () => { markSpot('cung'); addClue(state.phase < 2 ? "Bàn cúng cô hồn ngoài sân. Thầy Cửu đang làm lễ từ 19 giờ." : "Bàn cúng cô hồn. Thầy Cửu đã đứng đây suốt đêm."); } }
         ]
     },
     livingRoom: {
         name: "Phòng Khách", class: "bg-living", rain: false,
         items: [
-            { id: 'xa_ngang', icon: '📜', label: 'Xà Ngang Khắc Chữ', x: 50, y: 10, action: () => addClue("Xà ngang nhà có khắc chữ: 'Bảo Đại thập tứ niên' (Năm Bảo Đại thứ 14). *Ghi chú: Vua Bảo Đại lên ngôi năm 1926.") },
-            { id: 'khay_tra', icon: '🍵', label: 'Bàn Sảnh Để Khay Trà', x: 22, y: 40, action: () => addClue("Bàn sảnh nơi chị Tư để khay trà cho nguội mỗi tối. Mặt bàn còn vòng nước của chiếc ấm. Ngồi ghế bên cạnh thì với tay là tới khay, nhưng chưa rõ thuốc đã nằm sẵn trong chén hay bị bỏ thêm khi khay để ở đây.") }
+            { id: 'xa_ngang', icon: '📜', label: 'Xà Ngang Khắc Chữ', x: 50, y: 10, action: () => { markSpot('xa_ngang'); addClue("Xà ngang nhà có khắc chữ: 'Bảo Đại thập tứ niên' (Năm Bảo Đại thứ 14)."); } },
+            { id: 'khay_tra', icon: '🍵', label: 'Bàn Phòng Khách Để Khay Trà', x: 22, y: 40, action: () => { markSpot('khay_tra'); addClue(state.phase < 2 ? "Bàn phòng khách nơi chị Tư đặt khay trà của ông Thạc cho nguội bớt trước khi mang vào thư phòng lúc 21h30. Mặt bàn còn vòng nước của chiếc ấm." : "Bàn phòng khách nơi chị Tư để khay trà cho nguội mỗi tối. Mặt bàn còn vòng nước của chiếc ấm. Ngồi ghế bên cạnh thì với tay là tới khay, nhưng chưa rõ thuốc đã nằm sẵn trong chén hay bị bỏ thêm khi khay để ở đây."); } }
         ],
         showSuspects: true
     },
     kitchen: {
         name: "Nhà Bếp", class: "bg-kitchen", rain: false,
         items: [
-            { id: 'cau_dao', icon: '⚡', label: 'Cầu Dao Điện', x: 75, y: 30, action: () => addClue("Cầu dao tổng ở bếp, phải đứng ngay đó mới hạ được. Đã bị sập xuống lúc 23:30 và được bật lại lúc 23:50.", 'breaker') },
-            { id: 'tu_quan_ao', icon: '🗄️', label: 'Tủ Gỗ Cũ', x: 90, y: 55, action: () => openLockModal('cabinet', 'Tủ Gỗ Ở Bếp') },
-            { id: 'mam_cung', icon: '🍽️', label: 'Mâm Cúng Dọn Dở', x: 30, y: 60, action: () => addClue("Mâm cúng dọn dở bên chậu rửa, chén bát mới rửa được một nửa. Nước trong chậu đã nguội lạnh, xà phòng tan hết, như thể người rửa đã bỏ đi giữa chừng từ khá lâu trước khi mất điện.") }
+            { id: 'cau_dao', phase: 2, icon: '⚡', label: 'Cầu Dao Điện', x: 75, y: 30, action: () => addClue("Cầu dao tổng kiểu gạt tay cũ kỹ đặt trong bếp, hoàn toàn không có bộ hẹn giờ hay điều khiển từ xa — muốn ngắt điện chỉ có cách đứng trực tiếp tại đây gạt xuống. Đã bị sập xuống lúc 23:30 và được bật lại lúc 23:50.", 'breaker') },
+            { id: 'tu_quan_ao', phase: 2, icon: '🗄️', label: 'Tủ Gỗ Cũ', x: 90, y: 55, action: () => openLockModal('cabinet', 'Tủ Gỗ Ở Bếp') },
+            { id: 'mam_cung', icon: '🍽️', label: 'Mâm Cúng Dọn Dở', x: 30, y: 60, action: () => { markSpot('mam_cung'); addClue(state.phase < 2 ? "Chậu rửa dưới bếp còn mâm bát chị Tư đang dọn rửa từ chiều." : "Mâm cúng dọn dở bên chậu rửa, chén bát mới rửa được một nửa. Nước trong chậu vẫn còn hơi ấm, bọt xà phòng chưa tan hết — người rửa chỉ mới bỏ đi giữa chừng chưa lâu."); } }
         ]
     },
     hallway: {
         name: "Hành Lang", class: "bg-hallway", rain: false,
         items: [
-            { id: 'door', icon: '🚪', label: 'Khóa Thư Phòng', x: 50, y: 50, action: () => openLockModal('door', 'Cửa Thư Phòng') },
-            { id: 'vet_nuoc', icon: '💧', label: 'Vết Nước Trên Sàn', x: 28, y: 78, action: () => addClue("Vệt nước mưa lấm tấm trên sàn gạch, kéo từ cửa hông vào tới giữa hành lang rồi quay ngược ra. Ai đó đã đi vào từ ngoài mưa, đứng lại một lúc rồi vội vã bỏ ra ngoài.") }
+            { id: 'door', icon: '🚪', label: 'Khóa Thư Phòng', x: 50, y: 50, action: () => {
+                if (state.phase < 2) {
+                    const cCount = Object.keys(state.chats).length;
+                    if (cCount >= 2) {
+                        $('report-suspect').value = '';
+                        $('report-error').innerText = '';
+                        openModal('modal-report');
+                    } else {
+                        sfx('locked');
+                        showMsg("🔒 Giọng ông Thạc gắt gỏng vọng ra: 'Anh chưa hỏi chuyện mọi người trong nhà mà đã lên gõ cửa à? Xuống tìm xem ai gửi lá thư kia đi!'");
+                    }
+                } else openLockModal('door', 'Cửa Thư Phòng');
+            } },
+            { id: 'vet_nuoc', phase: 2, icon: '💧', label: 'Vết Nước Trên Sàn', x: 28, y: 78, action: () => addClue("Vệt nước mưa lấm tấm trên sàn gạch, kéo từ cửa hông vào tới giữa hành lang rồi quay ngược ra. Ai đó đã đi vào từ ngoài mưa, đứng lại một lúc rồi vội vã bỏ ra ngoài.") }
         ]
     },
     study: {
         name: "Thư Phòng", class: "bg-study", rain: false,
         locked: true,
         items: [
-            { id: 'body', icon: '🩻', label: 'Thi Thể Nạn Nhân', x: 45, y: 60, action: () => addClue("Thi thể ông Thạc. Chén trà trên bàn có cặn bột trắng nghi là thuốc an thần. Cặn nằm thành lớp đều sát đáy chén, không có bột vương trên thành chén hay trên khay: thuốc có vẻ đã nằm sẵn dưới đáy trước khi trà được rót, chứ không phải rắc thêm vào sau. Cửa thư phòng tự khóa mỗi khi đóng: từ ngoài phải có mật mã mới vào được, từ trong thì mở bình thường.", 'tea') },
+            { id: 'body', icon: '🩻', label: 'Thi Thể Nạn Nhân', x: 45, y: 60, action: () => addClue("Thi thể ông Thạc. Trên bàn có chén trà đã uống cạn, dưới đáy đọng một lớp cặn bột trắng kết dính chặt vào men sứ. Cửa thư phòng tự khóa mỗi khi đóng: từ ngoài phải có mật mã mới vào được, từ trong thì mở bình thường.", 'tea') },
             { id: 'calendar', icon: '🗓️', label: 'Lịch Tết Cũ', x: 40, y: 25, action: () => addClue("Lịch Tết năm Bính Tý vẫn treo trên tường, trang tháng Bảy khoanh đỏ. Ông Thạc không chịu gỡ suốt ba mươi năm.") },
             { id: 'clock', icon: '🕰️', label: 'Đồng Hồ Treo Tường', x: 65, y: 30, action: () => addClue("Đồng hồ treo tường dừng lúc 11 giờ 15. Mẩu giấy dán bên dưới, nét chữ ông Thạc: 'Không ai được chỉnh.'", 'clock') },
             { id: 'desk', icon: '🗝️', label: 'Ngăn Kéo Khóa', x: 55, y: 70, action: () => openLockModal('desk', 'Ngăn Kéo Bàn') }
@@ -1618,17 +1931,18 @@ const $ = id => document.getElementById(id);
 let activeCharacterId = null;
 let replyTimers = [];
 
-const story = `Tháng Bảy, năm 2026. Làng cổ ven sông.\nMưa như trút nước. Tiếng sấm xé toạc màn đêm.\n\nBạn là thám tử Trần Bảo. Ông Lương Văn Thạc (72 tuổi) đã thuê bạn bảo vệ ông ta sau khi nhận được lá thư máu: "Đêm Rằm, tao về lấy mạng".\n\nBạn đến lúc 22h00. 23h30, đột nhiên mất điện. Tiếng hát ru ai oán, rè rè như băng cũ, vọng lên từ phía giếng ngoài sân. Khi có điện lại, ông Thạc đã tắt thở trong thư phòng khóa kín.\n\nNghi phạm là 5 người đang có mặt trong nhà.\nHãy tìm ra kẻ thủ ác trước khi trời sáng. Dòng mục tiêu phía trên màn hình sẽ cho bạn biết cần làm gì tiếp theo.`;
+const story = `Tháng Bảy âm lịch, năm 2026. Làng cổ ven sông.\nMưa như trút nước. Tiếng sấm xé toạc màn đêm.\n\nBạn là thám tử Trần Bảo. Chiều nay ông Lương Văn Thạc (72 tuổi) nhặt được một lá thư máu đặt ngay ngoài cửa thư phòng: "Đêm Rằm, tao về lấy mạng" — và thuê bạn tới tìm kẻ đứng sau trong số năm người đang có mặt trong nhà.\n\nBạn tới lúc 22h00. Vì quá đa nghi, ông Thạc tự khóa chặt mình trong thư phòng cuối hành lang, chỉ nói vọng qua khe cửa:\n"Đi hỏi chuyện những người trong nhà, rồi quay lại gõ cửa báo cho tôi biết ai đã gửi lá thư kia."`;
 
 let i = 0;
 let typeTimer;
+let prologueActive = false;
 function typeWriter() {
+    if (!prologueActive) return;
     if (i < story.length) {
         let char = story.charAt(i);
         if (char === '\n') char = '<br>';
         else if (i % 3 === 0 && char !== ' ') sfx('typeKey');
         if (i === story.indexOf('Tiếng sấm')) sfx('thunder', 0.1);
-        if (i === story.indexOf('Tiếng hát ru')) playCassetteSound({ far: true, vol: 0.55 });
         $('prologue-text').innerHTML += char;
         i++;
         typeTimer = setTimeout(typeWriter, 30);
@@ -1638,13 +1952,14 @@ function typeWriter() {
 }
 function finishPrologue() {
     clearTimeout(typeTimer);
+    prologueActive = false;
     i = story.length;
     $('prologue-text').innerHTML = story.replace(/\n/g, '<br>');
     $('btn-start-game').classList.remove('hidden-ui');
     $('btn-skip').classList.add('hidden-ui');
 }
 $('btn-skip').onclick = finishPrologue;
-$('prologue-text').onclick = () => { if (i < story.length) finishPrologue(); };
+$('prologue-text').onclick = () => { if (prologueActive && i < story.length) finishPrologue(); };
 
 $('btn-mute').textContent = muted ? '🔇' : '🔊';
 $('btn-mute').onclick = toggleMute;
@@ -1687,18 +2002,22 @@ $('btn-start-audio').onclick = () => {
     if (titleLeaving) return;
     if (hasProgress(savedGame) && !confirm('Chơi mới sẽ xóa vụ án đang điều tra. Tiếp tục?')) return;
     initAudio();
+    setMusicMode('prologue');
     clearSave();
     titleExit(() => {
         $('audio-overlay').classList.add('hidden-ui');
         $('prologue').classList.remove('hidden-ui');
+        prologueActive = true;
         typeWriter();
     });
 };
 
 $('btn-continue').onclick = () => {
     if (titleLeaving) return;
+    prologueActive = false;
     initAudio();
     applySave(savedGame);
+    setMusicMode(state.phase >= 2 ? 'act2' : 'act1');
     titleExit(() => {
         $('audio-overlay').classList.add('hidden-ui');
         $('game-ui').classList.remove('hidden-ui');
@@ -1709,10 +2028,14 @@ $('btn-continue').onclick = () => {
 };
 
 $('btn-start-game').onclick = () => {
+    prologueActive = false;
     $('prologue').classList.add('hidden-ui');
     $('game-ui').classList.remove('hidden-ui');
+    updatePhaseUI();
+    setMusicMode('act1');
     renderRoom('frontYard');
-    addClue("Ghi chép của Trần Bảo lúc đến (22h00): Thầy Cửu đang cúng ngoài sân, Quân và Vân khấn cùng hàng xóm. Ông Khoa ngồi uống trà ở sảnh, chị Tư lui cui dưới bếp. Ông Thạc ở trong thư phòng, nói vọng qua cửa rằng không tiếp ai. Khoảng 22h30, Quân từ trong nhà đi ra, mặt hằm hằm.", null, { inline: true });
+    addClue("22h00 (Ghi chép Trần Bảo): Thầy Cửu đang cúng một mình ngoài sân. Quân và ông Khoa ở phòng khách; Vân đang phụ chị Tư dọn mâm dưới bếp. Ông Thạc tự nhốt trong thư phòng cuối hành lang.", null, { inline: true });
+    addClue("22h30 (Ghi chép Trần Bảo): Quân lên gõ cửa thư phòng xin tiền, hai cha con to tiếng cãi nhau qua cánh cửa vẫn khóa kín; lát sau Quân bực bội quay xuống phòng khách.", null, { inline: true });
     document.querySelectorAll('.nav-btn')[1].classList.add('pulsate');
     setTimeout(() => document.querySelectorAll('.nav-btn')[1].classList.remove('pulsate'), 5000);
 };
@@ -1732,9 +2055,10 @@ function setAvatar(img, char) {
     img.src = char.avatar;
 }
 
-function buildSuspects(container) {
+function buildSuspects(container, ids) {
     container.innerHTML = '';
-    Object.values(characters).forEach(char => {
+    const list = Array.isArray(ids) ? ids.map(id => characters[id]).filter(Boolean) : Object.values(characters);
+    list.forEach(char => {
         const charBtn = document.createElement('div');
         charBtn.className = 'flex flex-col items-center cursor-pointer hover:-translate-y-2 transition-transform';
         charBtn.onclick = () => openInterrogation(char.id);
@@ -1774,7 +2098,7 @@ function renderRoom(roomId) {
 
     const itemsLayer = $('items-layer');
     itemsLayer.innerHTML = '';
-    room.items.forEach(item => {
+    room.items.filter(item => !item.phase || state.phase >= item.phase).forEach(item => {
         const el = document.createElement('div');
         el.className = 'interactive-item';
         el.innerText = (item.icon === '🔒' && state.locks.box.solved) ? '🔓' : item.icon;
@@ -1796,9 +2120,17 @@ function renderRoom(roomId) {
 
     const suspectsLayer = $('suspects-layer');
     const suspectsStrip = $('suspects-strip');
-    if (room.showSuspects) {
-        buildSuspects(suspectsLayer);
-        buildSuspects(suspectsStrip);
+    const P1_ROOM_SUSPECTS = {
+        frontYard: ['cuu'],
+        livingRoom: ['quan', 'khoa'],
+        kitchen: ['van', 'hanh']
+    };
+    const visibleSuspects = state.phase < 2
+        ? (P1_ROOM_SUSPECTS[roomId] || [])
+        : (room.showSuspects ? Object.keys(characters) : []);
+    if (visibleSuspects.length) {
+        buildSuspects(suspectsLayer, visibleSuspects);
+        buildSuspects(suspectsStrip, visibleSuspects);
         suspectsLayer.classList.remove('hidden-ui');
         suspectsStrip.classList.add('show');
     } else {
@@ -1807,10 +2139,11 @@ function renderRoom(roomId) {
     }
     updateObjective();
     save();
+    if (roomId === 'frontYard') showTip('yard', isTouch ? 'Chạm tay lên cảnh để rọi đèn tìm vật chứng phát sáng.' : 'Rê chuột để rọi đèn tìm vật chứng phát sáng.');
 }
 
 let msgTimer, msgTimer2;
-function showMsg(text) {
+function showMsg(text, dur = 4000) {
     const box = $('msg-box');
     box.innerText = text;
     box.classList.remove('hidden-ui');
@@ -1819,7 +2152,7 @@ function showMsg(text) {
     msgTimer = setTimeout(() => {
         box.style.opacity = 0;
         msgTimer2 = setTimeout(() => box.classList.add('hidden-ui'), 300);
-    }, 4000);
+    }, dur);
 }
 
 function showModalMsg(text, imgUrls = []) {
@@ -1863,7 +2196,7 @@ function showModalMsg(text, imgUrls = []) {
 let activeNbTab = 'physical';
 
 function inferClueType(text) {
-    return /^(Quân|Vân|Khoa|Thầy Cửu|Chị Tư|Pháp y sơ bộ|Lúc mất điện)(?=[\s:,(]|$)/.test(String(text).trim())
+    return /^(Quân|Vân|Khoa|Thầy Cửu|Chị Tư|Pháp y sơ bộ|Lúc mất điện|Ghi chép của Trần Bảo)(?=[\s:,(]|$)/.test(String(text).trim())
         ? 'statement'
         : 'physical';
 }
@@ -1881,20 +2214,21 @@ function extractTimelineEntries(clues) {
     clues.forEach(text => {
         const matches = [...text.matchAll(re)];
         if (!matches.length) return;
-        let minTime = Infinity, label = '';
+        const seen = new Set();
+        const isNightCtx = /đồng hồ|Lan chết|nửa đêm|đêm Rằm|cô hầu gái|đêm|khuya|tối/i.test(text);
         matches.forEach(m => {
             let hh = parseInt(m[1], 10);
             const mm = parseInt(m[2], 10);
             if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) {
-                if (hh <= 11 && /đêm|khuya|tối/i.test(text)) hh += 12;
-                const mins = hh * 60 + mm;
-                if (mins < minTime) {
-                    minTime = mins;
-                    label = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
-                }
+                if (hh === 11 && mm === 15 && isNightCtx) hh = 23;
+                else if (hh <= 11 && /đêm|khuya|tối/i.test(text) && hh >= 6) hh += 12;
+                const label = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+                if (seen.has(label)) return;
+                seen.add(label);
+                const mins = (hh < 6 ? hh + 24 : hh) * 60 + mm;
+                entries.push({ mins, label, text });
             }
         });
-        if (minTime < Infinity) entries.push({ mins: minTime, label, text });
     });
     return entries.sort((a, b) => a.mins - b.mins);
 }
@@ -1965,12 +2299,18 @@ function addClue(text, flag, opts) {
     opts = opts || {};
     normalizeClues();
     if (flag) state.ev[flag] = true;
+    if (opts.clueId) state.clueIds[opts.clueId] = true;
     const isNew = !state.clues.includes(text);
     if (isNew) {
         state.clues.push(text);
         renderClues();
     }
     save();
+    if (state.clueIds.cuu_alibi && state.clueIds.khoa_alibi && state.clueIds.hanh_alone && !state.ev.recon) {
+        showTip('readyRecon', 'Đã đủ lời khai lúc 23:30! Mở 📓 Sổ tay để dựng lại hiện trường.');
+    } else if (!opts.inline && isNew) {
+        showTip('firstClue', 'Đã có manh mối đầu tiên. Bấm 📓 Sổ tay để xem và đối chiếu.');
+    }
     if (opts.inline) return isNew;
     showClueModal(text, {
         isNew,
@@ -2022,25 +2362,102 @@ function showClueModal(text, o) {
     openModal('modal-clue');
 }
 
+const TIPS_KEY = 'drtb_tips_v1';
+const isTouch = matchMedia('(pointer: coarse)').matches;
+let tipTimer = null, lastModalOpener = null, howtoReturnChat = null;
+function loadTips() {
+    try {
+        const d = JSON.parse(localStorage.getItem(TIPS_KEY) || '{}');
+        return { off: !!d.off, seen: (d.seen && typeof d.seen === 'object') ? d.seen : {} };
+    } catch (e) { return { off: false, seen: {} }; }
+}
+function saveTips(t) { try { localStorage.setItem(TIPS_KEY, JSON.stringify(t)); } catch (e) {} }
+function hideTip() {
+    clearTimeout(tipTimer);
+    $('coach-tip').classList.add('hidden-ui');
+}
+function showTip(id, text) { return; }
+$('coach-tip').onclick = hideTip;
+function syncTipsBtn() {
+    const t = loadTips();
+    $('btn-tips-toggle').textContent = t.off ? 'Bật gợi ý' : 'Tắt gợi ý';
+}
+
+document.querySelectorAll('#modal-bg > div').forEach(el => {
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+});
 function openModal(id) {
+    if (!lastModalOpener && document.activeElement && document.activeElement !== document.body) lastModalOpener = document.activeElement;
     document.querySelectorAll('#modal-bg > div').forEach(el => el.classList.add('hidden-ui'));
     $('modal-bg').classList.remove('hidden-ui');
-    $(id).classList.remove('hidden-ui');
+    const m = $(id);
+    m.classList.remove('hidden-ui');
+    if (id === 'modal-interrogation' || id === 'modal-notebook') duckAmbience(true);
+    const first = m.querySelector('button,input,select,[tabindex]:not([tabindex="-1"])');
+    if (first) setTimeout(() => first.focus(), 0);
 }
 function closeModals() {
+    if (howtoReturnChat && !$('modal-howto').classList.contains('hidden-ui')) {
+        const charId = howtoReturnChat;
+        howtoReturnChat = null;
+        openModal('modal-interrogation');
+        activeCharacterId = charId;
+        if (lastModalOpener) { try { lastModalOpener.focus(); } catch (e) {} lastModalOpener = null; }
+        return;
+    }
+    howtoReturnChat = null;
     $('modal-bg').classList.add('hidden-ui');
+    duckAmbience(false);
     activeCharacterId = null;
-    replyTimers.forEach(clearTimeout);
-    replyTimers = [];
+    const opener = lastModalOpener;
+    lastModalOpener = null;
+    if (opener && opener.focus) try { opener.focus(); } catch (e) {}
     const cb = afterCloseCb;
     afterCloseCb = null;
     if (cb) cb();
 }
-document.querySelectorAll('.close-modal').forEach(btn => { btn.onclick = closeModals; });
+document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || $('modal-bg').classList.contains('hidden-ui')) return;
+    const m = [...document.querySelectorAll('#modal-bg > div')].find(el => !el.classList.contains('hidden-ui'));
+    if (!m) return;
+    const f = [...m.querySelectorAll('button,input,select,a[href],[tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+function openHowto(opener) {
+    sfx('paper');
+    lastModalOpener = opener || document.activeElement;
+    howtoReturnChat = (!$('modal-bg').classList.contains('hidden-ui') && !$('modal-interrogation').classList.contains('hidden-ui')) ? activeCharacterId : null;
+    syncTipsBtn();
+    openModal('modal-howto');
+}
+$('btn-howto-title').onclick = (e) => openHowto(e.currentTarget);
+$('btn-howto-pro').onclick = (e) => openHowto(e.currentTarget);
+$('btn-howto').onclick = (e) => openHowto(e.currentTarget);
+$('btn-howto-chat').onclick = (e) => openHowto(e.currentTarget);
+$('btn-tips-toggle').onclick = () => {
+    const t = loadTips();
+    t.off = !t.off;
+    saveTips(t);
+    if (t.off) hideTip();
+    syncTipsBtn();
+    sfx('click');
+};
+$('btn-tips-reset').onclick = () => {
+    saveTips({ off: false, seen: {} });
+    syncTipsBtn();
+    sfx('click');
+    showTip('reset', 'Đã bật lại toàn bộ gợi ý theo ngữ cảnh.');
+};
+document.querySelectorAll('.close-modal').forEach(btn => { btn.onclick = () => closeModals(); });
 $('modal-bg').addEventListener('click', (e) => { if (e.target === $('modal-bg')) closeModals(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });
 
 $('btn-notebook').onclick = () => { sfx('paper'); renderClues(); fillChain(); openModal('modal-notebook'); };
+if ($('btn-letter')) $('btn-letter').onclick = () => { sfx('paper'); openModal('modal-letter'); };
 function appendBubbleEl(hist, msg, char) {
     const el = document.createElement('div');
     if (msg.role === 'u') {
@@ -2081,7 +2498,7 @@ function bubbleU(t) {
     appendBubbleEl($('chat-history'), msg, null);
 }
 function bubbleC(char, t, newClue) {
-    sfx('msgIn');
+    sfx('voice', char.id);
     const msg = { role: 'c', text: t, newClue: !!newClue };
     if (!Array.isArray(state.chats[char.id])) state.chats[char.id] = [];
     state.chats[char.id].push(msg);
@@ -2089,18 +2506,23 @@ function bubbleC(char, t, newClue) {
     appendBubbleEl($('chat-history'), msg, char);
 }
 function pick(v) {
-    let [t, c] = Array.isArray(v) ? v : [v];
+    let [t, c, clueId] = Array.isArray(v) ? v : [v];
     if (typeof t === 'function') t = t();
-    return [t, c];
+    return [t, c, clueId];
 }
 function reply(char, v) {
     const id = setTimeout(() => {
-        if (activeCharacterId !== char.id) return;
-        const [t, c] = pick(v);
+        const [t, c, clueId] = pick(v);
         const isNew = !!c && !state.clues.includes(c);
-        if (isNew) addClue(c, null, { inline: true });
-        bubbleC(char, t, isNew);
-        renderChips();
+        if (c) addClue(c, null, { inline: true, clueId });
+        if (activeCharacterId === char.id) {
+            bubbleC(char, t, isNew);
+            renderChips();
+        } else {
+            if (!Array.isArray(state.chats[char.id])) state.chats[char.id] = [];
+            state.chats[char.id].push({ role: 'c', text: t, newClue: isNew });
+            save();
+        }
     }, 500);
     replyTimers.push(id);
 }
@@ -2132,6 +2554,7 @@ function openInterrogation(charId) {
     $('ev-panel').classList.add('hidden-ui');
     renderChips();
     openModal('modal-interrogation');
+    showTip('firstChat', 'Gõ câu hỏi tự do, bấm chip gợi ý, hoặc bấm 📎 để đưa chứng cứ.');
 }
 $('btn-clear-chat').onclick = () => {
     if (!activeCharacterId) return;
@@ -2154,12 +2577,20 @@ function processChat(text, forcedIntent) {
     inputEl.value = '';
     const char = characters[activeCharacterId];
     const intent = forcedIntent || detectIntent(q) || guessIntent(q);
-    let v = intent && char.a[intent];
+    const p1Allowed = ['self','job','age','home','family','bye','letter','well','see','victim','money','fight','fake','ritual','tea','hello','p_quan','p_van','p_khoa','p_cuu','p_hanh','bg'];
+    let v = null;
+    if (intent) {
+        if (state.phase < 2) {
+            v = (char.a1 && char.a1[intent]) || (p1Allowed.includes(intent) ? char.a[intent] : null);
+        } else {
+            v = char.a[intent];
+        }
+    }
     if (!v) {
         const n = state.fb[char.id] = (state.fb[char.id] || 0) + 1;
         v = char.fb[(n - 1) % char.fb.length];
     }
-    if (intent && char.a[intent]) {
+    if (intent && v && state.phase >= 2) {
         const k = char.id + '.' + intent;
         if (intent === 'cass') state.ev.heard = true;
         if (k === 'quan.door' || k === 'khoa.victim') state.ev.proud = true;
@@ -2167,6 +2598,7 @@ function processChat(text, forcedIntent) {
         save();
     }
     reply(char, v);
+    setTimeout(updateObjective, 50);
 }
 function showEvidence(k) {
     if (!activeCharacterId) return;
@@ -2260,7 +2692,7 @@ const HINTS = {
         "Năm Bính Tý gần nhất trước nay là 1996: 1996."
     ]
 };
-const LOCK_NAMES = { door: 'Cửa thư phòng', desk: 'Ngăn kéo bàn', box: 'Hộp gỗ dưới bia', cabinet: 'Tủ gỗ ở bếp' };
+const LOCK_NAMES = { door: 'Cửa thư phòng', desk: 'Ngăn kéo bàn', box: 'Hộp đồng dưới bia', cabinet: 'Tủ gỗ ở bếp' };
 const totalHints = () => Object.values(state.hints).reduce((a, b) => a + b, 0);
 function hintFor(lockId) {
     const n = Math.min((state.hints[lockId] || 0) + 1, 3);
@@ -2283,9 +2715,8 @@ $('btn-hint-global').onclick = () => {
 
 function openLockModal(lockId, title) {
     if (lockId === 'box' && !state.ev.heard) { showMsg("Thám tử: 'Một chiếc hộp khóa số. Chưa biết nó liên quan gì. Nên nghe lời khai của mọi người trước.'"); sfx('locked'); return; }
-    if (lockId === 'door' && state.locks.box.solved && !state.ev.proud) { showMsg("Thám tử: 'Mình chưa biết ông Thạc thường đặt mã theo điều gì.'"); sfx('locked'); return; }
+    if (lockId === 'door' && !state.ev.proud) { showMsg("Thám tử: 'Mình chưa biết ông Thạc thường đặt mã theo điều gì.'"); sfx('locked'); return; }
     if (lockId === 'desk' && !state.ev.lanTime) { showMsg("Thám tử: 'Ngăn kéo khóa bốn số. Mình chưa biết ông ấy canh giữ điều gì.'"); sfx('locked'); return; }
-    if (lockId === 'door' && !state.locks.box.solved) { showMsg("Thám tử: 'Trước hết phải làm rõ tiếng hát ru ngoài giếng. Ma hay người?'"); sfx('locked'); return; }
     if (lockId === 'cabinet' && !state.locks.desk.solved) { showMsg("Thám tử: 'Một chiếc tủ gỗ khóa số. Chưa có lý do gì để cạy nó ra.'"); sfx('locked'); return; }
     if (state.locks[lockId].solved) {
         if (lockId === 'door') { renderRoom('study'); return; }
@@ -2302,6 +2733,7 @@ function openLockModal(lockId, title) {
     $('lock-hint').innerText = used ? `Gợi ý ${used}/3: ${HINTS[lockId][used - 1]}` : '';
     $('btn-hint').innerText = `💡 GỢI Ý (${used}/3)`;
     openModal('modal-lock');
+    showTip('firstLock', isTouch ? 'Chạm ▲/▼ để xoay số và mở khóa.' : 'Gõ số trực tiếp trên bàn phím, nhấn Enter để mở khóa.');
 }
 
 let lockCursor = 0;
@@ -2395,20 +2827,30 @@ const THINK = {
     vet_nuoc: "Có người từ ngoài mưa vào hành lang rồi bỏ chạy. Người ấy là ai, và đã thấy gì?",
     mam_cung: "Người rửa bát bỏ đi giữa chừng. Họ đã đi đâu?"
 };
+function updatePhaseUI() {
+    const p2 = $('notebook-phase2');
+    if (p2) p2.classList.toggle('hidden-ui', state.phase < 2);
+    const bl = $('btn-letter');
+    if (bl) bl.classList.toggle('hidden-ui', state.phase >= 2);
+    if (typeof renderChips === 'function' && activeCharacterId) renderChips();
+}
 function updateObjective() {
-    const L = state.locks; let t;
-    if (!L.box.solved) t = "Hồi 1 – Tiếng ma: Tiếng hát ru vọng từ phía giếng. Ma hay người?";
-    else if (!L.door.solved) t = "Hồi 2 – Phòng kín: Ông Thạc chết trong căn phòng khóa kín. Điều gì đã xảy ra?";
-    else if (!L.desk.solved) t = "Hồi 3 – Người dưới giếng: Vì sao có người muốn ông chết?";
-    else if (!state.ev.recon) t = "Hồi 4 – Dựng lại hiện trường: Lúc 23:30, mỗi người ở đâu? Ghi vào Sổ tay.";
-    else if (!L.cabinet.solved) t = "Hồi 5 – Kết án: Chọn hung thủ cùng động cơ, phương tiện, cơ hội. Chiếc tủ gỗ ở bếp có thể còn giấu điều gì đó.";
-    else t = "Mọi mảnh ghép đã đủ. Mở Sổ tay, chọn hung thủ cùng động cơ, phương tiện và cơ hội.";
-    $('objective').innerText = "🎯 " + t;
+    $('objective').innerText = state.phase < 2 ? "HỒI I · LÁ THƯ MÁU" : "HỒI II · ÁN MẠNG ĐÊM RẰM";
+}
+if ($('btn-report-submit')) {
+    $('btn-report-submit').onclick = () => {
+        const picked = $('report-suspect').value;
+        if (!picked) { $('report-error').innerText = "Hãy chọn một người để báo cáo với ông Thạc."; return; }
+        state.reportSuspect = picked;
+        save();
+        closeModals();
+        if (typeof window._triggerAct2 === 'function') setTimeout(() => window._triggerAct2(picked), 250);
+    };
 }
 const RECON = [['quan','Quân','san'],['van','Vân','san'],['khoa','Khoa','cong'],['cuu','Thầy Cửu','san'],['hanh','Chị Tư','bep']];
 RECON.forEach(r => { const d = document.createElement('div'); d.className = 'flex justify-between items-center text-sm gap-2'; d.innerHTML = `<span>${r[1]}</span><select data-r="${r[0]}" class="bg-[#1a1712] border border-[#5c4a30] p-1 text-[#dcd0c0]"><option value="">-- ở đâu? --</option><option value="san">Ngoài sân</option><option value="cong">Ngoài cổng</option><option value="bep">Trong bếp</option></select>`; $('recon-rows').appendChild(d); });
 $('btn-recon').onclick = () => {
-    const lack = [['Thầy Cửu', EVID.cuu_alibi.ok()], ['Khoa', state.clues.includes(characters.khoa.a.power[1])], ['Chị Tư', state.clues.includes(characters.hanh.a.power[1])]].filter(x => !x[1]).map(x => x[0]);
+    const lack = [['Thầy Cửu', !!state.clueIds.cuu_alibi], ['Khoa', !!state.clueIds.khoa_alibi], ['Chị Tư', !!state.clueIds.hanh_alone]].filter(x => !x[1]).map(x => x[0]);
     if (lack.length) { sfx('unlockFail'); $('recon-msg').className = 'text-sm text-yellow-400 mb-4'; $('recon-msg').innerText = "Chưa đủ lời khai về lúc 23:30 của: " + lack.join(', ') + "."; return; }
     const ok = RECON.every(r => document.querySelector(`#recon-rows select[data-r="${r[0]}"]`).value === r[2]);
     if (ok) { state.ev.recon = true; save(); sfx('clue'); updateObjective(); $('recon-msg').className = 'text-sm text-green-400 mb-4'; $('recon-msg').innerText = "Khớp với lời khai và nhật ký cuộc gọi. Giờ hãy đối chiếu với cầu dao."; }
@@ -2416,7 +2858,7 @@ $('btn-recon').onclick = () => {
 };
 let accuseArmed = null;
 const MAX_WRONG = 2;
-const CHAIN = { motive: ['diary', 'photo'], means: ['tea', 'pills'], opp: ['breaker'] };
+const CHAIN = { motive: ['diary', 'photo'], means: ['tea', 'pills'], opp: ['breaker', 'tea'] };
 const CHAIN_NAMES = { motive: 'động cơ', means: 'phương tiện', opp: 'cơ hội' };
 function fillChain() {
     const owned = Object.entries(EVID).filter(([k, e]) => e.ok() && e.type !== 'statement');
@@ -2448,6 +2890,7 @@ $('btn-accuse').onclick = () => {
         return;
     }
     $('accuse-error').innerText = '';
+    prologueActive = false;
 
     closeModals();
     $('game-ui').classList.add('hidden-ui');
@@ -2460,9 +2903,9 @@ $('btn-accuse').onclick = () => {
     const proof = [
         ['Chén trà có thuốc (khám thi thể trong thư phòng)', !!state.ev.tea, true],
         ['Cầu dao ở nhà bếp', !!state.ev.breaker, true],
-        ['Chiếc hộp gỗ cạnh bia đá', state.locks.box.solved, true],
+        ['Chiếc hộp đồng cạnh bia đá', state.locks.box.solved, true],
         ['Nhật ký và tấm ảnh trong ngăn kéo', state.locks.desk.solved, true],
-        ['Vật chứng trong chiếc tủ gỗ ở bếp (không bắt buộc)', state.locks.cabinet.solved, false]
+        ['Vật chứng trong chiếc tủ gỗ ở bếp (lọ thuốc rỗng & đồ giả ma)', state.locks.cabinet.solved, true]
     ];
     const enough = proof.every(p => p[1] || !p[2]);
 
@@ -2474,7 +2917,7 @@ $('btn-accuse').onclick = () => {
     } else if (suspect === 'hanh') {
         pr.classList.add('win');
         sfx('win');
-        setTimeout(() => playCassetteSound({ far: true, vol: 0.6 }), 5200);
+        setMusicMode('ending');
         const picked = {};
         document.querySelectorAll('#chain select').forEach(s => picked[s.dataset.c] = s.value);
         const okC = Object.keys(CHAIN).filter(c => CHAIN[c].includes(picked[c]));
@@ -2485,14 +2928,14 @@ $('btn-accuse').onclick = () => {
             : `Đúng hung thủ, nhưng lập luận còn hổng ở phần ${miss.join(', ')}. Hạnh vẫn nhận tội, song hồ sơ của bạn chưa thật kín kẽ.`;
         gameEnded = true; clearSave();
         try { localStorage.setItem('drtb_solved_v1', '1'); } catch (e) {}
-        proText.innerHTML = `${head}<br><br>Chị Tư Hạnh là em gái của Lan, cô hầu gái bị ông Thạc đẩy xuống giếng năm 1996 rồi dàn dựng thành "tự tử". Năm ấy ông đuổi cô bé về quê trong đêm, chẳng buồn hỏi tên. Mười hai năm làm giúp việc trong nhà, chị chờ đúng đêm Rằm này.<br><br><div class="text-base text-left inline-block">Chiều: giấu chiếc cassette hẹn giờ vào hộp gỗ cạnh giếng.<br>21h10: bỏ thuốc an thần lấy từ chính lọ của ông Thạc vào chén, rồi mới rót trà.<br>23h15: bỏ dở mâm bát, mặc áo dài trắng hiện ra ở hành lang cho người khác nhìn thấy.<br>23h30: hạ cầu dao trong bếp, băng hát ru cất lên. Cả nhà tin là oan hồn về đòi mạng.</div><br><br>Lúc ấy Quân, Vân và Thầy Cửu đều ở ngoài sân, Khoa đang gọi video. Chỉ có một người ở một mình trong bếp.<br><br>Hạnh mỉm cười: "Tôi không hối hận."<br><br>Vụ án khép lại. Nhưng đêm đó, máy cassette trong kho vật chứng dù không có pin vẫn tự động hát ru...<br><br><span class="text-red-500 font-bold text-2xl">${full ? 'HOÀN THÀNH XUẤT SẮC!' : 'PHÁ ÁN THÀNH CÔNG'}</span><br><br>Lập luận: ${okC.length}/3<br>Gợi ý đã dùng: ${totalHints()}<br>Số lần buộc tội sai: ${state.wrong}<br><div class="flex flex-wrap justify-center gap-3 mt-4"><button onclick="restartGame()" class="btn">Chơi lại</button><a href="../index.html#kho-ho-so" class="btn btn-red">← Về Kho Hồ Sơ Dấu Đỏ</a></div>`;
+        proText.innerHTML = `${head}<br><br>Chị Tư Hạnh là em gái của Lan — cô hầu gái bị ông Thạc đẩy xuống giếng năm 1996 rồi dàn dựng thành "tự tử". Năm ấy ông đuổi cô bé về quê trong đêm, chẳng buồn hỏi tên. Mười hai năm xin vào làm giúp việc trong căn nhà này, đêm nào chị cũng cúi đầu pha trà cho kẻ giết chị mình, lặng lẽ nhìn chiếc đồng hồ trong thư phòng dừng ở 11 giờ 15.<br><br>Tháng trước, nghe tin ông Thạc sắp bán căn nhà cổ và cho thợ lấp kín cái giếng ngoài sân, chị hiểu nếu không ra tay đúng Đêm Rằm tròn ba mươi năm này, tên của Lan sẽ bị chôn vùi vĩnh viễn.<br><br><div class="text-base text-left inline-block">Chiều 15/7: đặt lá thư máu ngoài cửa thư phòng để ép ông Thạc tự nhốt mình trong căn phòng khóa mã (không ai vào cấp cứu kịp khi thuốc ngấm), rồi giấu chiếc cassette chạy pin hẹn giờ vào hộp đồng dưới chân bia đá.<br>21h10: bỏ thuốc an thần lấy từ tủ thuốc dưới bếp vào chén, rồi mới rót trà.<br>23h15: bỏ dở mâm bát, mặc áo dài trắng hiện ra ở hành lang để người khác trông thấy.<br>23h30: hạ cầu dao trong bếp, băng hát ru cất lên. Cả nhà tin là oan hồn về đòi mạng.</div><br><br>Lúc ấy Quân, Vân và Thầy Cửu đều ở ngoài sân, Khoa đang gọi video. Chỉ có một người ở một mình trong bếp.<br><br>Hạnh tháo chiếc tạp dề đặt lên bàn, giọng bình thản đến rợn người: "Mười hai năm qua, ông ta uống trà tôi pha mà chưa một lần nhìn thẳng vào mặt tôi. Chiếc khăn thêu chữ L dưới bia đá là tôi đặt lại cho chị Lan. Hôm nay ông ta cũng không còn cơ hội lấp cái giếng đó nữa."<br><br>Bạn lặng lẽ mở cuốn nhật ký, đọc to dòng cuối cùng viết lúc 21h45: <i>"Trà tối nay đắng hơn mọi bữa, vậy mà ta vẫn uống cạn."</i><br><br>Lần đầu tiên sau mười hai năm, đôi tay đang gấp tạp dề của chị Tư bỗng run lên. Đến tận lúc chết, ông Thạc vẫn chưa nhận ra chị — liều thuốc an thần quá liều lúc 21h45 làm ông suy hô hấp và kiệt sức dần, để rồi tiếng hát ru vang lên lúc mất điện trở thành cú chốt gây hoảng loạn khiến ông trụy tim gục xuống. Nhưng ba mươi năm giữ nguyên tờ lịch năm 1996 và chiếc đồng hồ dừng ở 11 giờ 15 cho thấy ông ta chưa từng sống thanh thản một ngày nào: ông ta tự giam mình trong nỗi ám ảnh tội lỗi suốt ba thập kỷ.<br><br>Sự trả thù đã hoàn thành — nhưng không còn chút hả hê nào, chỉ còn lại khoảng trống lạnh lẽo.<br><br>Ngoài sân, cơn mưa Rằm tháng Bảy vừa ngớt. Ánh bình minh xám nhạt hắt qua khe cửa thư phòng, rọi xuống chiếc đồng hồ đã đứng kim suốt ba mươi năm...<br><br><div class="text-sm text-left inline-block border-t border-[#5c4a30] pt-3 mt-1 text-[#d6c8b4]"><b>Sáng hôm sau — Hồ sơ khép lại:</b><br>• <b>Chị Tư Hạnh:</b> Không kháng cáo, chỉ xin thắp một nén nhang trước miệng giếng lần cuối trước khi lên xe công an.<br>• <b>Quân & Vân:</b> Căn nhà cổ bị niêm phong chờ giải quyết; lần đầu sau tám năm làm dâu, Vân đặt thẳng lọ thuốc an thần lên bàn và nói hết với Quân.<br>• <b>Khoa:</b> Vội vã rời làng ngay khi trời sáng, nhưng những trang nhật ký về nguồn đồ cổ của ông Thạc đã nằm lại trong hồ sơ.<br>• <b>Thầy Cửu:</b> Thu dọn bàn cúng trước bình minh, thừa nhận món nợ đồng lõa năm 1996 rồi lặng lẽ bước ra cổng: <i>"Nợ năm chín sáu trả xong rồi..."</i></div><br><br><span class="text-xs tracking-widest uppercase text-[#c59b48]">Trần Bảo đóng dấu đỏ lên bìa Hồ sơ #001. Một đêm mưa kết thúc — nhưng chiếc điện thoại trên bàn vừa rung lên cuộc gọi mới...</span><br><br><span class="text-red-500 font-bold text-2xl">${full ? 'HOÀN THÀNH XUẤT SẮC!' : 'PHÁ ÁN THÀNH CÔNG'}</span><br><br>Lập luận: ${okC.length}/3<br>Số lần buộc tội sai: ${state.wrong}<br><div class="flex flex-wrap justify-center gap-3 mt-4"><button onclick="restartGame()" class="btn">Chơi lại</button><a href="../index.html#kho-ho-so" class="btn btn-red">← Về Kho Hồ Sơ Dấu Đỏ</a></div>`;
     } else {
         state.wrong++;
         pr.classList.add('ending');
         sfx('lose');
         if (state.wrong >= MAX_WRONG) {
             gameEnded = true; clearSave();
-            proText.innerHTML = `Bạn đã chỉ điểm sai lần thứ hai.<br><br>Đèn tắt phụt. Tiếng hát ru rè rè lại vọng lên từ phía giếng, lần này không có máy nào bật cả. Cả nhà rời đi trong im lặng, và kẻ thủ ác vẫn thản nhiên dọn mâm dưới bếp.<br><br>Vụ án khép lại mà không ai bị trừng phạt.<br><br><span class="text-red-600 font-bold text-3xl">GAME OVER</span><br><div class="flex flex-wrap justify-center gap-3 mt-4"><button onclick="restartGame()" class="btn">Chơi lại từ đầu</button><a href="../index.html#kho-ho-so" class="btn btn-red">← Về Kho Hồ Sơ Dấu Đỏ</a></div>`;
+            proText.innerHTML = `Bạn đã chỉ điểm sai lần thứ hai.<br><br>Đèn tắt phụt rồi bật sáng lại trong im lặng. Khi những người còn lại lặng lẽ rời khỏi căn nhà trong cơn mưa tạnh dần, kẻ thủ ác vẫn bình thản thu dọn khay trà dưới bếp.<br><br>Vụ án khép lại với một bản án oan — và sự thật năm 1996 mãi mãi bị chôn vùi.<br><br><span class="text-red-600 font-bold text-3xl">GAME OVER</span><br><div class="flex flex-wrap justify-center gap-3 mt-4"><button onclick="restartGame()" class="btn">Chơi lại từ đầu</button><a href="../index.html#kho-ho-so" class="btn btn-red">← Về Kho Hồ Sơ Dấu Đỏ</a></div>`;
         } else {
             save();
             proText.innerHTML = `Bạn đã chỉ điểm sai người.<br><br>Đột nhiên đèn tắt... Tiếng cười lạnh lẽo vang lên. Cửa thư phòng khóa sập lại.<br><br>Bạn chỉ còn <b>${MAX_WRONG - state.wrong}</b> lần buộc tội nữa.<br><br><span class="text-red-600 font-bold text-3xl">SAI NGƯỜI</span><br><br><button onclick="backToGame()" class="btn mt-4 mr-2">Quay lại điều tra</button><button onclick="restartGame()" class="btn mt-4">Chơi lại từ đầu</button>`;
@@ -2754,12 +3197,12 @@ $('btn-accuse').onclick = () => {
             x.fillRect(0, 0, W, H);
         }
         x.globalCompositeOperation = 'source-over';
-        updateHotspots(cx, cy, r * 0.55);
+        updateHotspots(cx, cy, r * 0.22);
     }
     requestAnimationFrame(frame);
 
-    // 4. Hiệu ứng tâm lý & Sự kiện cúp điện bất ngờ khi mở ngăn kéo thư phòng
-    let glitchTimer = null, blackoutPending = false;
+    // 4. Hiệu ứng tâm lý & Biến cố 23:30 chuyển sang Hồi 2 khi báo cáo tại Cửa Thư Phòng
+    let glitchTimer = null, act2Running = false;
     function triggerDread(glitch, persistent) {
         if (persistent) document.body.classList.add('dread-state');
         if (glitch && !reduce) {
@@ -2769,34 +3212,43 @@ $('btn-accuse').onclick = () => {
             glitchTimer = setTimeout(() => document.body.classList.remove('dread-glitch'), 420);
         }
     }
-    function triggerBlackoutEvent() {
+    function triggerAct2Event() {
+        if (state.phase >= 2 || act2Running) return;
+        act2Running = true;
+        state.phase = 2;
+        state.ev.heard = true;
+        save();
+        updatePhaseUI();
+        updateObjective();
+        setMusicMode('act2');
         blackoutMode = true;
         document.body.classList.add('blackout-event', 'dread-state');
         sfx('locked'); triggerDread(true, true);
-        showMsg("⚡ Cạch! Cầu dao đột ngột sập xuống... Có tiếng hát ru vọng lại từ hành lang!");
-        setTimeout(() => playCassetteSound({ far: true, vol: 0.75 }), 1100);
+        showMsg("⚡ 23:30 — Sau khi cả nhà tản ra sân cúng và cổng nhà, bạn vừa gõ cửa báo cáo thì điện đột ngột tắt phụt... Tiếng hát ru từ phía giếng cất lên!", 5500);
+        setTimeout(() => playCassetteSound({ far: true, vol: 0.78 }), 900);
+        setTimeout(() => {
+            sfx('scream');
+            triggerDread(true, true);
+            showMsg("😱 Á! Một tiếng la thất thanh của ông Thạc dội ra từ Thư Phòng đang khóa kín!", 6000);
+        }, 5200);
         setTimeout(() => {
             blackoutMode = false;
+            act2Running = false;
             document.body.classList.remove('blackout-event');
             sfx('click');
-            showMsg("💡 Điện chập chờn sáng lại. Ai đó vừa ở ngoài hành lang...");
-        }, 6500);
+            renderRoom(state.room);
+            addClue("23h30 (Biến cố): Sau khi bạn ra hiên kiểm tra cổng lúc 23h15–23h25 rồi quay vào hành lang gõ cửa báo cáo, đèn đột ngột tắt phụt. Tiếng hát ru vang lên từ phía giếng, ngay sau đó là tiếng la thất thanh của ông Thạc từ bên trong thư phòng gỗ lim dày khóa chặt — giữa bóng tối không ai phá nổi cửa ngay lúc đó. 23h50 điện sáng lại.", null, { inline: true });
+            showMsg("💡 Điện vừa sáng lại! Cả năm người hoảng hốt tụ tập về Phòng Khách — nhưng cửa Thư Phòng vẫn khóa chặt! Hãy tìm cách mở cửa Thư Phòng ngay!", 7000);
+            setTimeout(() => {
+                if (state.wrong === 0) document.body.classList.remove('dread-state');
+            }, 2500);
+        }, 11200);
     }
-
-    const hus0 = handleUnlockSuccess;
-    handleUnlockSuccess = function (lockId) {
-        hus0.apply(this, arguments);
-        if (lockId === 'desk') blackoutPending = true;
-    };
-    const cm0 = closeModals;
-    closeModals = function () {
-        cm0.apply(this, arguments);
-        if (blackoutPending) { blackoutPending = false; setTimeout(triggerBlackoutEvent, 350); }
-    };
+    window._triggerAct2 = triggerAct2Event;
 
     const sfx0 = sfx;
     sfx = function (name) {
-        if (name === 'thunder') setTimeout(() => { flashAt = performance.now(); }, (arguments[1] || 0) * 1000);
+        if (name === 'thunder') flashAt = performance.now();
         if (name === 'stinger' || name === 'lose') triggerDread(true, name === 'lose');
         return sfx0.apply(this, arguments);
     };
@@ -2826,7 +3278,7 @@ $('btn-accuse').onclick = () => {
     $('btn-accuse').onclick = function () {
         const suspect = $('accuse-suspect').value;
         const armedBefore = accuseArmed;
-        const proofOk = !!state.ev.tea && !!state.ev.breaker && state.locks.box.solved && state.locks.desk.solved;
+        const proofOk = !!state.ev.tea && !!state.ev.breaker && state.locks.box.solved && state.locks.desk.solved && state.locks.cabinet.solved;
         acc0.apply(this, arguments);
        if (suspect === 'hanh' && armedBefore === 'hanh' && state.ev.recon && proofOk && !reduce) {
             const pr = $('prologue');
@@ -2983,15 +3435,19 @@ $('btn-accuse').onclick = () => {
             '<ellipse cx="60" cy="40" rx="30" ry="9" fill="#8fbfa9" opacity=".22"/><ellipse cx="180" cy="110" rx="34" ry="10" fill="#9ccbb4" opacity=".2"/><ellipse cx="150" cy="52" rx="14" ry="5" fill="#b4dcc8" opacity=".15"/><rect x="38" y="40" width="164" height="72" rx="3" fill="none" stroke="#0e1c17" stroke-width="2"/><rect x="40" y="42" width="160" height="68" rx="2" fill="none" stroke="#a9d3c0" stroke-opacity=".25"/>' +
             nails([34, 120, 206], 34, 3.500, '#2a4a3f') + nails([34, 120, 206], 118, 3.500, '#2a4a3f') + '<rect x="58" y="22" width="30" height="9" fill="#2d4b41" stroke="#101c18"/><rect x="152" y="22" width="30" height="9" fill="#2d4b41" stroke="#101c18"/>' +
             '<circle cx="120" cy="76" r="17" fill="url(#b3)" stroke="#3b2808" stroke-width="2"/><circle cx="120" cy="72" r="4" fill="#120b04"/><path d="M118 74h4l2 11h-8z" fill="#120b04"/><rect width="240" height="150" fill="url(#v3)"/>'),
-        // Gương cổ trong tủ: khung mạ vàng xỉn, mặt gương ố, vết nứt, bóng người mờ
-        cabinet: (function () {
-            var o = '', k, a;
-            for (k = 0; k < 14; k++) { a = k / 14 * 6.2832; o += '<circle cx="' + (120 + Math.cos(a) * 62).toFixed(1) + '" cy="' + (75 + Math.sin(a) * 68).toFixed(1) + '" r="4" fill="url(#b4)" stroke="#3b2808"/>'; }
-            return svg(defs(4, '<radialGradient id="m4" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#9fb0ad"/><stop offset=".6" stop-color="#4b5a58"/><stop offset="1" stop-color="#1b2222"/></radialGradient>') +
-                '<rect width="240" height="150" fill="#2a1a12"/><rect width="240" height="150" filter="url(#g4)"/><ellipse cx="120" cy="75" rx="64" ry="70" fill="url(#b4)" stroke="#2a1c06" stroke-width="2.500"/><ellipse cx="120" cy="75" rx="52" ry="58" fill="#3b2a1a" stroke="#1c1208" stroke-width="2"/>' + o +
-                '<ellipse cx="120" cy="75" rx="45" ry="51" fill="url(#m4)"/><ellipse cx="120" cy="64" rx="13" ry="16" fill="#cfd8d4" opacity=".09"/><path d="M96 118c2-22 12-30 24-30s22 8 24 30z" fill="#cfd8d4" opacity=".07"/>' +
-                '<path d="M104 42l10 26-6 14 14 22M114 68l22 6" stroke="#fff" stroke-opacity=".35" stroke-width=".8" fill="none"/><ellipse cx="96" cy="100" rx="9" ry="6" fill="#6f8a56" opacity=".22"/><ellipse cx="148" cy="52" rx="7" ry="5" fill="#6f8a56" opacity=".18"/><ellipse cx="102" cy="52" rx="24" ry="14" fill="#fff" opacity=".07" transform="rotate(-30 102 52)"/><rect width="240" height="150" fill="url(#v4)"/>');
-        })()
+        // Tủ gỗ ở bếp: hai cánh tủ gỗ cũ, khe cửa, bản lề và ổ khóa số bằng đồng ở giữa
+        cabinet: svg(defs(4) + '<rect width="240" height="150" fill="#2a190e"/><rect width="240" height="150" filter="url(#g4)"/>' +
+            '<rect x="20" y="14" width="96" height="122" rx="2" fill="#462917" stroke="#180d06" stroke-width="2.5"/>' +
+            '<rect x="124" y="14" width="96" height="122" rx="2" fill="#462917" stroke="#180d06" stroke-width="2.5"/>' +
+            '<rect x="30" y="24" width="76" height="102" fill="none" stroke="#2c170b" stroke-width="2"/>' +
+            '<rect x="134" y="24" width="76" height="102" fill="none" stroke="#2c170b" stroke-width="2"/>' +
+            '<path d="M120 14V136" stroke="#0d0603" stroke-width="3"/>' +
+            '<rect x="14" y="28" width="10" height="18" fill="url(#b4)" stroke="#3b2808"/><rect x="14" y="104" width="10" height="18" fill="url(#b4)" stroke="#3b2808"/>' +
+            '<rect x="216" y="28" width="10" height="18" fill="url(#b4)" stroke="#3b2808"/><rect x="216" y="104" width="10" height="18" fill="url(#b4)" stroke="#3b2808"/>' +
+            '<rect x="92" y="54" width="56" height="42" rx="4" fill="url(#b4)" stroke="#3b2808" stroke-width="2"/>' +
+            '<rect x="100" y="65" width="40" height="18" rx="2" fill="#1b130a" stroke="#5b3f12"/>' +
+            '<rect x="103" y="68" width="7" height="12" fill="#3a2c1c"/><rect x="112" y="68" width="7" height="12" fill="#3a2c1c"/><rect x="121" y="68" width="7" height="12" fill="#3a2c1c"/><rect x="130" y="68" width="7" height="12" fill="#3a2c1c"/>' +
+            '<rect width="240" height="150" fill="url(#v4)"/>')
     };
     var ml = $('modal-lock'), hero = document.createElement('div'); hero.className = 'lock-hero'; ml.insertBefore(hero, ml.firstChild);
     var ol0 = openLockModal;
@@ -3053,7 +3509,46 @@ $('btn-accuse').onclick = () => {
         bye: ['tam biet', 'thoi nhe', 'chao nhe', 'xong roi', 'hen gap lai']
     };
     Object.keys(SYN).forEach(function (k) { addKW(INTENTS, k, SYN[k]); });
-    var RAW = { ghost: ['ma', 'hồn', 'quỷ'], tea: ['trà'], drug: ['thuốc'], money: ['tiền', 'nợ'], well: ['giếng'], cass: ['băng'] };
+    // Bước D: Mở rộng từ khóa (đời thường, miền Nam, viết tắt, lỗi gõ không dấu)
+    var EXT_KW = {
+        tonight: ['23h25', 'quay lai san', 'toi nay ong o dau', 'luc do o dau', '23h30 o dau', '23:30 o dau', 'nua dem o dau', 'luc xay ra chuyen', 'khi su viec xay ra', 'bang chung ngoai pham', 'chung cu ngoai pham', 'chung minh vo toi', 'toi nay lam gi', 'dem nay lam gi', 'hoi nay o dau', 'luc nay o dau', 'co o do khong', 'alibi cua ban', 'ngoai pham luc do'],
+        victim: ['ong chu nha', 'chu nha the nao', 'tinh tinh ong thac', 'ong ay ra sao', 'ong thac co ghet ai', 'ong thac bi sao', 'chuyen gi voi ong thac', 'co thu oan gi', 'ghet ong thac', 'ong thac kho tinh', 'hai ong thac', 'quan he voi nan nhan', 'nguoi chet la ai'],
+        power: ['cup dien', 'mat dien', 'tat dien', 'luc cup dien', 'luc mat dien', 'khi cup dien', 'khi mat dien', 'cup dien luc nao', 'mat dien khi nao', 'den tat luc nao', 'ai tat dien', 'ai cup cau dao', 'ai ha cau dao', 'cup dien 23h30', 'mat dien dot ngot', 'cup dien toi nay', 'den tat thui', 'toi thui', 'bat den lai', 'ai bat cau dao', 'cau dao o bep', 'ngat dien'],
+        tea: ['khay tra', 'am tra', 'pha tra', 'bung tra', 'bung tra len', 'mang tra', 'tra ai pha', 'nuoc tra', 'chen nuoc tra', 'tach tra nong', 'tra am', 'tra dang', 'khay tra o dau', 'ai pha tra', 'ai bung tra', 'bo gi vao tra', 'tra co thuoc', 'bot trang trong tra', 'can duoi day chen', 'uong tra luc nao', 'tra 21h10', 'tra 21h30'],
+        drug: ['thuoc trong tra', 'bo thuoc vao tra', 'bo thuoc', 'loai thuoc', 'thuoc gi', 'thuoc ngu cua ai', 'lo thuoc', 'vo lo thuoc', 'thuoc an than o dau', 'ai lay thuoc', 'bo thuoc vao', 'trung doc', 'dau doc', 'uong thuoc qua lieu', 'thuoc doc gi', 'thuoc me', 'thuoc tay', 'lo thuoc rong', 'tu thuoc o bep'],
+        money: ['tien nong', 'no co bac', 'thieu no', 'chua benh', 'can tien', 'muon tien', 'doi no', 'tien bac the nao', 'co thieu tien', 'tung thieu', 'tien cua ai', 'giau co', 'thua ke', 'gia tai'],
+        fight: ['cai co', 'cai lon', 'chui nhau', 'mat long', 'gay go', 'xich mich chuyen gi', '22h30 cai nhau', 'cai nhau qua cua', 'do gia', 'chuyen lam an'],
+        cass: ['tieng hat gi', 'hat ru o dau', 'tieng ru con', 'bang cu', 'may cat set', 'cassette hen gio', 'tieng vong tu gieng', 'ai bat bang', 'tieng keu la', 'am thanh la', 'giong hat ru'],
+        ghost: ['co ma khong', 'tin ma khong', 'ma quy', 'oan hon ve', 'linh hon', 'ao dai trang', 'bong trang', 'mac ao trang', 'gia ma', 'hanh lang co ma', 'bi ma am', 'am khi', 'ma nu'],
+        lan: ['co lan', 'lan chet', 'co hau gai', 'nguoi hau gai', 'co gai nam xua', 'chuyen 1996', 'nam binh ty', 'em gai lan', 'chi em lan', 'tam anh cu', 'hinh cu 1996', 'vu an cu', 'chuyen ba muoi nam'],
+        well: ['gieng co', 'duoi gieng', 'xuong gieng', 'nhay gieng', 'day gieng', 'tu tu duoi gieng', 'lap gieng', 'bia da canh gieng', 'o gieng co gi', 'quanh gieng'],
+        box: ['cai hop', 'hop dong', 'hop duoi bia', 'hop duoi gieng', 'hop khoa so', 'hop dung gi', 'ai dat hop', 'mo hop', 'hop ngoai san'],
+        door: ['mat khau cua', 'pass cua', 'code cua', 'khoa so thu phong', 'mo cua thu phong', 'cua khoa trong', 'lam sao mo cua', 'ma mo cua', 'nam xay nha', 'xa ngang'],
+        leave: ['bo di dau', 'di ra ngoai luc nao', 'co roi khoi', 'chay ra ngoai', 'ra xe lam gi', 'len vao nha', 'co ai ra vao', 'vang mat luc nao', 'bo bep'],
+        phone: ['goi cho vo', 'goi video', 'check dien thoai', 'xem nhat ky', 'tin nhan', 'cuoc goi 23h28', 'ai goi dien', 'goi luc may gio'],
+        letter: ['thu mau', 'thu do', 'noi dung thu', 'ai gui thu', 'ai viet thu', 'thu de ngoai cua', 'la thu chieu nay', 'thu nac danh la sao'],
+        suspect: ['ai dung sau', 'dung sau vu', 'nguoi giet', 'ai giet', 'ai la hung thu', 'ai giet ong thac', 'nghi ai nhat', 'thu pham la ai', 'ai dang ngo', 'ai noi doi', 'co nghi ai khong', 'ke thu ac', 'hung thu la ai'],
+        body: ['dau vet tu thi', 'kham nghiem', 'tu thi', 'thi the', 'xac chet', 'qua doi', 'chet vi sao', 'sao lai chet', 'nguyen nhan tu vong', 'mat luc may gio', 'kham xac', 'chet nhu the nao', 'bi giet sao', 'co dau hieu gi'],
+        who: ['trong nha co ai', 'nha co ai', 'co ai o nha', 'co nhung ai', 'ai o do', 'ai dung do', 'nhung ai co mat', 'luc do co ai', 'ai trong nha', 'ai ngoai san'],
+        see: ['thay gi la', 'thay gi khong', 'nghe gi khong', 'de y thay gi', 'co gi bat thuong', 'thay ai di qua', 'thay bong nguoi', 'nghe tieng dong'],
+        witness: ['chung kien', 'ai lam chung', 'co ai thay khong', 'ai xac nhan', 'nhan chung dau', 'tin duoc khong'],
+        ritual: ['cung kieng', 'thay cung lam gi', 'le cung co hon', 'ban cung', 'doc kinh', 'khon vai'],
+        fear: ['co so khong', 'giat minh', 'hoang so', 'lo lang', 'run so'],
+        bg: ['bao lau roi', 'o nha nay bao lau', 'lam o day bao lau', 'lam lau chua', 'o day lau chua', 'ngay xua the nao', 'lai lich', 'que o dau len', 'vao nha bao lau', 'chuyen truoc day'],
+        fake: ['hang gia', 'do co', 'gia mao', 'do co gia', 'ban do gia', 'lua dao', 'cam do', 'ban do trong nha'],
+        self: ['ten ban la gi', 'cho hoi ten', 'xung danh', 'ban la ai vay', 'ai day', 'ban ten gi'],
+        job: ['lam gi o day', 'nghe gi', 'cong viec gi', 'lam thue', 'y ta', 'buon do co'],
+        home: ['que anh', 'que chi', 'que ong', 'que thay', 'que ba', 'o dau toi', 'tu dau toi'],
+        hello: ['chao ban', 'chao anh', 'chao chi', 'chao thay', 'chao ba', 'chao co', 'chao chu', 'chao ong', 'xin chao', 'alo'],
+        bye: ['thoi chao', 'nghi hoi', 'de sau', 'dong cua so'],
+        p_van: ['voi van', 've van', 'chi van', 'co van', 'thanh van', 'van voi'],
+        p_quan: ['voi quan', 've quan', 'anh quan', 'cau quan', 'minh quan', 'quan voi', 'thang quan'],
+        p_khoa: ['voi khoa', 've khoa', 'ong khoa', 'duc khoa', 'khoa voi'],
+        p_cuu: ['voi cuu', 've cuu', 'thay cuu', 'ong cuu', 'cuu voi'],
+        p_hanh: ['voi hanh', 've hanh', 'chi hanh', 'chi tu', 'ba tu', 'tu hanh']
+    };
+    Object.keys(EXT_KW).forEach(function (k) { addKW(INTENTS, k, EXT_KW[k]); });
+    var RAW = { ghost: ['hồn', 'quỷ'], tea: ['trà'], drug: ['thuốc'], money: ['tiền', 'nợ'], well: ['giếng'], cass: ['băng'] };
     Object.keys(RAW).forEach(function (k) { addKW(RAW_KW, k, RAW[k]); });
 
     // Từ điển chịu lỗi gõ: sai một ký tự vẫn hiểu
@@ -3103,50 +3598,293 @@ $('btn-accuse').onclick = () => {
         hanh: ['Dạ, tôi phận làm thuê, anh hỏi gì tôi xin thưa nấy. Chỉ sợ tôi nói không đủ ý.', 'Việc bếp núc tôi nhớ rõ, còn chuyện trên nhà thì tôi đâu dám để ý, thưa anh.', 'Tôi thấp cổ bé họng, nói ra ai tin... Anh cứ hỏi cho đến khi anh yên tâm.']
     };
     var ctx = {};
-    function C(id) { return ctx[id] || (ctx[id] = { last: null, person: null, asked: {}, why: 0 }); }
-    function gated(key) { if (key === 'lan') return true; var ch = CHIPS.filter(function (c) { return c[1] === key; })[0]; return !ch || ch[2](); }
+    function C(id) { return ctx[id] || (ctx[id] = { last: null, person: null, asked: {}, why: 0, showAll: false, showAsked: false }); }
+    var P1_ALLOWED = { self:1, job:1, age:1, home:1, family:1, bye:1, letter:1, well:1, see:1, victim:1, money:1, fight:1, fake:1, ritual:1, tea:1, hello:1, p_quan:1, p_van:1, p_khoa:1, p_cuu:1, p_hanh:1, bg:1 };
+    var MAIN_INTENTS = { power:1, door:1, victim:1, well:1, cass:1, lan:1, tea:1, drug:1, body:1, letter:1, self:1 };
+    function src(char, key) {
+        return state.phase < 2
+            ? ((char.a1 && char.a1[key]) || (P1_ALLOWED[key] ? char.a[key] : null))
+            : char.a[key];
+    }
+    function gated(key) {
+        if (state.phase < 2) return !!P1_ALLOWED[key] || key === 'lan';
+        if (key === 'lan' || key === 'door' || key === 'self' || key === 'job') return true;
+        var ch = CHIPS.filter(function (c) { return c[1] === key; })[0];
+        return !ch || ch[2]();
+    }
     function flags(char, key) {
+        if (state.phase < 2) return;
         if (key === 'cass') state.ev.heard = true;
         var k = char.id + '.' + key;
         if (k === 'quan.door' || k === 'khoa.victim') state.ev.proud = true;
         if (k === 'cuu.well' || k === 'cuu.lan') state.ev.lanTime = true;
         save();
     }
-    function isFollowUp(n) { return n.split(' ').filter(Boolean).length <= 5 && /^(tai sao|vi sao|sao|the a|that khong|sao lai|roi sao|va sao|vay a|co chac|chac khong|nghia la)/.test(n); }
+    function isFollowUp(n) {
+        if (/^(sao|dau|ai|vay a|the a|that khong|roi sao|sao nua|vi sao|tai sao)$/.test(n)) return true;
+        return n.split(' ').filter(Boolean).length <= 5 && /^(tai sao|vi sao|sao|the a|that khong|sao lai|roi sao|va sao|vay a|co chac|chac khong|nghia la|o dau|khi nao|ai vay)/.test(n);
+    }
     function isMore(n) { return /^(con gi|ngoai ra|con nua|them gi|con dieu gi|co gi nua|noi them|noi tiep|ke tiep|roi sao nua)/.test(n); }
+    // Bước F: Ghi nhận câu rơi xuống tầng 3 vào localStorage 'drtb_miss' (tối đa 300 mục)
+    function recordMiss(charId, q) {
+        try {
+            var arr = JSON.parse(localStorage.getItem('drtb_miss') || '[]');
+            if (!Array.isArray(arr)) arr = [];
+            arr.push({ char: charId, q: q, time: new Date().toISOString() });
+            if (arr.length > 300) arr = arr.slice(arr.length - 300);
+            localStorage.setItem('drtb_miss', JSON.stringify(arr));
+        } catch (e) {}
+    }
+    window.exportMiss = function () {
+        var raw = '[]';
+        try { raw = localStorage.getItem('drtb_miss') || '[]'; } catch (e) {}
+        console.log(raw);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(raw).catch(function () {});
+        }
+        return JSON.parse(raw);
+    };
+    // Bước C: Tầng 1 (nhân vật/vật chứng được nhắc) & Tầng 2 (loại câu hỏi)
+    function fallbackTier1(char, n, toks) {
+        var ENT = [
+            ['thu phong', 'door'], ['quan', 'p_quan', 'minh quan'], ['van', 'p_van', 'thanh van'], ['khoa', 'p_khoa', 'duc khoa'], ['cuu', 'p_cuu', 'thay cuu'], ['hanh', 'p_hanh', 'chi tu', 'ba tu'],
+            ['lan', 'lan', '1996'], ['gieng', 'well'], ['tra', 'tea'], ['thuoc', 'drug'], ['cau dao', 'power'], ['dien', 'power'],
+            ['cassette', 'cass'], ['cat set', 'cass'], ['bia', 'well'], ['hop', 'box'], ['thu', 'letter'], ['cua phong', 'door'], ['cua khoa', 'door'], ['mo cua', 'door'], ['dong ho', 'body']
+        ];
+        for (var i = 0; i < ENT.length; i++) {
+            var kw = ENT[i][0], mapped = ENT[i][1];
+            if (n.indexOf(' ' + kw + ' ') >= 0 || toks.indexOf(kw) >= 0) {
+                var v = src(char, mapped);
+                if (v && gated(mapped)) return { tier: 1, key: mapped, reply: pick(v) };
+            }
+        }
+        return null;
+    }
+    function fallbackTier2(char, n) {
+        var cid = char.id;
+        if (/(^| )ai( |$)/.test(n)) {
+            var vWho = src(char, 'who');
+            if (vWho && gated('who')) return { tier: 2, key: 'who', reply: pick(vWho) };
+            var byId = {
+                quan: 'Anh muốn hỏi cụ thể về ai — ông Khoa, thầy Cửu hay người giúp việc?',
+                van: 'Tôi chỉ biết phần việc của mình. Anh muốn hỏi về ai trong nhà thì nêu rõ tên.',
+                khoa: 'Anh muốn hỏi ai trong nhà này? Cứ gọi đúng tên từng người tôi kể cho.',
+                cuu: 'Người sống quanh đây nhiều chuyện lắm, cậu muốn hỏi đích danh ai?',
+                hanh: 'Dạ anh hỏi rõ giúp tôi tên người anh muốn biết — cậu Quân, cô Vân hay ông Khoa ạ?'
+            };
+            return { tier: 2, key: null, reply: [byId[cid] || char.fb[0]] };
+        }
+        if (/(o dau|cho nao|noi nao)/.test(n)) {
+            var vTon = src(char, 'tonight');
+            if (vTon && gated('tonight')) return { tier: 2, key: 'tonight', reply: pick(vTon) };
+        }
+        if (/(khi nao|luc nao|may gio|bao gio)/.test(n)) {
+            var tMap = {
+                quan: 'Tối nay mọi thứ dồn lại quanh mốc 22h30 lúc tôi cãi ba, và sau 23 giờ. Anh muốn hỏi giờ nào?',
+                van: 'Tôi nhớ rõ nhất các mốc 21h20, 22h50 và 23h10–23h25. Anh cần kiểm tra mốc nào?',
+                khoa: 'Tôi ngồi phòng khách từ hơn 21h tới 23h10, còn 23h28 trở đi thì có nhật ký gọi điện chứng minh.',
+                cuu: 'Ta cúng từ 19 giờ, còn chuyện năm Bính Tý thì xảy ra gần nửa đêm. Cậu hỏi mốc nào?',
+                hanh: 'Dạ tôi chỉ nhớ rõ giờ pha trà 21h10, mang vào lúc 21h30 và dọn bếp thôi ạ.'
+            };
+            return { tier: 2, key: null, reply: [tMap[cid] || char.fb[0]] };
+        }
+        if (/(tai sao|vi sao|ly do)/.test(n)) {
+            var rMap = {
+                quan: 'Chuyện trong nhà nhiều uẩn khúc lắm. Anh hỏi thẳng về lá thư, tiền bạc hay chuyện ba tôi đi.',
+                van: 'Mỗi người đều có lý do riêng. Anh hỏi cụ thể về thuốc men hay chuyện tôi xin tiền ba chồng xem.',
+                khoa: 'Lý do thì hỏi người trong nhà họ Lương ấy — tôi chỉ là khách làm ăn thôi.',
+                cuu: 'Nhân quả đều có gốc từ chuyện năm 1996 ở cái giếng kia. Cậu hỏi đúng chỗ đó sẽ rõ.',
+                hanh: 'Dạ phận làm thuê tôi không dám đoán nguyên do. Anh thử hỏi về lá thư hay chuyện ông chủ xem.'
+            };
+            return { tier: 2, key: null, reply: [rMap[cid] || char.fb[0]] };
+        }
+        if (/(co thay|thay gi|nghe gi|co nghe)/.test(n)) {
+            var vSee = src(char, 'see');
+            if (vSee && gated('see')) return { tier: 2, key: 'see', reply: pick(vSee) };
+        }
+        return null;
+    }
     // Hiểu câu hỏi: ưu tiên cặp Người + Hành động, hiểu đại từ "ông ấy/chị ấy", chịu lỗi gõ
     function understand(q, char, c) {
         var sc = score(q), n = norm(q);
-        var persons = Object.keys(sc).filter(function (k) { return /^p_/.test(k) && char.a[k]; });
-        var acts = Object.keys(sc).filter(function (k) { return !/^p_/.test(k) && char.a[k] && gated(k); }).sort(function (a, b) { return sc[b] - sc[a]; });
+        var persons = Object.keys(sc).filter(function (k) { return /^p_/.test(k) && src(char, k); });
+        var acts = Object.keys(sc).filter(function (k) { return !/^p_/.test(k) && src(char, k) && gated(k); }).sort(function (a, b) { return sc[b] - sc[a]; });
         var PLAIN = { self: 1, job: 1, age: 1, home: 1, family: 1, bye: 1, hello: 1 };
         var real = acts.filter(function (k) { return !PLAIN[k]; });
-        if (persons.length) { c.person = persons[0]; return real.length ? real[0] : persons[0]; }
-        if (sc.self && char.a.self && n.indexOf('thac') < 0 && !((sc.lan || 0) > sc.self)) return 'self';
+        if (persons.length) {
+            c.person = persons[0];
+            var nonVic = real.filter(function (k) { return k !== 'victim'; });
+            return nonVic.length ? nonVic[0] : persons[0];
+        }
+        if (acts.length && acts[0] !== 'self') return acts[0];
+        if (sc.self && src(char, 'self') && !real.length && n.indexOf('thac') < 0) return 'self';
         if (acts.length) return acts[0];
         if (c.person && /(^| )(anh ay|chi ay|co ay|ong ay|ba ay|nguoi do|ho|han)( |$)/.test(n)) return c.person;
-        var g = guessIntent(q); if (g && char.a[g] && gated(g)) return g;
+        var g = guessIntent(q); if (g && src(char, g) && gated(g)) return g;
         return null;
     }
     function answer(char, c, q, forced) {
-        var n = norm(q), key = forced || understand(q, char, c);
+        var n = norm(q), toks = rawTokens(q), key = forced || understand(q, char, c);
         if (!key && isMore(n) && c.last) {
-            var next = (REL[c.last] || (/^p_/.test(c.last) ? ['tonight', 'see', 'who'] : [])).filter(function (k) { return char.a[k] && !c.asked[k] && gated(k); })[0];
-            if (next) { key = next; var v0 = pick(char.a[key]); c.asked[key] = 1; c.last = key; flags(char, key); return [(CONN[char.id] || '') + v0[0], v0[1]]; }
+            var next = (REL[c.last] || (/^p_/.test(c.last) ? ['tonight', 'see', 'who'] : [])).filter(function (k) { return src(char, k) && !c.asked[k] && gated(k); })[0];
+            if (next) { key = next; var v0 = pick(src(char, key)); c.asked[key] = 1; c.last = key; flags(char, key); return [(CONN[char.id] || '') + v0[0], v0[1], v0[2]]; }
         }
         if (!key && c.last && (isFollowUp(n) || isMore(n))) { var L = FOLLOW[char.id] || char.fb; return L[(c.why++) % L.length]; }
-        if (!key) { var m = state.fb[char.id] = (state.fb[char.id] || 0) + 1; save(); return char.fb[(m - 1) % char.fb.length]; }
+        if (!key) {
+            var t1 = fallbackTier1(char, ' ' + n + ' ', toks);
+            if (t1) { if (t1.key) { c.last = t1.key; flags(char, t1.key); } return t1.reply; }
+            var t2 = fallbackTier2(char, n);
+            if (t2) { if (t2.key) { c.last = t2.key; flags(char, t2.key); } return t2.reply; }
+            recordMiss(char.id, q);
+            var m = state.fb[char.id] = (state.fb[char.id] || 0) + 1; save(); return char.fb[(m - 1) % char.fb.length];
+        }
         c.last = key; c.why = 0; flags(char, key);
-        var cnt = c.asked[key] = (c.asked[key] || 0) + 1, v = pick(char.a[key]);
-        if (cnt >= 2 && STAGE[char.id]) { var st = STAGE[char.id][cnt >= 3 ? 1 : 0]; return [st[(cnt - 2) % st.length] + v[0], v[1]]; }
+        var cnt = c.asked[key] = (c.asked[key] || 0) + 1, v = pick(src(char, key));
+        if (cnt >= 2 && STAGE[char.id]) { var st = STAGE[char.id][cnt >= 3 ? 1 : 0]; return [st[(cnt - 2) % st.length] + v[0], v[1], v[2]]; }
         return v;
     }
+    // Bước E2: Hàm chạy bộ test giả lập trong console
+    window.runTestSuite = function (data, phaseVal) {
+        var oldPhase = state.phase;
+        if (phaseVal) state.phase = phaseVal;
+        var stats = {}, byIntent = {}, missed = [], wrong = [], total = 0, ok = 0;
+        (data || []).forEach(function (row) {
+            total++;
+            var ch = characters[row.char];
+            var c = { last: null, person: null, asked: {}, why: 0 };
+            var n = norm(row.q), toks = rawTokens(row.q);
+            var k = understand(row.q, ch, c);
+            var tier = 0;
+            if (!k) {
+                var t1 = fallbackTier1(ch, ' ' + n + ' ', toks);
+                if (t1) { k = t1.key; tier = 1; }
+                else {
+                    var t2 = fallbackTier2(ch, n);
+                    if (t2) { k = t2.key; tier = 2; }
+                    else { tier = 3; }
+                }
+            }
+            stats[row.char] = stats[row.char] || { total: 0, ok: 0, tier3: 0 };
+            stats[row.char].total++;
+            if (tier === 3) stats[row.char].tier3++;
+            var exp = row.expect || null;
+            byIntent[exp || '_offtopic'] = byIntent[exp || '_offtopic'] || { total: 0, ok: 0 };
+            byIntent[exp || '_offtopic'].total++;
+            var pass = exp ? (k === exp) : (tier === 3 || k === null);
+            if (pass) { ok++; stats[row.char].ok++; byIntent[exp || '_offtopic'].ok++; }
+            else {
+                var rec = { char: row.char, q: row.q, expect: exp, got: k, tier: tier };
+                if (tier === 3) missed.push(rec); else wrong.push(rec);
+            }
+        });
+        state.phase = oldPhase;
+        console.log('TEST_SUITE:', ok + '/' + total, '(' + Math.round(ok * 100 / Math.max(1, total)) + '%)');
+        console.table(stats);
+        console.table(byIntent);
+        if (missed.length) { console.log('RƠI VÀO TẦNG 3 (fb):', missed); }
+        if (wrong.length) { console.log('KHỚP NHẦM INTENT:', wrong); }
+        return { total: total, ok: ok, stats: stats, byIntent: byIntent, missed: missed, wrong: wrong };
+    };
     processChat = function (text, forced) {
         if (!activeCharacterId) return;
         var inp = $('chat-input'), q = (text || inp.value).trim(), char = characters[activeCharacterId];
         if (!q) return;
         $('ev-panel').classList.add('hidden-ui'); bubbleU(q); inp.value = '';
         reply(char, answer(char, C(char.id), q, forced));
+        setTimeout(updateObjective, 50);
+    };
+    // Bước A: Làm gọn chip (<= 6 chip chính, ưu tiên REL + đường chính, thu gọn "Đã hỏi", nút "Hỏi chuyện khác")
+    renderChips = function () {
+        var box = $('chat-chips');
+        box.innerHTML = '';
+        var char = characters[activeCharacterId];
+        if (!char) return;
+        var c = C(char.id);
+        var valid = CHIPS.filter(function (ch) { return ch[2]() && !!src(char, ch[1]); });
+        var unasked = [], asked = [];
+        valid.forEach(function (ch) {
+            if (c.asked[ch[1]]) asked.push(ch);
+            else unasked.push(ch);
+        });
+        var relList = (c.last && REL[c.last]) ? REL[c.last] : [];
+        unasked.sort(function (a, b) {
+            var ra = relList.indexOf(a[1]), rb = relList.indexOf(b[1]);
+            var sa = (ra >= 0 ? 100 - ra : 0) + (MAIN_INTENTS[a[1]] ? 10 : 0);
+            var sb = (rb >= 0 ? 100 - rb : 0) + (MAIN_INTENTS[b[1]] ? 10 : 0);
+            return sb - sa;
+        });
+        var limit = c.showAll ? unasked.length : 4;
+        unasked.slice(0, limit).forEach(function (ch) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'btn text-xs';
+            b.textContent = ch[0];
+            b.onclick = function () { processChat(ch[0], ch[1]); };
+            box.appendChild(b);
+        });
+        if (unasked.length > 4) {
+            var moreBtn = document.createElement('button');
+            moreBtn.type = 'button';
+            moreBtn.className = 'btn text-xs chip-more';
+            moreBtn.textContent = c.showAll ? 'Thu gọn' : ('Hỏi chuyện khác (+' + (unasked.length - 4) + ')');
+            moreBtn.onclick = function () { sfx('click'); c.showAll = !c.showAll; renderChips(); };
+            box.appendChild(moreBtn);
+        }
+        if (asked.length) {
+            var askBtn = document.createElement('button');
+            askBtn.type = 'button';
+            askBtn.className = 'btn chip-asked-toggle';
+            askBtn.textContent = (c.showAsked ? '▾ ' : '▸ ') + 'Đã hỏi (' + asked.length + ')';
+            askBtn.onclick = function () { sfx('click'); c.showAsked = !c.showAsked; renderChips(); };
+            box.appendChild(askBtn);
+            if (c.showAsked) {
+                var row = document.createElement('div');
+                row.className = 'chip-asked-list';
+                asked.forEach(function (ch) {
+                    var b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'btn';
+                    b.textContent = ch[0];
+                    b.onclick = function () { processChat(ch[0], ch[1]); };
+                    row.appendChild(b);
+                });
+                box.appendChild(row);
+            }
+        }
+    };
+    // Bước B: Báo cáo ô trống và kiểm tra đường chính thắng game
+    window.auditCoverage = function () {
+        var allIntents = [];
+        CHIPS.forEach(function (ch) { if (allIntents.indexOf(ch[1]) < 0) allIntents.push(ch[1]); });
+        Object.keys(INTENTS).forEach(function (k) { if (allIntents.indexOf(k) < 0) allIntents.push(k); });
+        var rows = [];
+        Object.keys(characters).forEach(function (cid) {
+            var ch = characters[cid];
+            allIntents.forEach(function (intent) {
+                if (!ch.a[intent]) {
+                    rows.push({
+                        nhan_vat: cid,
+                        intent: intent,
+                        trong_CHIPS: CHIPS.some(function (x) { return x[1] === intent; }),
+                        duong_chinh: !!MAIN_INTENTS[intent]
+                    });
+                }
+            });
+        });
+        var mainPathChecks = [
+            { du_kien: 'heard (tiếng hát ru / cassette)', ok: CHIPS.some(function (c) { return c[1] === 'cass'; }) },
+            { du_kien: 'proud (mã cửa thư phòng: quan.door hoặc khoa.victim)', ok: CHIPS.some(function (c) { return c[1] === 'door'; }) && !!characters.quan.a.door && CHIPS.some(function (c) { return c[1] === 'victim'; }) && !!characters.khoa.a.victim },
+            { du_kien: 'lanTime (giờ Lan chết: cuu.well hoặc cuu.lan)', ok: CHIPS.some(function (c) { return c[1] === 'well'; }) && !!characters.cuu.a.well && CHIPS.some(function (c) { return c[1] === 'lan'; }) && !!characters.cuu.a.lan },
+            { du_kien: 'cuu_alibi (lời khai 23:30 Thầy Cửu)', ok: CHIPS.some(function (c) { return c[1] === 'power'; }) && !!characters.cuu.a.power },
+            { du_kien: 'khoa_alibi (nhật ký 23:28 Khoa)', ok: CHIPS.some(function (c) { return c[1] === 'power'; }) && !!characters.khoa.a.power },
+            { du_kien: 'hanh_alone (lời khai 23:30 Chị Tư)', ok: CHIPS.some(function (c) { return c[1] === 'power'; }) && !!characters.hanh.a.power },
+            { du_kien: 'quan_2315 (Quân thú nhận 23h15)', ok: !!characters.quan.ev.costume }
+        ];
+        console.log('=== KIỂM TRA ĐƯỜNG CHÍNH (KHÔNG CẦN GÕ TỰ DO) ===');
+        console.table(mainPathChecks);
+        console.log('=== CÁC Ô TRỐNG (characters[id].a[intent]) ===');
+        console.table(rows);
+        return { mainPathChecks: mainPathChecks, missing: rows };
     };
     // Dọn mọi ghi chú hành động trong ngoặc đơn còn sót: tâm lý chỉ thể hiện bằng lời nói
     var pk0 = pick;
