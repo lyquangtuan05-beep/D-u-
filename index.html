@@ -204,6 +204,8 @@ html.js .folder[data-reveal]{transition:opacity .7s ease var(--d,0ms),translate 
 .user-tag i { display: inline-grid; place-items: center; background: var(--seal); color: #f6ecd9; font-style: normal; font-weight: 700; font-size: 0.74rem; }
 .auth-msg { flex-basis: 100%; max-width: 22rem; color: #f2b8b0; font-size: 0.8rem; font-weight: 400; letter-spacing: 0; text-transform: none; line-height: 1.45; }
 .auth-msg:empty { display: none; }
+.folder[data-status="Đã phá án"] .state span:last-child, .doc .stamp[data-status="Đã phá án"] { color: #1b5e20; border-color: #1b5e20; }
+.folder[data-status="Đang điều tra"] .state span:last-child { color: var(--seal); }
 </style>
 
 </head>
@@ -356,12 +358,12 @@ var CASES = [
     play: "games/dem-ram-thang-bay.html",
     excerpt: [
       "Tháng Bảy, năm 2026. Làng cổ ven sông. Mưa như trút nước.",
-      "Ông Lương Văn Thạc, 72 tuổi, nhận được một lá thư máu: <em>“Đêm Rằm, tao về lấy mạng.”</em> Ông thuê thám tử Trần Bảo đến bảo vệ.",
-      "Nửa đêm, mất điện. Tiếng hát ru ai oán vọng lên từ phía giếng ngoài sân. Khi đèn sáng lại, ông Thạc đã tắt thở trong thư phòng <span class=\"redact\">khóa kín từ bên trong</span>.",
+      "Ông Lương Văn Thạc, 72 tuổi, nhận được một lá thư máu: <em>“Đêm Rằm, tao về lấy mạng.”</em> Ông thuê thám tử Trần Bảo đến điều tra, còn bản thân tự khóa chặt mình trong thư phòng.",
+      "23h30, điện vụt tắt. Tiếng hát ru ai oán vọng lên từ phía giếng ngoài sân, tiếp đó là một tiếng la thất thanh dội ra từ thư phòng <span class=\"redact\">khóa kín từ bên trong</span>.",
       "Kẻ thủ ác là một trong <span class=\"redact\">năm người</span> đang có mặt. Bạn phải tìm ra trước khi trời sáng."
     ],
     sheet: [
-      ["Thể loại", "Trinh thám, giải đố, phòng kín"],
+      ["Thể loại", "Trinh thám, giải đố, tâm lý"],
       ["Địa điểm", "5 căn phòng để khám xét: Sân Trước, Phòng Khách, Nhà Bếp, Hành Lang, Thư Phòng"],
       ["Nghi phạm", "5 người, mỗi người một lời khai"],
       ["Nền tảng", "Trình duyệt trên điện thoại, máy tính bảng, máy tính"],
@@ -400,12 +402,29 @@ function buildChips() {
   });
 }
 
+function getCaseStatus(c) {
+  if (c.id === 'ho-so-001') {
+    try {
+      if (localStorage.getItem('drtb_solved_v1') === '1') return 'Đã phá án';
+      var raw = localStorage.getItem('drtb_save_v1');
+      if (raw) {
+        var s = JSON.parse(raw);
+        if (s && ((s.clues && s.clues.length) || Object.values(s.solved || {}).some(Boolean) || Object.keys(s.ev || {}).length > 0 || Object.keys(s.chats || {}).length > 0)) {
+          return 'Đang điều tra';
+        }
+      }
+    } catch (e) {}
+  }
+  return c.status;
+}
+
 function buildVault() {
   var box = document.getElementById('vault-list');
   var html = '';
   CASES.forEach(function (c) {
-    html += '<a class="folder" href="#' + c.id + '" data-no="' + esc(c.no) + '">' +
-      '<div class="state"><span>Trạng thái</span><span>' + esc(c.status) + '</span></div>' +
+    var st = getCaseStatus(c);
+    html += '<a class="folder" href="#' + c.id + '" data-no="' + esc(c.no) + '" data-status="' + esc(st) + '">' +
+      '<div class="state"><span>Trạng thái</span><span>' + esc(st) + '</span></div>' +
       '<h3>' + esc(c.title) + '</h3>' +
       '<p>' + esc(c.summary) + '</p>' +
       '<span class="open">Mở hồ sơ →</span>' +
@@ -433,10 +452,17 @@ function buildCase(c) {
     '<section><div class="case">' +
     '<article class="doc" aria-label="Trích hồ sơ vụ án"><div class="tag"><span>' + esc(c.no) + '</span><span>Mật</span></div>';
   c.excerpt.forEach(function (p) { h += '<p>' + p + '</p>'; });
-  h += '<span class="stamp">' + esc(c.status).toUpperCase() + '</span></article><ul class="sheet">';
+  var st = getCaseStatus(c);
+  h += '<span class="stamp" data-status="' + esc(st) + '">' + esc(st).toUpperCase() + '</span></article><ul class="sheet">';
   c.sheet.forEach(function (r) { h += '<li><span class="k">' + esc(r[0]) + '</span><span class="v">' + esc(r[1]) + '</span></li>'; });
-  h += '</ul></div></section>' +
-    '<section aria-labelledby="h-sus"><p class="eyebrow mono">Nghi phạm</p><h2 id="h-sus">Ai đang nói dối?</h2>' +
+  h += '</ul></div></section>';
+  h += '<section aria-labelledby="h-ctrl"><p class="eyebrow mono">Điều khiển nhanh</p><h2 id="h-ctrl">Thao tác tại hiện trường</h2><ul class="sheet">' +
+    '<li><span class="k">Khám xét</span><span class="v">Rê chuột hoặc chạm tay rọi đèn pin quanh phòng, bấm vào vật chứng phát sáng để thu thập.</span></li>' +
+    '<li><span class="k">Ổ khóa</span><span class="v">Xoay bánh số hoặc gõ trực tiếp 4 chữ số trên bàn phím, nhấn Enter để mở.</span></li>' +
+    '<li><span class="k">Thẩm vấn</span><span class="v">Hỏi tự do bằng tiếng Việt, chọn câu gợi ý, hoặc đưa vật chứng ra đối chất.</span></li>' +
+    '<li><span class="k">Kết án</span><span class="v">Mở Sổ tay, đối chiếu mốc thời gian, dựng lại hiện trường rồi chỉ mặt hung thủ.</span></li>' +
+    '</ul></section>';
+  h += '<section aria-labelledby="h-sus"><p class="eyebrow mono">Nghi phạm</p><h2 id="h-sus">Ai đang nói dối?</h2>' +
     '<p class="intro">Tất cả đều có mặt trong nhà đêm đó. Tất cả đều có điều muốn giấu.</p><div class="suspects">';
   c.suspects.forEach(function (s) { h += '<div class="sus">' + SILHOUETTE + '<b>' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></div>'; });
   h += '</div></section>';
@@ -658,6 +684,7 @@ buildChips();
 buildVault();
 document.getElementById('cta-follow').addEventListener('click', scrollToFollow);
 window.addEventListener('hashchange', route);
+window.addEventListener('pageshow', function () { buildVault(); route(); });
 route();
 markReveal();
 </script>
