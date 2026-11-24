@@ -2,14 +2,17 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Đêm Rằm Tháng Bảy</title>
     <link rel="icon" type="image/jpeg" href="../avatar_1x1.jpg">
     <link rel="apple-touch-icon" href="../avatar_1x1.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=IBM+Plex+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Patrick+Hand&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="./title_bg.jpg">
     <link rel="preload" as="image" href="./bg_yard.jpg">
+    <link rel="preload" as="image" href="./bg_hallway_ghost.jpg">
     <style>
         :root {
             --bg-color: #050505;
@@ -176,10 +179,10 @@
         }
 
         #stage {
-            aspect-ratio: 16 / 9;
-            width: min(100%, calc((100vh - 7rem) * 16 / 9));
-            width: min(100%, calc((100dvh - 7rem) * 16 / 9));
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            min-height: 0;
         }
         @media (hover: none) { .interactive-item::after { opacity: 1; } }
 
@@ -368,42 +371,130 @@
 
 
 
-        /* ===== Màn hình chờ: miệng giếng dưới trăng rằm ===== */
-        #audio-overlay { position:absolute; inset:0; z-index:50; background:#05070a; overflow:hidden; }
-        #title-3d, #title-fallback, #title-vignette, #title-flash, #title-fade { position:absolute; inset:0; width:100%; height:100%; }
+        /* ===== Màn hình chờ: miệng giếng dưới trăng rằm (AAA Cinematic) ===== */
+        #audio-overlay { position:absolute; inset:0; z-index:50; background:#050608; overflow:hidden; }
+        #title-3d, #title-fallback, #title-mist, #title-vignette, #title-flash, #title-fade { position:absolute; inset:0; width:100%; height:100%; }
         #title-fallback { z-index:0; transition:opacity 1.2s ease; }
         #title-fallback svg { width:100%; height:100%; display:block; }
-        #title-photo { position:absolute; inset:-3%; width:106%; height:106%; z-index:1; background:url('./title_bg.jpg') center/cover no-repeat, #05070a; transform-origin:50% 72%; transform:scale(1.04); will-change:transform, opacity; transition:opacity .45s ease .15s; }
+        #title-photo {
+            position:absolute; inset:-3%; width:106%; height:106%; z-index:1;
+            background:url('./title_bg.jpg') center 48%/cover no-repeat, #05070a;
+            filter:contrast(1.08) saturate(1.08) brightness(0.9);
+            transform-origin:50% 68%; will-change:transform, opacity;
+            animation:titleBreathe 24s ease-in-out infinite alternate;
+            transition:opacity .45s ease .15s;
+        }
+        @keyframes titleBreathe { 0% { transform:scale(1.03) translate3d(0,0,0); } 100% { transform:scale(1.09) translate3d(0,-0.8%,0); } }
+        #title-mist {
+            z-index:2; pointer-events:none; opacity:.45;
+            background:
+                radial-gradient(ellipse 55% 24% at 32% 72%, rgba(210,220,235,.18), transparent 70%),
+                radial-gradient(ellipse 46% 20% at 72% 66%, rgba(225,110,75,.14), transparent 68%);
+            animation:mistDrift 18s ease-in-out infinite alternate;
+        }
+        @keyframes mistDrift { 0% { transform:translateX(-2.5%) scale(1); } 100% { transform:translateX(2.5%) scale(1.04); } }
         #title-3d { z-index:1; display:block; opacity:0; transition:opacity .4s ease; }
-        #audio-overlay.diving #title-photo { transform:scale(5.2) !important; opacity:0; transition:transform .75s cubic-bezier(.4,0,.85,1), opacity .45s ease .18s; }
+        #audio-overlay.diving #title-photo { animation:none; transform:scale(5.2) !important; opacity:0; transition:transform .75s cubic-bezier(.4,0,.85,1), opacity .45s ease .18s; }
         #audio-overlay.diving #title-3d { opacity:1; }
         #title-vignette { z-index:2; pointer-events:none; background:
-            radial-gradient(ellipse 80% 70% at 50% 60%, transparent 45%, rgba(2,3,5,.8) 100%),
-            linear-gradient(180deg, rgba(3,4,6,.82) 0%, rgba(3,4,6,.3) 24%, transparent 42%, transparent 66%, rgba(3,4,6,.88) 100%); }
+            radial-gradient(ellipse 66% 58% at 50% 56%, transparent 32%, rgba(4,4,6,.76) 100%),
+            linear-gradient(180deg, rgba(5,4,5,.86) 0%, rgba(5,4,5,.36) 24%, transparent 40%, transparent 68%, rgba(5,4,5,.92) 100%); }
         #title-flash { z-index:3; pointer-events:none; background:#cfdcff; opacity:0; mix-blend-mode:screen; }
         #title-fade { z-index:6; pointer-events:none; background:#000; opacity:0; transition:opacity .6s ease; }
-        #title-ui { position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center;
-            padding:clamp(26px,7vh,80px) 20px clamp(22px,5.5vh,60px); pointer-events:none; transition:opacity .45s ease, transform .7s ease; }
-        #title-ui .ttl-top, #title-ui .ttl-bottom { pointer-events:auto; }
-        .ttl-kicker { font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:700; letter-spacing:.32em; text-transform:uppercase; color:#b9a77f; margin-bottom:18px; }
-        .ttl-kicker::before, .ttl-kicker::after { content:""; display:inline-block; width:28px; height:1px; background:currentColor; vertical-align:middle; margin:0 12px; opacity:.6; }
-        #audio-overlay h1 { font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(2.6rem,7.8vw,6.2rem); line-height:1.12; letter-spacing:.01em; color:#b3170f; margin:0; transition:color .12s, text-shadow .12s; }
-        #audio-overlay h1 em { display:block; font-style:italic; font-size:.6em; letter-spacing:.2em; color:#e3d6bf; text-shadow:0 2px 18px rgba(0,0,0,.95); }
-        #audio-overlay.struck h1 { color:#f0f2f8; text-shadow:0 0 36px rgba(210,225,255,.9), 0 0 6px rgba(255,255,255,.8); }
-        .ttl-tag { margin:18px auto 0; max-width:36rem; font-family:'IBM Plex Mono',monospace; font-size:clamp(.82rem,1.6vw,1rem); line-height:1.65; color:#cfc3ad; text-shadow:0 1px 10px #000, 0 0 2px #000; }
-        .ttl-bottom { display:flex; flex-direction:column; align-items:center; gap:12px; }
-        #audio-overlay .btn { min-width:min(290px,80vw); padding:14px 30px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:1rem; letter-spacing:.24em;
-            color:#e8d9a8; background:rgba(8,6,6,.55); border:1px solid rgba(212,175,55,.45); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); cursor:pointer;
-            transition:background .25s, border-color .25s, color .25s, transform .25s, box-shadow .25s; }
-        #audio-overlay .btn:hover, #audio-overlay .btn:focus-visible { background:rgba(138,3,3,.88); border-color:#e8d9a8; color:#fff; transform:translateY(-2px); box-shadow:0 10px 26px rgba(138,3,3,.45); outline:none; }
-        #audio-overlay .btn-red { color:#ffd9cf; background:rgba(90,6,4,.6); border-color:rgba(210,50,40,.8); }
+        #title-ui {
+            position:absolute; inset:0; z-index:4;
+            display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center;
+            padding:clamp(20px,4.5vh,52px) 20px clamp(16px,3.8vh,38px);
+            pointer-events:none; transition:opacity .45s ease, transform .7s ease;
+        }
+        #title-ui .ttl-top, #title-ui .ttl-bottom, #title-ui .ttl-corner { pointer-events:auto; }
+        .ttl-corner {
+            position:absolute; top:14px; z-index:20;
+            font-family:'IBM Plex Mono',monospace !important; font-size:.7rem !important; font-weight:700 !important;
+            letter-spacing:.14em !important; padding:7px 14px !important; min-width:auto !important;
+            color:#d9c8a3 !important; background:rgba(8,6,6,.68) !important;
+            border:1px solid rgba(200,162,88,.38) !important; text-decoration:none;
+            clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+        }
+        .ttl-corner:hover { border-color:#e8c77b !important; color:#fff !important; background:rgba(138,3,3,.78) !important; }
+        .ttl-kicker {
+            display:inline-flex; align-items:center; gap:10px;
+            font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:600;
+            letter-spacing:.26em; text-transform:uppercase; color:#c8a258; margin-bottom:8px;
+            text-shadow:0 2px 10px rgba(0,0,0,.95);
+        }
+        .ttl-kicker::before, .ttl-kicker::after { content:""; width:28px; height:1px; background:linear-gradient(90deg,transparent,#c8a258); opacity:.8; }
+        .ttl-kicker::after { background:linear-gradient(90deg,#c8a258,transparent); }
+        #audio-overlay h1 {
+            font-family:'Cormorant Garamond',Georgia,serif; font-weight:700;
+            font-size:clamp(2.8rem,7.6vw,6rem); line-height:1.06; letter-spacing:.08em;
+            margin:0; padding:0.12em 0 0;
+            background:linear-gradient(180deg,#ff6a56 8%,#cc1d18 56%,#800909 100%);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+            filter:drop-shadow(0 8px 26px rgba(0,0,0,.95)) drop-shadow(0 0 18px rgba(143,17,17,.35));
+            transition:filter .12s;
+        }
+        #audio-overlay h1 em {
+            display:block; font-style:normal; font-weight:600;
+            font-size:.46em; letter-spacing:.34em; margin-top:.12em; padding:.08em 0;
+            background:linear-gradient(180deg,#fff7e8 15%,#dfd0b1 72%,#b29663 100%);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+            filter:drop-shadow(0 4px 16px rgba(0,0,0,.98));
+        }
+        #audio-overlay.struck h1 { filter:drop-shadow(0 0 34px rgba(220,235,255,.95)) brightness(1.6); }
+        .ttl-tag {
+            margin:10px auto 0; max-width:34rem;
+            font-family:'Be Vietnam Pro',sans-serif; font-size:clamp(.82rem,1.45vw,.96rem);
+            font-weight:400; line-height:1.55; color:#ddd1bd;
+            text-shadow:0 2px 14px rgba(0,0,0,.98), 0 0 4px #000;
+        }
+        .ttl-bottom { display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; }
+        .ttl-actions { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px; }
+        #audio-overlay .btn {
+            min-width:176px; padding:12px 24px;
+            font-family:'Be Vietnam Pro',sans-serif; font-weight:700; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase;
+            color:#efe4cc; background:rgba(12,10,10,.72); border:1px solid rgba(200,162,88,.42);
+            -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); cursor:pointer;
+            clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+            transition:background .22s, border-color .22s, color .22s, transform .22s, box-shadow .22s;
+        }
+        #audio-overlay .btn:hover, #audio-overlay .btn:focus-visible {
+            background:rgba(200,162,88,.18); border-color:#e5c37a; color:#fff;
+            transform:translateY(-2px); box-shadow:0 12px 28px rgba(0,0,0,.65); outline:none;
+        }
+        #audio-overlay .btn-red {
+            min-width:206px; color:#fff6e8;
+            background:linear-gradient(135deg,#b82320,#7d0d0d);
+            border-color:rgba(232,192,114,.68);
+            box-shadow:0 10px 30px rgba(143,17,17,.52);
+        }
+        #audio-overlay .btn-red:hover, #audio-overlay .btn-red:focus-visible {
+            background:linear-gradient(135deg,#d24a3f,#991414);
+            border-color:#f5d796; box-shadow:0 14px 36px rgba(210,74,63,.6);
+        }
         #net-warn { color:#eab308; font-size:.82rem; max-width:28rem; margin:0; }
-        .ttl-note { margin:4px 0 0; max-width:30rem; font-size:.72rem; line-height:1.5; letter-spacing:.05em; color:#8d8475; }
-        #audio-overlay.leaving #title-ui { opacity:0; transform:translateY(-16px) scale(.98); }
+        .ttl-note {
+            margin:2px 0 0; max-width:46rem;
+            font-family:'Be Vietnam Pro',sans-serif; font-size:.73rem; line-height:1.45;
+            letter-spacing:.02em; color:#a89b87; text-shadow:0 1px 8px #000;
+        }
+        #audio-overlay.leaving #title-ui { opacity:0; transform:translateY(-14px) scale(.98); }
         #audio-overlay.leaving #title-ui * { pointer-events:none; }
-        @media (max-height:520px) { .ttl-tag { display:none; } .ttl-kicker { margin-bottom:8px; } }
-        @media (max-width:520px) { .ttl-kicker { font-size:.6rem; letter-spacing:.2em; } .ttl-kicker::before, .ttl-kicker::after { display:none; } .ttl-tag br { display:none; } }
-        @media (prefers-reduced-motion: reduce) { #title-3d, #title-fallback, #title-ui { transition:none; } #title-fallback .rain { animation:none; } }
+        @media (max-height:460px) {
+            #title-ui { padding:14px 16px 12px; }
+            .ttl-tag { display:none; }
+            .ttl-kicker { margin-bottom:4px; }
+            #audio-overlay h1 { font-size:clamp(2.2rem,6vw,3.4rem); }
+            #audio-overlay .btn { padding:9px 18px; min-width:148px; font-size:.74rem; }
+            .ttl-note { font-size:.66rem; }
+        }
+        @media (max-width:520px) {
+            .ttl-kicker { font-size:.6rem; letter-spacing:.18em; }
+            .ttl-kicker::before, .ttl-kicker::after { display:none; }
+            .ttl-tag br { display:none; }
+            #audio-overlay .btn { min-width:140px; padding:10px 16px; font-size:.74rem; }
+        }
+        @media (prefers-reduced-motion: reduce) { #title-3d, #title-fallback, #title-ui, #title-photo, #title-mist { transition:none; animation:none !important; } #title-fallback .rain { animation:none; } }
     	/* ===== NÂNG CẤP TOÀN DIỆN: 2.5D PARALLAX, HẬU KỲ, TAB ĐỐI CHẤT & TÁI HIỆN ===== */
 #stage { perspective: 1000px; background: #050505 !important; }
 #stage-bg-layer {
@@ -491,11 +582,42 @@ body.dread-glitch #app-container {
 #recon-cinema .rc-time { color: #d24a3f; font-weight: 700; letter-spacing: 0.18em; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 6px; }
 #recon-cinema .rc-line { max-width: 44rem; margin: 0 auto 14px; font-size: clamp(0.95rem, 2vw, 1.15rem); line-height: 1.65; text-shadow: 0 2px 8px #000; }
 @media (prefers-reduced-motion: reduce) { #cine-post::before, #suspect-avatar, body.dread-glitch #app-container { animation: none !important; } }
+
+/* Bắt buộc xoay ngang trên điện thoại khi ở màn hình dọc */
+#rotate-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(5, 5, 5, 0.96); color: #e8dcc8;
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px; gap: 14px;
+}
+#rotate-overlay .rot-icon {
+    font-size: 3rem; display: inline-block;
+    animation: rotHint 1.8s ease-in-out infinite;
+}
+@keyframes rotHint { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } }
+@media (pointer: coarse) and (orientation: portrait) and (max-width: 900px) {
+    #rotate-overlay { display: flex; }
+}
+
+/* Lớp hành lang có bóng ma nữ mờ ảo đồng bộ parallax với #stage-bg-layer */
+#stage-ghost-layer {
+    position: absolute; inset: -3.5%; width: 107%; height: 107%;
+    background: url('./bg_hallway_ghost.jpg') center/cover no-repeat;
+    z-index: 2; opacity: 0; pointer-events: none;
+    will-change: transform, opacity;
+    filter: contrast(1.06) brightness(0.95);
+}
 	</style>
 </head>
 <body class="crt">
 
 <div id="app-container" class="w-full h-full relative flex justify-center items-center">
+    <div id="rotate-overlay" role="dialog" aria-modal="true" aria-label="Xoay ngang màn hình">
+        <div class="rot-icon" aria-hidden="true">📱</div>
+        <div class="title-font text-xl text-red-500 font-bold tracking-wider">XOAY NGANG ĐIỆN THOẠI</div>
+        <p class="text-sm text-[#d3c9b8] max-w-xs leading-relaxed">Vụ án <b>Đêm Rằm Tháng Bảy</b> yêu cầu màn hình ngang và toàn màn hình trên điện thoại để hiển thị đủ hiện trường.</p>
+        <button id="btn-rotate-fs" type="button" class="btn btn-red text-sm mt-1">⛶ TOÀN MÀN HÌNH &amp; XOAY NGANG</button>
+    </div>
 
     <div id="audio-overlay">
         <div id="title-fallback" aria-hidden="true">
@@ -532,20 +654,25 @@ body.dread-glitch #app-container {
         </div>
         <div id="title-photo" aria-hidden="true"></div>
         <canvas id="title-3d" aria-hidden="true"></canvas>
+        <div id="title-mist" aria-hidden="true"></div>
         <div id="title-vignette"></div>
         <div id="title-flash"></div>
         <div id="title-ui">
+            <a id="btn-title-back" href="../index.html#kho-ho-so" class="ttl-corner" style="left:14px">← KHO HỒ SƠ</a>
+            <button id="btn-title-audio" type="button" class="ttl-corner hidden-ui" style="right:14px">🔊 BẬT NHẠC</button>
             <div class="ttl-top">
                 <div class="ttl-kicker">Hồ sơ #001 · Làng cổ ven sông</div>
                 <h1>ĐÊM RẰM<em>THÁNG BẢY</em></h1>
-                <p class="ttl-tag">Đêm cửa ngục mở. Một tiếng hát ru vọng lên từ đáy giếng,<br> và ông chủ nhà đã tắt thở trong căn phòng khóa kín.</p>
+                <p class="ttl-tag">Tiếng hát ru vọng lên từ đáy giếng — và ông chủ nhà đã tắt thở trong căn phòng khóa kín.</p>
             </div>
             <div class="ttl-bottom">
                 <p id="net-warn" class="hidden-ui">Không tải được giao diện (Tailwind). Hãy kiểm tra kết nối mạng rồi tải lại trang.</p>
-                <button id="btn-continue" class="btn btn-red hidden-ui">TIẾP TỤC VỤ ÁN</button>
-                <button id="btn-start-audio" class="btn pulsate">VÀO NHÀ CHÍNH</button>
-                <button id="btn-howto-title" type="button" class="btn">CÁCH CHƠI</button>
-                <p class="ttl-note">Game có âm thanh và hiệu ứng hù dọa nhẹ. Đeo tai nghe để có trải nghiệm tốt nhất.</p>
+                <div class="ttl-actions">
+                    <button id="btn-continue" class="btn btn-red hidden-ui">TIẾP TỤC VỤ ÁN</button>
+                    <button id="btn-start-audio" class="btn pulsate">VÀO NHÀ CHÍNH</button>
+                    <button id="btn-howto-title" type="button" class="btn">CÁCH CHƠI</button>
+                </div>
+                <p class="ttl-note">Game có âm thanh và hiệu ứng hù dọa nhẹ · Đeo tai nghe để có trải nghiệm tốt nhất.</p>
             </div>
         </div>
         <div id="title-fade"></div>
@@ -558,11 +685,12 @@ body.dread-glitch #app-container {
         <button id="btn-howto-pro" type="button" class="text-xs text-[#b9a77f] underline mt-3 bg-transparent border-0 cursor-pointer">Xem cách chơi</button>
     </div>
 
-    <div id="game-ui" class="w-full h-full max-w-5xl relative hidden-ui flex flex-col lightning-bg">
+    <div id="game-ui" class="w-full h-full relative hidden-ui flex flex-col lightning-bg">
         <div class="h-12 border-b border-[#333] flex justify-between items-center px-2 md:px-4 bg-black/80 z-30">
             <div class="hidden md:block title-font text-xl tracking-widest text-red-600">TRẦN BẢO - THÁM TỬ TƯ</div>
             <div id="room-name" class="font-bold">Sân Trước</div>
             <div class="flex gap-2">
+                <button id="btn-fullscreen" type="button" class="btn text-sm" title="Toàn màn hình" aria-label="Toàn màn hình">⛶</button>
                 <button id="btn-mute" class="btn text-sm" title="Bật/tắt âm thanh">🔊</button>
                 <button id="btn-hint-global" class="btn text-sm hidden-ui">💡 GỢI Ý</button>
                 <button id="btn-letter" class="btn text-sm">✉️ XEM LÁ THƯ</button>
@@ -822,6 +950,33 @@ function initAudio() {
 }
 
 const MUSIC = { mode: 'off', timer: null, step: 0, padG: null };
+const bgmAudio = new Audio('./bgm_theme.mp3');
+bgmAudio.loop = true;
+bgmAudio.preload = 'auto';
+bgmAudio.volume = 0;
+let bgmTarget = 0, bgmDuck = 1, bgmRampTimer = null;
+function syncBgmVolume() {
+    const goal = (muted || document.hidden || MUSIC.mode === 'off') ? 0 : Math.min(1, Math.max(0, bgmTarget * bgmDuck));
+    if (goal > 0 && bgmAudio.paused) {
+        const p = bgmAudio.play();
+        if (p && p.catch) p.catch(() => {});
+    }
+    clearInterval(bgmRampTimer);
+    bgmRampTimer = setInterval(() => {
+        const diff = goal - bgmAudio.volume;
+        if (Math.abs(diff) <= 0.015) {
+            bgmAudio.volume = goal;
+            clearInterval(bgmRampTimer);
+            if (goal === 0 && (muted || document.hidden || MUSIC.mode === 'off') && !bgmAudio.paused) bgmAudio.pause();
+        } else {
+            bgmAudio.volume = Math.min(1, Math.max(0, bgmAudio.volume + diff * 0.25));
+        }
+    }, 60);
+}
+function setBgmForMode(mode) {
+    bgmTarget = mode === 'title' ? 0.85 : mode === 'prologue' ? 0.15 : mode === 'ending' ? 0.20 : mode === 'act2' ? 0.10 : mode === 'act1' ? 0.10 : 0;
+    syncBgmVolume();
+}
 function playPianoNote(freq, vol, dur, delay) {
     if (!audioCtx || muted || audioCtx.state !== 'running' || !window._musicBus) return;
     const ac = audioCtx, t = ac.currentTime + (delay || 0);
@@ -857,24 +1012,30 @@ function ensureMusicPad() {
     });
 }
 function setMusicMode(mode) {
-    if (!audioCtx) return;
-    ensureMusicPad();
     MUSIC.mode = mode;
     MUSIC.step = 0;
     clearTimeout(MUSIC.timer);
+    setBgmForMode(mode);
+    if (!audioCtx) return;
+    ensureMusicPad();
     const t = audioCtx.currentTime;
-    const padLevel = mode === 'prologue' ? 0.085 : mode === 'ending' ? 0.075 : mode === 'act2' ? 0.048 : mode === 'act1' ? 0.036 : 0;
+    const padLevel = mode === 'prologue' ? 0.022 : mode === 'ending' ? 0.02 : mode === 'act2' ? 0.016 : mode === 'act1' ? 0.01 : 0;
     if (MUSIC.padG) MUSIC.padG.gain.setTargetAtTime(padLevel, t, 1.0);
-    if (mode === 'off') return;
+    if (mode === 'off' || mode === 'title') return;
 
+    const TITLE_SEQ = [
+        [293.66, 440.00], [349.23], [329.63],
+        [220.00, 293.66], [349.23], [293.66],
+        [233.08, 349.23], [329.63], [261.63]
+    ];
     const PROLOGUE_SEQ = [
         [146.83, 220.00, 349.23], [329.63], [293.66],
         [116.54, 174.61, 293.66], [261.63], [220.00],
         [98.00,  146.83, 233.08], [220.00], [174.61],
         [110.00, 164.81, 277.18], [220.00], [146.83]
     ];
-    const ACT1_NOTES = [146.83, 174.61, 220.00, 261.63, 293.66, 329.63, 349.23];
-    const ACT2_NOTES = [110.00, 146.83, 155.56, 207.65, 220.00, 233.08, 293.66];
+    const ACT1_NOTES = [220.00, 261.63, 293.66, 329.63, 349.23, 440.00];
+    const ACT2_NOTES = [207.65, 220.00, 233.08, 293.66, 311.13, 349.23];
     const END_SEQ = [
         [146.83, 293.66], [349.23], [329.63], [220.00],
         [116.54, 233.08], [293.66], [261.63], [174.61],
@@ -884,25 +1045,25 @@ function setMusicMode(mode) {
     function nextNote() {
         if (MUSIC.mode !== mode) return;
         if (!document.hidden && !muted && audioCtx.state === 'running') {
-            if (mode === 'prologue' || mode === 'ending') {
-                const seq = mode === 'prologue' ? PROLOGUE_SEQ : END_SEQ;
+            if (mode === 'prologue' || mode === 'ending' || mode === 'title') {
+                const seq = mode === 'prologue' ? PROLOGUE_SEQ : mode === 'title' ? TITLE_SEQ : END_SEQ;
                 const chord = seq[MUSIC.step % seq.length];
-                chord.forEach((f, idx) => playPianoNote(f, mode === 'prologue' ? 0.088 : 0.082, 3.8, idx * 0.22));
+                chord.forEach((f, idx) => playPianoNote(f, mode === 'prologue' ? 0.052 : mode === 'title' ? 0.042 : 0.05, 3.8, idx * 0.28));
                 MUSIC.step++;
-                MUSIC.timer = setTimeout(nextNote, mode === 'prologue' ? 2350 : 2700);
+                MUSIC.timer = setTimeout(nextNote, mode === 'prologue' ? 2800 : mode === 'title' ? 3800 : 3000);
                 return;
             }
             const pool = mode === 'act2' ? ACT2_NOTES : ACT1_NOTES;
             const n1 = pool[Math.floor(Math.random() * pool.length)];
-            playPianoNote(n1, mode === 'act2' ? 0.062 : 0.052, 3.2, 0);
-            if (Math.random() < 0.45) {
+            playPianoNote(n1, mode === 'act2' ? 0.045 : 0.036, 3.2, 0);
+            if (Math.random() < 0.35) {
                 const n2 = pool[Math.floor(Math.random() * pool.length)];
-                playPianoNote(n2, 0.038, 2.8, 0.75);
+                playPianoNote(n2, 0.026, 2.8, 0.85);
             }
         }
-        MUSIC.timer = setTimeout(nextNote, (mode === 'act2' ? 3800 : 5200) + Math.random() * 2400);
+        MUSIC.timer = setTimeout(nextNote, (mode === 'act2' ? 5200 : 6800) + Math.random() * 2600);
     }
-    MUSIC.timer = setTimeout(nextNote, mode === 'prologue' ? 450 : 1200);
+    MUSIC.timer = setTimeout(nextNote, (mode === 'prologue' || mode === 'title') ? 900 : 1600);
 }
 function duckAmbience(on) {
     if (!audioCtx || !ambBus) return;
@@ -1008,13 +1169,16 @@ function toggleMute() {
         masterGain.gain.setTargetAtTime(muted ? 0 : 1, audioCtx.currentTime, 0.05);
         if (!muted && audioCtx.state !== 'running') audioCtx.resume();
     }
+    syncBgmVolume();
     document.getElementById('btn-mute').textContent = muted ? '🔇' : '🔊';
     try { localStorage.setItem('drtb_muted', muted ? '1' : '0'); } catch (e) {}
 }
 
 document.addEventListener('visibilitychange', () => {
-    if (!audioCtx) return;
-    if (document.hidden) audioCtx.suspend(); else audioCtx.resume();
+    if (audioCtx) {
+        if (document.hidden) audioCtx.suspend(); else audioCtx.resume();
+    }
+    syncBgmVolume();
 });
 document.addEventListener('pointerdown', () => {
     if (audioCtx && audioCtx.state !== 'running' && !document.hidden) audioCtx.resume();
@@ -1203,7 +1367,7 @@ const SFX = {
         };
         try {
             const a = new Audio('./sfx_scream.mp3');
-            a.volume = 0.28;
+            a.volume = 0.85;
             const p = a.play();
             if (p && p.catch) p.catch(synthFallback);
         } catch (e) { synthFallback(); }
@@ -2010,9 +2174,62 @@ function titleExit(next) {
     else { $('title-fade').style.opacity = 1; setTimeout(finish, 650); }
 }
 
+function enterFullscreenAndLandscape() {
+    try {
+        const el = document.documentElement;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+        const p = (!document.fullscreenElement && !document.webkitFullscreenElement && req) ? req.call(el) : Promise.resolve();
+        Promise.resolve(p).then(() => {
+            if (isTouch && screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
+        }).catch(() => {});
+    } catch (e) {}
+}
+function toggleFullscreen() {
+    try {
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            const ex = document.exitFullscreen || document.webkitExitFullscreen;
+            if (ex) ex.call(document);
+        } else {
+            enterFullscreenAndLandscape();
+        }
+    } catch (e) {}
+}
+if ($('btn-fullscreen')) $('btn-fullscreen').onclick = toggleFullscreen;
+if ($('btn-rotate-fs')) $('btn-rotate-fs').onclick = enterFullscreenAndLandscape;
+
+function startTitleMusic() {
+    if (titleLeaving || (MUSIC.mode && MUSIC.mode !== 'off' && MUSIC.mode !== 'title')) return;
+    initAudio();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    if (MUSIC.mode !== 'title') setMusicMode('title');
+    else syncBgmVolume();
+    const btn = $('btn-title-audio');
+    if (!muted && bgmAudio.paused) {
+        bgmAudio.volume = bgmTarget;
+        const p = bgmAudio.play();
+        if (p && p.then) {
+            p.then(() => { if (btn) btn.classList.add('hidden-ui'); })
+             .catch(() => { if (btn && !$('audio-overlay').classList.contains('hidden-ui')) btn.classList.remove('hidden-ui'); });
+        }
+    } else if (!bgmAudio.paused && btn) {
+        btn.classList.add('hidden-ui');
+    }
+}
+try { startTitleMusic(); } catch (e) {}
+['pointerdown', 'keydown'].forEach(ev => {
+    window.addEventListener(ev, () => {
+        if (!$('audio-overlay').classList.contains('hidden-ui') && (bgmAudio.paused || !audioCtx || audioCtx.state !== 'running')) {
+            startTitleMusic();
+        }
+    }, { passive: true });
+});
+
 $('btn-start-audio').onclick = () => {
     if (titleLeaving) return;
     if (hasProgress(savedGame) && !confirm('Chơi mới sẽ xóa vụ án đang điều tra. Tiếp tục?')) return;
+    enterFullscreenAndLandscape();
     initAudio();
     setMusicMode('prologue');
     clearSave();
@@ -2026,6 +2243,7 @@ $('btn-start-audio').onclick = () => {
 
 $('btn-continue').onclick = () => {
     if (titleLeaving) return;
+    enterFullscreenAndLandscape();
     prologueActive = false;
     initAudio();
     applySave(savedGame);
@@ -2370,7 +2588,7 @@ function showClueModal(text, o) {
     $('clue-text').textContent = text;
 
     if (!o.quiet) sfx(o.isNew ? 'clue' : 'paper');
-    afterCloseCb = o.isNew ? () => { showMsg('📔 Đã ghi manh mối mới vào Sổ tay!'); sfx('note'); } : null;
+    afterCloseCb = o.isNew ? () => { showMsg('📔 Đã ghi manh mối mới vào Sổ tay!', 1500); sfx('note'); } : null;
     openModal('modal-clue');
 }
 
@@ -2991,6 +3209,10 @@ $('btn-accuse').onclick = () => {
     const bgLayer = document.createElement('div');
     bgLayer.id = 'stage-bg-layer';
     stage.insertBefore(bgLayer, stage.firstChild);
+    const ghostLayer = document.createElement('div');
+    ghostLayer.id = 'stage-ghost-layer';
+    ghostLayer.setAttribute('aria-hidden', 'true');
+    stage.insertBefore(ghostLayer, bgLayer.nextSibling);
     const itemsLayer = $('items-layer');
 
     const cinePost = document.createElement('div');
@@ -3061,8 +3283,30 @@ $('btn-accuse').onclick = () => {
         }
     };
 
-    let cfg = ROOM_FX.frontYard, blackoutMode = false;
+    let cfg = ROOM_FX.frontYard, blackoutMode = false, hallwayGhostStart = 0;
     bgLayer.style.background = cfg.bg;
+
+    // Nhịp chớp tắt ánh sáng lập lòe trong hành lang để bóng ma hiện mờ ảo theo từng đợt chớp
+    function getHallwayStrobe(gt) {
+        if (gt < 0 || gt > 6.0) return 0;
+        if (reduce) return gt < 5.6 ? 0.55 : 0;
+        const bursts = [
+            [0.00, 0.28, 0.92], [0.36, 0.52, 0.62],
+            [0.95, 1.12, 0.78], [1.20, 1.34, 0.45],
+            [1.95, 2.24, 0.80], [2.34, 2.48, 0.52],
+            [3.15, 3.36, 0.74], [3.46, 3.60, 0.85], [3.70, 3.82, 0.42],
+            [4.55, 4.86, 0.64], [5.15, 5.32, 0.36]
+        ];
+        for (let i = 0; i < bursts.length; i++) {
+            const b = bursts[i];
+            if (gt >= b[0] && gt <= b[1]) {
+                const p = (gt - b[0]) / (b[1] - b[0]);
+                const env = Math.sin(p * Math.PI);
+                return b[2] * (0.65 + 0.35 * env);
+            }
+        }
+        return 0;
+    }
 
     let W = 0, H = 0, dpr = Math.min(devicePixelRatio || 1, coarse ? 1.25 : 1.5);
     function size() {
@@ -3110,7 +3354,9 @@ $('btn-accuse').onclick = () => {
         if (!reduce) {
             const ox = (0.5 - lx) * cfg.parallax, oy = (0.5 - ly) * (cfg.parallax * 0.65);
             const rx = (ly - 0.5) * 1.4, ry = (0.5 - lx) * 1.8;
-            bgLayer.style.transform = `translate3d(${ox.toFixed(2)}px, ${oy.toFixed(2)}px, 0) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+            const tr = `translate3d(${ox.toFixed(2)}px, ${oy.toFixed(2)}px, 0) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+            bgLayer.style.transform = tr;
+            ghostLayer.style.transform = tr;
             itemsLayer.style.transform = `translate3d(${(ox * 1.18).toFixed(2)}px, ${(oy * 1.18).toFixed(2)}px, 0)`;
         }
 
@@ -3199,9 +3445,18 @@ $('btn-accuse').onclick = () => {
             x.beginPath(); x.arc(dx, dy, (1 + (d.p % 1.2)) * (1 + glint * 0.8), 0, 7); x.fill();
         });
 
+        const strobe = (hallwayGhostStart && blackoutMode && state.room === 'hallway')
+            ? getHallwayStrobe((performance.now() - hallwayGhostStart) / 1000)
+            : 0;
+        if (hallwayGhostStart && blackoutMode && state.room === 'hallway') {
+            ghostLayer.style.opacity = (strobe > 0 ? (0.28 + strobe * 0.54) : 0.05).toFixed(3);
+        } else if (ghostLayer.style.opacity !== '0') {
+            ghostLayer.style.opacity = '0';
+        }
+
         x.globalCompositeOperation = 'source-over';
-        const darkLevel = blackoutMode ? 0.96 : cfg.dark;
-        const gDark = x.createRadialGradient(cx, cy, r * 0.14, cx, cy, r * (blackoutMode ? 1.15 : 1.65));
+        const darkLevel = blackoutMode ? Math.max(0.32, 0.96 - strobe * 0.62) : cfg.dark;
+        const gDark = x.createRadialGradient(cx, cy, r * 0.14, cx, cy, r * (blackoutMode ? (1.15 + strobe * 0.95) : 1.65));
         gDark.addColorStop(0, 'rgba(0,0,0,0)');
         gDark.addColorStop(0.55, `rgba(0,0,0,${(darkLevel * 0.58).toFixed(3)})`);
         gDark.addColorStop(1, `rgba(0,0,0,${darkLevel})`);
@@ -3213,8 +3468,9 @@ $('btn-accuse').onclick = () => {
         gWarm.addColorStop(1, 'rgba(255, 175, 95, 0)');
         x.fillStyle = gWarm; x.fillRect(0, 0, W, H);
 
-        if (flashVal > 0.01) {
-            x.fillStyle = `rgba(190, 215, 255, ${(flashVal * 0.22).toFixed(3)})`;
+        if (flashVal > 0.01 || strobe > 0.05) {
+            const coldA = Math.min(0.28, flashVal * 0.22 + strobe * 0.18);
+            x.fillStyle = `rgba(190, 215, 255, ${coldA.toFixed(3)})`;
             x.fillRect(0, 0, W, H);
         }
         x.globalCompositeOperation = 'source-over';
@@ -3242,6 +3498,7 @@ $('btn-accuse').onclick = () => {
         updatePhaseUI();
         updateObjective();
         setMusicMode('act2');
+        bgmDuck = 0.25; syncBgmVolume();
         blackoutMode = true;
         document.body.classList.add('blackout-event', 'dread-state');
         sfx('locked'); triggerDread(true, true);
@@ -3250,11 +3507,15 @@ $('btn-accuse').onclick = () => {
         setTimeout(() => {
             sfx('scream');
             triggerDread(true, true);
+            hallwayGhostStart = performance.now();
             showMsg("😱 Á! Một tiếng la thất thanh của ông Thạc dội ra từ Thư Phòng đang khóa kín!", 6000);
         }, 5200);
         setTimeout(() => {
             blackoutMode = false;
             act2Running = false;
+            hallwayGhostStart = 0;
+            ghostLayer.style.opacity = '0';
+            bgmDuck = 1; syncBgmVolume();
             document.body.classList.remove('blackout-event');
             sfx('click');
             renderRoom(state.room);
