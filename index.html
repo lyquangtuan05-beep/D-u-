@@ -206,6 +206,30 @@ html.js .folder[data-reveal]{transition:opacity .7s ease var(--d,0ms),translate 
 .user-tag i { display: inline-grid; place-items: center; background: var(--seal); color: #f6ecd9; font-style: normal; font-weight: 700; font-size: 0.74rem; }
 .auth-msg { flex-basis: 100%; max-width: 22rem; color: #f2b8b0; font-size: 0.8rem; font-weight: 400; letter-spacing: 0; text-transform: none; line-height: 1.45; }
 .auth-msg:empty { display: none; }
+.auth-modal-bg { position: fixed; inset: 0; z-index: 60; background: rgba(6, 5, 5, 0.82); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; }
+.auth-modal-bg[hidden] { display: none; }
+.auth-modal { width: 100%; max-width: 390px; background: #14100f; border: 1px solid #3c2d29; border-radius: 6px; padding: 22px 22px 20px; color: var(--paper); box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7); position: relative; }
+.auth-modal h3 { margin: 0 0 14px; font-family: var(--serif); font-size: 1.35rem; color: var(--paper); }
+.auth-close { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--paper-dim); font-size: 1.35rem; line-height: 1; cursor: pointer; padding: 4px 8px; }
+.auth-close:hover { color: var(--paper); }
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; background: #0c0909; padding: 4px; border-radius: 4px; border: 1px solid #2a201e; }
+.auth-tab { background: none; border: none; color: var(--paper-dim); padding: 7px 10px; border-radius: 3px; font-family: var(--body); font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+.auth-tab.on { background: var(--seal); color: #f8efe0; }
+.auth-field { display: grid; gap: 5px; margin-bottom: 11px; }
+.auth-field label { font-size: 0.78rem; color: var(--paper-dim); font-weight: 600; }
+.auth-field input { width: 100%; box-sizing: border-box; background: #0b0908; border: 1px solid #3c2d29; color: var(--paper); padding: 9px 11px; border-radius: 4px; font-family: var(--body); font-size: 0.9rem; outline: none; }
+.auth-field input:focus { border-color: var(--seal-bright); }
+.auth-submit { width: 100%; background: var(--seal); border: 1px solid var(--seal-bright); color: #f8efe0; padding: 10px 14px; border-radius: 4px; font-family: var(--body); font-weight: 700; font-size: 0.86rem; cursor: pointer; margin-top: 2px; }
+.auth-submit:hover { background: var(--seal-bright); }
+.auth-submit:disabled { opacity: 0.55; cursor: default; }
+.auth-div { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--paper-dim); font-size: 0.75rem; }
+.auth-div::before, .auth-div::after { content: ""; flex: 1; height: 1px; background: #2c221f; }
+.auth-alt { display: grid; gap: 8px; }
+.auth-alt-btn { width: 100%; background: #1a1514; border: 1px solid #453530; color: var(--paper); padding: 9px 12px; border-radius: 4px; font-family: var(--body); font-weight: 600; font-size: 0.84rem; cursor: pointer; }
+.auth-alt-btn:hover { border-color: var(--seal-bright); background: rgba(210, 74, 63, 0.1); }
+.auth-alt-btn:disabled { opacity: 0.55; cursor: default; }
+.auth-err { margin-top: 10px; min-height: 1.2em; color: #f2b8b0; font-size: 0.8rem; line-height: 1.45; }
+.auth-err:empty { display: none; }
 .folder[data-status="Đã phá án"] .state span:last-child, .doc .stamp[data-status="Đã phá án"] { color: #1b5e20; border-color: #1b5e20; }
 .folder[data-status="Đang điều tra"] .state span:last-child { color: var(--seal); }
 </style>
@@ -437,10 +461,10 @@ function buildVault() {
       '</a>';
   });
   html += '<a class="folder empty" href="#theo-doi" data-no="Hồ sơ #002" style="cursor:pointer">' +
-    '<div class="state"><span>Trạng thái</span><span>Đang niêm phong</span></div>' +
+    '<div class="state"><span>Trạng thái</span><span>Sắp diễn ra</span></div>' +
     '<h3>Vụ án tiếp theo</h3>' +
-    '<p>Chơi thử hiện trường đầu miễn phí. Mở khóa toàn bộ hồ sơ qua VietQR (39.000đ). Theo dõi Facebook &amp; TikTok để nhận mật báo ngày mở án.</p>' +
-    '<span class="open" style="color:var(--seal-bright)">Nhận thông báo mở án →</span></a>';
+    '<p>Hồ sơ vụ án mới đang được chuẩn bị. Theo dõi Facebook &amp; TikTok để nhận mật báo ngày mở án.</p>' +
+    '<span class="open" style="color:var(--seal-bright)">Sắp diễn ra →</span></a>';
   box.innerHTML = html;
 }
 
@@ -490,6 +514,11 @@ function scrollToFollow() {
 }
 function route() {
   var h = location.hash.replace('#', '');
+  if (window.__authGate && !window.__authGate.canOpen(h)) {
+    show('home');
+    window.scrollTo(0, 0);
+    return;
+  }
   var found = null;
   CASES.forEach(function (c) { if (c.id === h) found = c; });
   if (found) {
@@ -713,8 +742,100 @@ markReveal();
 
   var box = document.getElementById('auth-box');
   if (!box) return;
-  var api = null, auth = null, user = null, busy = false, msgTimer = null, loadFailed = false;
+  var api = null, auth = null, user = null, busy = false, msgTimer = null, loadFailed = false, mode = 'login', authReady = false, pendingHash = null;
   var FAIL_MSG = 'Không tải được dịch vụ đăng nhập. Hãy kiểm tra mạng hoặc tắt trình chặn quảng cáo.';
+
+  var modal = document.createElement('div');
+  modal.className = 'auth-modal-bg';
+  modal.id = 'auth-modal';
+  modal.hidden = true;
+  modal.innerHTML =
+    '<div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-m-title">' +
+      '<button type="button" class="auth-close" id="auth-close" aria-label="Đóng">&times;</button>' +
+      '<h3 id="auth-m-title">Tài khoản điều tra viên</h3>' +
+      '<div class="auth-tabs" role="tablist">' +
+        '<button type="button" class="auth-tab on" data-mode="login">Đăng nhập</button>' +
+        '<button type="button" class="auth-tab" data-mode="register">Đăng ký</button>' +
+      '</div>' +
+      '<form id="auth-form" autocomplete="on">' +
+        '<div class="auth-field">' +
+          '<label for="auth-user">Tên đăng nhập</label>' +
+          '<input id="auth-user" name="username" type="text" placeholder="vd: thamtu01 (3-24 ký tự)" autocomplete="username" required>' +
+        '</div>' +
+        '<div class="auth-field">' +
+          '<label for="auth-pass">Mật khẩu</label>' +
+          '<input id="auth-pass" name="password" type="password" placeholder="Ít nhất 6 ký tự" autocomplete="current-password" required>' +
+        '</div>' +
+        '<button type="submit" class="auth-submit" id="auth-submit">Đăng nhập</button>' +
+      '</form>' +
+      '<div class="auth-div">hoặc</div>' +
+      '<div class="auth-alt">' +
+        '<button type="button" class="auth-alt-btn" id="auth-google">Tiếp tục với Google</button>' +
+        '<button type="button" class="auth-alt-btn" id="auth-anon">Chơi ẩn danh (không cần tài khoản)</button>' +
+      '</div>' +
+      '<div class="auth-err" id="auth-err" role="alert"></div>' +
+    '</div>';
+  document.body.appendChild(modal);
+
+  var mForm = document.getElementById('auth-form');
+  var mUser = document.getElementById('auth-user');
+  var mPass = document.getElementById('auth-pass');
+  var mSubmit = document.getElementById('auth-submit');
+  var mGoogle = document.getElementById('auth-google');
+  var mAnon = document.getElementById('auth-anon');
+  var mErr = document.getElementById('auth-err');
+
+  function setModalBusy(v) {
+    busy = v;
+    mSubmit.disabled = v;
+    mGoogle.disabled = v;
+    mAnon.disabled = v;
+    render();
+  }
+  function showModalErr(t) { mErr.textContent = t || ''; }
+  function openModal(hint) {
+    showModalErr(hint || '');
+    modal.hidden = false;
+    setTimeout(function () { try { mUser.focus(); } catch (e) {} }, 20);
+  }
+  function closeModal() { modal.hidden = true; showModalErr(''); }
+
+  function isVaultHash(h) {
+    if (h === 'kho-ho-so') return true;
+    return CASES.some(function (c) { return c.id === h; });
+  }
+  window.__authGate = {
+    isVaultHash: isVaultHash,
+    canOpen: function (h) {
+      if (!isVaultHash(h)) return true;
+      if (user) return true;
+      if (authReady) {
+        pendingHash = '#' + h;
+        openModal('Vui lòng đăng nhập hoặc chọn Chơi ẩn danh để vào Kho hồ sơ.');
+      }
+      return false;
+    }
+  };
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var h = href.slice(1);
+    if (isVaultHash(h) && !user) {
+      e.preventDefault();
+      pendingHash = href;
+      openModal('Vui lòng đăng nhập hoặc chọn Chơi ẩn danh để vào Kho hồ sơ.');
+    }
+  });
+  function setMode(next) {
+    mode = next;
+    modal.querySelectorAll('.auth-tab').forEach(function (t) {
+      t.classList.toggle('on', t.getAttribute('data-mode') === mode);
+    });
+    mSubmit.textContent = mode === 'register' ? 'Tạo tài khoản' : 'Đăng nhập';
+    mPass.autocomplete = mode === 'register' ? 'new-password' : 'current-password';
+    showModalErr('');
+  }
 
   function say(text) {
     var el = document.getElementById('auth-msg');
@@ -724,13 +845,21 @@ markReveal();
     if (text) msgTimer = setTimeout(function () { el.textContent = ''; }, 9000);
   }
 
+  function displayNameOf(u) {
+    if (!u) return '';
+    if (u.isAnonymous) return 'Ẩn danh';
+    if (u.displayName) return u.displayName;
+    if (u.email) return u.email.replace(/@daudo\.local$/i, '');
+    return 'Người chơi';
+  }
+
   function render() {
     var keep = (document.getElementById('auth-msg') || {}).textContent || '';
     box.textContent = '';
     if (user) {
       var tag = document.createElement('span');
       tag.className = 'user-tag';
-      var name = user.displayName || user.email || 'Người chơi';
+      var name = displayNameOf(user);
       if (user.photoURL) {
         var img = document.createElement('img');
         img.alt = ''; img.referrerPolicy = 'no-referrer'; img.src = user.photoURL;
@@ -763,25 +892,72 @@ markReveal();
     if (c === 'auth/popup-closed-by-user' || c === 'auth/cancelled-popup-request') return '';
     if (c === 'auth/popup-blocked') return 'Trình duyệt đã chặn cửa sổ đăng nhập. Hãy cho phép cửa sổ bật lên cho trang này rồi bấm lại.';
     if (c === 'auth/unauthorized-domain') return 'Tên miền này chưa được thêm vào Firebase (Authentication > Settings > Authorized domains).';
-    if (c === 'auth/operation-not-allowed') return 'Chưa bật đăng nhập bằng Google trong Firebase (Authentication > Sign-in method).';
+    if (c === 'auth/operation-not-allowed') return 'Phương thức đăng nhập này chưa được bật trong Firebase (Authentication > Sign-in method).';
+    if (c === 'auth/email-already-in-use') return 'Tên đăng nhập này đã tồn tại, hãy chọn tên khác hoặc chuyển sang Đăng nhập.';
+    if (c === 'auth/invalid-credential' || c === 'auth/wrong-password' || c === 'auth/user-not-found') return 'Sai tên đăng nhập hoặc mật khẩu.';
+    if (c === 'auth/weak-password') return 'Mật khẩu phải có ít nhất 6 ký tự.';
     if (c === 'auth/network-request-failed') return 'Mất kết nối mạng, hãy thử lại.';
     if (c === 'auth/web-storage-unsupported') return 'Trình duyệt đang chặn lưu dữ liệu nên không đăng nhập được. Hãy bật cookie hoặc đổi trình duyệt.';
     return 'Không đăng nhập được' + (c ? ' (' + c + ')' : '') + '. Hãy thử lại.';
   }
 
-  function login() {
+  function loginGoogle() {
     if (/FBAN|FBAV|Instagram|Zalo|Line\//i.test(navigator.userAgent)) {
-      say('Google không cho đăng nhập trong trình duyệt của ứng dụng (Zalo, Facebook...). Hãy mở trang bằng Chrome hoặc Safari.');
+      showModalErr('Google không cho đăng nhập trong trình duyệt của ứng dụng (Zalo, Facebook...). Hãy mở trang bằng Chrome hoặc Safari.');
       return;
     }
-    if (!api) { say(loadFailed ? FAIL_MSG : 'Dịch vụ đăng nhập đang tải, hãy thử lại sau vài giây.'); return; }
-    busy = true; render();
+    if (!api) { showModalErr(loadFailed ? FAIL_MSG : 'Dịch vụ đăng nhập đang tải, hãy thử lại sau vài giây.'); return; }
+    setModalBusy(true);
+    showModalErr('');
     var provider = new api.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
     api.signInWithPopup(auth, provider)
-      .catch(function (err) { var t = explain(err); busy = false; render(); say(t); })
-      .then(function () { busy = false; render(); });
+      .then(function () { setModalBusy(false); closeModal(); })
+      .catch(function (err) { setModalBusy(false); showModalErr(explain(err)); });
   }
+
+  function loginAnon() {
+    if (!api) { showModalErr(loadFailed ? FAIL_MSG : 'Dịch vụ đăng nhập đang tải, hãy thử lại sau vài giây.'); return; }
+    setModalBusy(true);
+    showModalErr('');
+    api.signInAnonymously(auth)
+      .then(function () { setModalBusy(false); closeModal(); })
+      .catch(function (err) { setModalBusy(false); showModalErr(explain(err)); });
+  }
+
+  function submitUserPass(e) {
+    e.preventDefault();
+    if (!api) { showModalErr(loadFailed ? FAIL_MSG : 'Dịch vụ đăng nhập đang tải, hãy thử lại sau vài giây.'); return; }
+    var rawUser = (mUser.value || '').trim();
+    var uname = rawUser.toLowerCase();
+    var pass = mPass.value || '';
+    if (!/^[a-z0-9._-]{3,24}$/.test(uname)) {
+      showModalErr('Tên đăng nhập dài 3–24 ký tự, chỉ gồm chữ không dấu, số, dấu chấm, gạch dưới hoặc gạch ngang.');
+      return;
+    }
+    if (pass.length < 6) {
+      showModalErr('Mật khẩu phải có ít nhất 6 ký tự.');
+      return;
+    }
+    var fakeEmail = uname + '@daudo.local';
+    setModalBusy(true);
+    showModalErr('');
+    if (mode === 'register') {
+      api.createUserWithEmailAndPassword(auth, fakeEmail, pass)
+        .then(function (cred) {
+          if (cred && cred.user && api.updateProfile) {
+            return api.updateProfile(cred.user, { displayName: rawUser }).catch(function () {});
+          }
+        })
+        .then(function () { setModalBusy(false); closeModal(); })
+        .catch(function (err) { setModalBusy(false); showModalErr(explain(err)); });
+    } else {
+      api.signInWithEmailAndPassword(auth, fakeEmail, pass)
+        .then(function () { setModalBusy(false); closeModal(); })
+        .catch(function (err) { setModalBusy(false); showModalErr(explain(err)); });
+    }
+  }
+
   function logout() {
     if (!api) return;
     api.signOut(auth).catch(function () { say('Không đăng xuất được, hãy thử lại.'); });
@@ -789,8 +965,19 @@ markReveal();
 
   box.addEventListener('click', function (e) {
     if (!e.target.closest || !e.target.closest('#auth-btn')) return;
-    if (user) logout(); else login();
+    if (user) logout(); else openModal();
   });
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal || e.target.id === 'auth-close') closeModal();
+    var tab = e.target.closest && e.target.closest('.auth-tab');
+    if (tab) setMode(tab.getAttribute('data-mode'));
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+  mForm.addEventListener('submit', submitUserPass);
+  mGoogle.addEventListener('click', loginGoogle);
+  mAnon.addEventListener('click', loginAnon);
 
   render();
 
@@ -799,11 +986,31 @@ markReveal();
     var app = m[0].initializeApp(firebaseConfig);
     api = m[1];
     auth = api.getAuth(app);
-    api.onAuthStateChanged(auth, function (u) { user = u; busy = false; render(); });
+    api.onAuthStateChanged(auth, function (u) {
+      authReady = true;
+      user = u;
+      busy = false;
+      render();
+      var curH = location.hash.replace('#', '');
+      if (user) {
+        if (pendingHash) {
+          var target = pendingHash;
+          pendingHash = null;
+          if (location.hash !== target) location.hash = target;
+          else route();
+        } else if (isVaultHash(curH)) {
+          route();
+        }
+      } else if (isVaultHash(curH)) {
+        pendingHash = location.hash;
+        route();
+      }
+    });
     import(BASE + 'firebase-analytics.js').then(function (a) {
       return a.isSupported().then(function (ok) { if (ok) a.getAnalytics(app); });
     }).catch(function () {});
   }).catch(function () {
+    authReady = true;
     loadFailed = true;
     say(FAIL_MSG);
   });
