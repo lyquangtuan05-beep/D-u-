@@ -334,13 +334,21 @@ main > div[hidden] { display: none !important; }
   filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.85));
 }
 .hero-sub {
-  margin: 14px 0 0;
-  font-family: var(--mono);
-  font-size: clamp(0.82rem, 1.8vw, 1rem);
-  letter-spacing: 0.34em;
+  margin: 16px auto 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 22px;
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 3vw, 1.95rem);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--crimson-hi);
+  color: #f6e4c1;
   font-weight: 700;
+  border-top: 1px solid rgba(200, 162, 88, 0.35);
+  border-bottom: 1px solid rgba(210, 74, 63, 0.45);
+  background: linear-gradient(90deg, transparent, rgba(143, 17, 17, 0.22), transparent);
+  text-shadow: 0 4px 22px rgba(0, 0, 0, 0.95), 0 0 24px rgba(210, 74, 63, 0.48);
 }
 .hero-lead {
   margin: 22px auto 34px;
@@ -906,7 +914,6 @@ footer {
         <p class="eyebrow">Hồ sơ #001 đang mở · Miễn phí</p>
         <h1 class="hero-title">DẤU ĐỎ</h1>
         <p class="hero-sub">Trinh Thám Mang Hồn Việt</p>
-        <p class="hero-lead">Khám xét hiện trường, thẩm vấn tự do bằng tiếng Việt và lật mặt hung thủ ngay trên trình duyệt.</p>
         <div class="hero-actions">
           <a class="btn solid big" href="#kho-ho-so">Mở kho hồ sơ</a>
           <a class="btn big" href="#nghi-pham" id="btn-to-suspects">Xem 5 nghi phạm</a>
@@ -949,7 +956,6 @@ footer {
         <div class="sec-head center" data-reveal>
           <p class="eyebrow">Lối chơi điều tra</p>
           <h2 class="sec-title">BA BƯỚC PHÁ ÁN</h2>
-          <p class="sec-desc">Không cần cài đặt. Mọi manh mối đều có logic chặt chẽ và lưu tiến trình tự động.</p>
         </div>
         <div class="pillars">
           <article class="card-3d" data-tilt data-reveal>
