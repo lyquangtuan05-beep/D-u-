@@ -640,6 +640,52 @@ section.sec { padding: 88px 0; position: relative; }
 }
 .chip:hover { border-color: var(--gold); background: rgba(200, 162, 88, 0.14); transform: translateY(-2px); }
 
+/* ===== Support / Tiếp sức phát triển ===== */
+.support-box {
+  background:
+    radial-gradient(circle at 18% 42%, rgba(200, 162, 88, 0.12), transparent 52%),
+    linear-gradient(135deg, #161110, #0d0a0a);
+  border: 1px solid var(--gold-soft);
+  padding: 38px 36px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 28px;
+  align-items: center;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+.support-bank {
+  margin-top: 18px;
+  padding: 16px 18px;
+  background: rgba(10, 8, 8, 0.72);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.support-bank-meta { font-size: 0.86rem; color: var(--paper); line-height: 1.55; }
+.support-bank-meta span { display: block; color: var(--paper-dim); font-size: 0.78rem; }
+.support-note { margin: 14px 0 0; font-size: 0.78rem; color: var(--paper-dim); }
+.support-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.support-qr {
+  width: min(230px, 100%);
+  border-radius: 10px;
+  border: 1px solid rgba(200, 162, 88, 0.45);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+  background: #fff;
+}
+.support-qr-cap { font-size: 0.74rem; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; }
+@media (max-width: 820px) {
+  .support-box { grid-template-columns: 1fr; padding: 28px 22px; }
+}
+
 /* ===== VAULT VIEW (#kho-ho-so) ===== */
 .page-shell { padding: 112px 0 88px; min-height: calc(100svh - 86px); }
 .vault-grid {
@@ -837,8 +883,10 @@ footer {
       <a href="#gioi-thieu" data-nav="home">Giới thiệu</a>
       <a href="#kho-ho-so" data-nav="vault">Kho hồ sơ</a>
       <a href="#theo-doi" data-nav="follow">Theo dõi</a>
+      <a href="#ung-ho" data-nav="support">Ủng hộ</a>
     </nav>
     <div class="nav-right">
+      <button type="button" class="auth-btn" id="bgm-btn" title="Bật/tắt nhạc nền" aria-label="Bật/tắt nhạc nền">🔊</button>
       <span class="auth-box" id="auth-box"></span>
       <a class="btn solid sm nav-cta-hide" href="#kho-ho-so">Chơi ngay</a>
     </div>
@@ -933,6 +981,23 @@ footer {
             <ul class="chips" id="chips"></ul>
           </div>
           <a class="btn solid big" href="#kho-ho-so">Vào kho hồ sơ</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-line" id="support">
+      <div class="container">
+        <div class="support-box" data-reveal>
+          <div>
+            <p class="eyebrow" style="margin-bottom:10px">Tiếp sức phát triển</p>
+            <h2 class="sec-title" style="font-size:clamp(1.6rem,3.4vw,2.3rem);margin-bottom:8px">Đồng Hành Cùng Dấu Đỏ</h2>
+            <p class="sec-desc" style="max-width:38rem">Toàn bộ Hồ sơ #001 đều mở miễn phí trên trình duyệt. Nếu bạn thích trải nghiệm phá án vừa rồi và muốn dự án đi xa hơn, mọi đóng góp tùy tâm đều giúp mình có thêm kinh phí viết kịch bản, dựng hiện trường và duy trì tên miền cho Hồ sơ #002.</p>
+            <p class="support-note mono">Hoàn toàn tự nguyện · Mọi vụ án đang mở đều chơi miễn phí trọn vẹn.</p>
+          </div>
+          <div class="support-qr-wrap">
+            <img class="support-qr" src="./qr_ung_ho.jpg" alt="Mã VietQR ủng hộ phát triển Dấu Đỏ">
+            <span class="support-qr-cap mono">Quét VietQR / Napas 24/7</span>
+          </div>
         </div>
       </div>
     </section>
@@ -1215,6 +1280,9 @@ function route() {
   } else if (h === 'theo-doi') {
     show('home');
     setTimeout(function () { scrollToEl('follow'); }, 40);
+  } else if (h === 'ung-ho') {
+    show('home');
+    setTimeout(function () { scrollToEl('support'); }, 40);
   } else if (h === 'nghi-pham') {
     show('home');
     setTimeout(function () { scrollToEl('nghi-pham'); }, 40);
@@ -1384,6 +1452,50 @@ buildChips();
 buildSuspectShowcase();
 buildVault();
 bindTilt();
+(function initIndexBgm() {
+  var btn = document.getElementById('bgm-btn');
+  if (!btn) return;
+  var bgm = new Audio('./games/bgm_theme.mp3');
+  bgm.loop = true;
+  bgm.preload = 'auto';
+  bgm.volume = 0.42;
+  var muted = false;
+  try { muted = localStorage.getItem('drtb_muted') === '1'; } catch (e) {}
+
+  function syncBtn() {
+    btn.textContent = muted ? '🔇' : (bgm.paused ? '🔇 Bật nhạc' : '🔊');
+  }
+  function tryPlay() {
+    if (muted || document.hidden || !bgm.paused) { syncBtn(); return; }
+    var p = bgm.play();
+    if (p && p.then) {
+      p.then(syncBtn).catch(syncBtn);
+    } else {
+      syncBtn();
+    }
+  }
+  btn.addEventListener('click', function () {
+    muted = !muted;
+    try { localStorage.setItem('drtb_muted', muted ? '1' : '0'); } catch (e) {}
+    if (muted) {
+      bgm.pause();
+      syncBtn();
+    } else {
+      tryPlay();
+    }
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) bgm.pause();
+    else if (!muted) tryPlay();
+  });
+  ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+    window.addEventListener(ev, function () {
+      if (!muted && bgm.paused) tryPlay();
+    }, { passive: true });
+  });
+  syncBtn();
+  tryPlay();
+})();
 window.addEventListener('hashchange', route);
 window.addEventListener('pageshow', function () { buildVault(); route(); });
 route();
