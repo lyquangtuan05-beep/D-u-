@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="../manifest.json">
     <title>Đêm Rằm Tháng Bảy</title>
     <link rel="icon" type="image/jpeg" href="../avatar_1x1.jpg">
     <link rel="apple-touch-icon" href="../avatar_1x1.jpg">
@@ -29,10 +31,17 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
-            height: 100%;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
+        }
+        #game-ui {
+            padding-left: env(safe-area-inset-left, 0px);
+            padding-right: env(safe-area-inset-right, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         input, textarea { user-select: text; -webkit-user-select: text; }
 
@@ -178,11 +187,63 @@
             100% { box-shadow: 0 0 0 0 rgba(138, 3, 3, 0), inset 0 0 6px rgba(0,0,0,0.8); }
         }
 
+        #stage-scroll {
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
         #stage {
             width: 100%;
             height: 100%;
             flex: 1;
             min-height: 0;
+        }
+        @media (orientation: portrait) and (max-width: 767px) {
+            #stage-scroll {
+                overflow-x: auto;
+                overflow-y: hidden;
+                justify-content: flex-start;
+                align-items: stretch;
+                -webkit-overflow-scrolling: touch;
+            }
+            #stage {
+                aspect-ratio: 16 / 9;
+                width: auto;
+                height: 100%;
+                min-width: 100%;
+                flex: none;
+            }
+            .game-topbar {
+                height: auto !important;
+                min-height: 2.75rem;
+                padding: 6px 8px !important;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .game-topbar .btn {
+                padding: 4px 7px !important;
+                font-size: 0.72rem !important;
+            }
+            #room-name { font-size: 0.9rem; }
+            .room-nav-bar {
+                height: auto !important;
+                min-height: 3.2rem;
+                flex-wrap: wrap !important;
+                padding: 6px !important;
+                gap: 5px !important;
+            }
+            .room-nav-bar .nav-btn {
+                flex: 1 1 30%;
+                font-size: 0.72rem !important;
+                padding: 7px 4px !important;
+                text-align: center;
+            }
+            .modal-h { height: 88dvh; max-height: none; }
         }
         @media (hover: none) { .interactive-item::after { opacity: 1; } }
 
@@ -565,12 +626,17 @@ body.dread-glitch #app-container {
 }
 
 /* Tab Vật chứng & Lời khai trong #ev-panel */
-#ev-panel { flex-direction: column; max-height: 145px; overflow-y: auto; background: rgba(27, 22, 19, 0.08); padding-bottom: 8px; }
-.ev-tabs { display: flex; gap: 6px; border-bottom: 1px solid rgba(27, 22, 19, 0.3); padding-bottom: 5px; margin-bottom: 4px; width: 100%; }
-.ev-tab { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; padding: 3px 10px; border: 1px solid #1b1613; background: transparent; color: #1b1613; cursor: pointer; }
+#ev-panel {
+    display: flex; flex-direction: column; flex-wrap: nowrap; flex-shrink: 0;
+    gap: 6px; max-height: 175px; overflow-y: auto; overflow-x: hidden;
+    background: rgba(27, 22, 19, 0.09); border-top: 1px solid rgba(27, 22, 19, 0.35);
+    padding-bottom: 10px; position: relative; z-index: 5;
+}
+.ev-tabs { display: flex; flex-shrink: 0; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid rgba(27, 22, 19, 0.3); padding-bottom: 5px; margin-bottom: 2px; width: 100%; }
+.ev-tab { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; padding: 4px 10px; border: 1px solid #1b1613; background: transparent; color: #1b1613; cursor: pointer; }
 .ev-tab.active { background: #8a0303; border-color: #8a0303; color: #fff; }
-.ev-list { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
-.testimony-btn { text-align: left; line-height: 1.35; padding: 5px 8px !important; max-width: 100%; }
+.ev-items, .ev-list { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+.ev-items .btn, .testimony-btn { text-align: left; white-space: normal; line-height: 1.35; padding: 5px 9px !important; max-width: 100%; }
 
 /* Lớp phụ đề trình diễn tái hiện vụ án ở đoạn kết */
 #recon-cinema {
@@ -582,22 +648,6 @@ body.dread-glitch #app-container {
 #recon-cinema .rc-time { color: #d24a3f; font-weight: 700; letter-spacing: 0.18em; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 6px; }
 #recon-cinema .rc-line { max-width: 44rem; margin: 0 auto 14px; font-size: clamp(0.95rem, 2vw, 1.15rem); line-height: 1.65; text-shadow: 0 2px 8px #000; }
 @media (prefers-reduced-motion: reduce) { #cine-post::before, #suspect-avatar, body.dread-glitch #app-container { animation: none !important; } }
-
-/* Bắt buộc xoay ngang trên điện thoại khi ở màn hình dọc */
-#rotate-overlay {
-    display: none; position: fixed; inset: 0; z-index: 9999;
-    background: rgba(5, 5, 5, 0.96); color: #e8dcc8;
-    flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 24px; gap: 14px;
-}
-#rotate-overlay .rot-icon {
-    font-size: 3rem; display: inline-block;
-    animation: rotHint 1.8s ease-in-out infinite;
-}
-@keyframes rotHint { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } }
-@media (pointer: coarse) and (orientation: portrait) and (max-width: 900px) {
-    #rotate-overlay { display: flex; }
-}
 
 /* Lớp hành lang có bóng ma nữ mờ ảo đồng bộ parallax với #stage-bg-layer */
 #stage-ghost-layer {
@@ -612,13 +662,6 @@ body.dread-glitch #app-container {
 <body class="crt">
 
 <div id="app-container" class="w-full h-full relative flex justify-center items-center">
-    <div id="rotate-overlay" role="dialog" aria-modal="true" aria-label="Xoay ngang màn hình">
-        <div class="rot-icon" aria-hidden="true">📱</div>
-        <div class="title-font text-xl text-red-500 font-bold tracking-wider">XOAY NGANG ĐIỆN THOẠI</div>
-        <p class="text-sm text-[#d3c9b8] max-w-xs leading-relaxed">Vụ án <b>Đêm Rằm Tháng Bảy</b> yêu cầu màn hình ngang và toàn màn hình trên điện thoại để hiển thị đủ hiện trường.</p>
-        <button id="btn-rotate-fs" type="button" class="btn btn-red text-sm mt-1">⛶ TOÀN MÀN HÌNH &amp; XOAY NGANG</button>
-    </div>
-
     <div id="audio-overlay">
         <div id="title-fallback" aria-hidden="true">
             <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
@@ -686,7 +729,7 @@ body.dread-glitch #app-container {
     </div>
 
     <div id="game-ui" class="w-full h-full relative hidden-ui flex flex-col lightning-bg">
-        <div class="h-12 border-b border-[#333] flex justify-between items-center px-2 md:px-4 bg-black/80 z-30">
+        <div class="game-topbar h-12 border-b border-[#333] flex justify-between items-center px-2 md:px-4 bg-black/80 z-30">
             <div class="hidden md:block title-font text-xl tracking-widest text-red-600">TRẦN BẢO - THÁM TỬ TƯ</div>
             <div id="room-name" class="font-bold">Sân Trước</div>
             <div class="flex gap-2">
@@ -702,16 +745,18 @@ body.dread-glitch #app-container {
 
         <div id="objective" class="px-3 py-2 text-xs md:text-sm bg-[#1a1210] border-b border-[#5c4a30] text-[#e8dbce] z-30"></div>
         <div id="scene-container" class="flex-1 relative overflow-hidden bg-black flex flex-col items-center justify-center">
-            <div id="stage" class="relative overflow-hidden bg-yard">
-                <div id="rain-effect" class="rain"></div>
-                <div id="items-layer" class="absolute inset-0 z-20"></div>
-                <div id="suspects-layer" class="absolute bottom-10 w-full flex justify-center gap-3 md:gap-8 hidden-ui z-20 px-2"></div>
-                <div id="msg-box" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 border border-gray-600 p-3 rounded text-center w-11/12 max-w-md hidden-ui z-30 opacity-0 transition-opacity duration-300"></div>
+            <div id="stage-scroll">
+                <div id="stage" class="relative overflow-hidden bg-yard">
+                    <div id="rain-effect" class="rain"></div>
+                    <div id="items-layer" class="absolute inset-0 z-20"></div>
+                    <div id="suspects-layer" class="absolute bottom-10 w-full flex justify-center gap-3 md:gap-8 hidden-ui z-20 px-2"></div>
+                    <div id="msg-box" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 border border-gray-600 p-3 rounded text-center w-11/12 max-w-md hidden-ui z-30 opacity-0 transition-opacity duration-300"></div>
+                </div>
             </div>
             <div id="suspects-strip"></div>
         </div>
 
-        <div class="h-16 border-t border-[#333] bg-black/90 flex justify-center items-center gap-1 md:gap-4 px-1 md:px-2 z-30">
+        <div class="room-nav-bar h-16 border-t border-[#333] bg-black/90 flex justify-center items-center gap-1 md:gap-4 px-1 md:px-2 z-30">
             <button class="btn nav-btn text-xs md:text-sm" data-room="frontYard">SÂN TRƯỚC</button>
             <button class="btn nav-btn text-xs md:text-sm" data-room="livingRoom">PHÒNG KHÁCH</button>
             <button class="btn nav-btn text-xs md:text-sm" data-room="kitchen">NHÀ BẾP</button>
@@ -733,7 +778,7 @@ body.dread-glitch #app-container {
             <div class="md:w-3/5 flex flex-col flex-1 min-h-0 bg-[#151515]">
                 <div id="chat-history" class="flex-1 min-h-0 p-4 overflow-y-auto flex flex-col gap-3"></div>
                 <div id="chat-chips" class="px-3 pt-2 flex flex-wrap gap-2 border-t border-[#333]"></div>
-                <div id="ev-panel" class="px-3 pt-2 flex flex-wrap gap-2 hidden-ui"></div>
+                <div id="ev-panel" class="px-3 pt-2 hidden-ui"></div>
                 <div class="p-3 flex flex-wrap gap-2">
                     <input type="text" id="chat-input" class="flex-1 min-w-0 bg-black border border-[#555] text-white p-2 rounded focus:outline-none focus:border-red-500" placeholder="Hỏi bất kỳ điều gì..." autocomplete="off">
                     <button id="btn-send-chat" class="btn btn-red">HỎI</button>
@@ -1891,6 +1936,8 @@ Object.assign(characters.quan.ev, {
     cuu_lan: "Lão thầy cúng đó chuyên bịa chuyện dọa ma để vòi thêm tiền lễ! Hồi 1996 tôi mới tám tuổi, người lớn bảo cô hầu gái đó tự nhảy xuống giếng, giờ lão lại lôi ra hù dọa nhà tôi à?",
     hanh_tea: "Thì tối nào trà của ba tôi chẳng để ở phòng khách cho nguội! Lúc 21h10–21h30 tôi chưa xuống phòng khách, ai đi ngang sảnh làm gì sao tôi biết. Anh hỏi lão Khoa ấy, lão ngồi ngay cạnh bàn trà!",
     cuu_alibi: "Đấy, thầy Cửu cũng làm chứng cho tôi rồi nhé! Cả xóm đứng ngay sau lưng thầy, tôi mà bỏ đi đâu được thì ai khấn thay tôi?",
+    khoa_alibi: "Lão Khoa đứng ngoài cổng gọi cho vợ từ 23h28 à? Thế thì lão cũng có bằng chứng ngoại phạm lúc cúp điện rồi... Khoan đã, vậy ai gạt cầu dao dưới bếp?",
+    hanh_alone: "Chị Tư ở bếp một mình từ tối tới lúc cúp điện... Nhưng chị ấy hiền khô, làm thuê mười mấy năm, chị ấy có lý do gì hại ba tôi đâu?",
     costume: ["Áo dài trắng! Đúng cái bóng tôi thấy ở hành lang... Thôi được, tôi khai thật: 23h15 tôi có lẻn vào nhà định xin tiền ba thêm lần nữa, thấy bóng trắng đứng im cuối hành lang nên hoảng quá chạy biến ra sân, 23h25 đã đứng lại chỗ khấn rồi!", "Quân thú nhận đã lẻn vào nhà lúc 23h15 và thấy bóng áo trắng ở hành lang (là người mặc đồ giả ma). Lúc 23h30 ông đã quay lại sân."]
 });
 
@@ -1898,6 +1945,8 @@ Object.assign(characters.van.ev, {
     cuu_lan: ["Thầy Cửu nói cô ấy mất lúc 23h15... Khoan đã, chiếc đồng hồ treo tường trong thư phòng ba chồng tôi cũng dừng đúng 11 giờ 15, và ông cấm tuyệt đối không ai được chỉnh lại.", "Vân nhận ra giờ chết của Lan (23h15) trùng khớp với chiếc đồng hồ dừng trong thư phòng ông Thạc."],
     hanh_tea: "21h20 tôi có đi ngang bàn phòng khách thật, nhưng chỉ lấy cái khăn rồi đi ngay. Trong khoảng hai mươi phút đó, ông Khoa ngồi uống trà ngay sát bên, còn chị Tư thì ra vào bếp liên tục.",
     cuu_alibi: "Tôi đã khai rõ từ đầu: 23h10 tôi ra xe lấy túi y tế, 23h25 quay lại đứng cạnh hàng xóm và thầy Cửu. Lời thầy ấy hoàn toàn khớp với tôi.",
+    khoa_alibi: "Nhật ký gọi video của ông Khoa kéo dài từ 23h28 đến 23h41, bao trùm đúng mốc 23h30 cầu dao sập. Dữ liệu đó khá chắc chắn.",
+    hanh_alone: "Cầu dao tổng nằm ngay trong bếp, và lúc 23h30 chỉ có mình chị Tư ở đó không ai làm chứng. Tôi không kết luận vội, nhưng đó là lỗ hổng duy nhất về thời gian.",
     costume: "Áo dài trắng, tóc giả... lại nằm trong tủ bếp. Nhưng tôi chỉ nói dữ kiện: muốn mặc bộ này lúc cần dọa người thì người đó phải rời vị trí từ trước đó."
 });
 
@@ -1905,6 +1954,8 @@ Object.assign(characters.khoa.ev, {
     cuu_lan: ["Thầy Cửu biết rõ giờ chết của một cô hầu gái từ ba mươi năm trước ư? Nghe lạ đấy... Lão thầy cúng này ở làng bên, sao chuyện thâm cung bí sử nhà họ Lương lão lại thuộc từng phút như vậy?", "Khoa đặt nghi vấn: tại sao Thầy Cửu là người ngoài lại nhớ chính xác giờ Lan chết cách đây 30 năm."],
     hanh_tea: "Đúng là tôi ngồi sảnh uống trà tới hơn 23 giờ, khay trà của lão Thạc để bàn bên cạnh. Nhưng lúc 21h20 cô Vân có đi ngang qua đó, mà chính chị giúp việc cũng bưng ấm ra bưng chén vào. Sao anh chỉ nhìn mỗi tôi?",
     cuu_alibi: "Chuyện ngoài sân tôi không bàn, lúc 23h28 tôi đã đứng ngoài cổng gọi video cho vợ rồi. Nhật ký cuộc gọi sờ sờ ra đây, tôi cần gì ai khấn hộ.",
+    khoa_alibi: "Nhật ký cuộc gọi 23:28 đến 23:41 tôi mở cho anh xem tận mắt rồi đấy. Lúc điện sập tôi đứng ngoài cổng rõ mồn một, loại tôi ra khỏi danh sách được rồi chứ?",
+    hanh_alone: "Ở một mình dưới bếp đúng chỗ đặt cầu dao tổng mà không ai làm chứng... Anh thám tử, người hiền lành kín tiếng đôi khi mới là người đáng dè chừng nhất đấy.",
     diary: "Hóa ra lão Thạc giết người bịt miệng từ năm 96... Hèn gì lão treo cái lịch cũ rích đó suốt mấy chục năm. Kẻ thù kiểu này thì không chỉ có một người đâu anh thám tử."
 });
 
@@ -1912,6 +1963,8 @@ Object.assign(characters.cuu.ev, {
     cuu_lan: ["Cậu hỏi cho tới cùng thì ta cũng chẳng giấu nữa... Năm chín sáu, chính lão Thạc đã bỏ một khoản tiền lớn thuê ta làm lễ trấn yểm và phao tin khắp làng rằng con bé Lan tự tử vì oan nghiệp, để bịt miệng thiên hạ. Ba mươi năm rồi, ta chưa một đêm ngủ yên...", "Thầy Cửu thú nhận năm 1996 đã nhận tiền của ông Thạc để làm lễ trấn yểm và phao tin Lan tự tử nhằm bịt miệng dân làng."],
     hanh_tea: "Chuyện trà nước trong nhà ta không bước chân vào nên không thấy. Nhưng thuốc độc không tự rơi vào chén, người pha và người đi ngang đều có phần.",
     cuu_alibi: "Tai ta nghe rõ giọng cậu Quân và cô Vân khấn ngay sau lưng lúc đèn tắt. Âm dương chứng giám, ta không nói sai nửa lời.",
+    khoa_alibi: "Lúc nửa đêm ta lo khấn vái, chỉ thoáng thấy bóng ông Khoa đi ra phía cổng trước khi đèn tắt. Chuyện điện thoại của ông ta thì ta không rành.",
+    hanh_alone: "Dưới bếp một mình lúc âm khí nặng nhất đêm Rằm... Nếu người đó không sợ bóng tối quanh cầu dao, thì trong lòng hẳn phải có điều nung nấu từ lâu.",
     photo: "Hai chị em... cô chị nằm dưới đáy giếng, còn đứa em năm ấy khóc đến khàn giọng rồi bị đuổi đi ngay trong đêm. Liệu nó có thật sự bỏ xứ mà đi không..."
 });
 
@@ -1919,6 +1972,8 @@ Object.assign(characters.hanh.ev, {
     cuu_lan: "Dạ... chuyện ma quỷ thầy Cửu nói nghe rợn người lắm, nhưng tôi phận làm thuê mới vào nhà này mười hai năm, chuyện năm chín sáu tôi không được biết, thưa anh.",
     hanh_tea: "Dạ đúng lời tôi thưa lúc nãy. Tối nào tôi cũng pha trà đúng 21h10, để ở phòng khách cho nguội rồi 21h30 mang vào thư phòng. Lúc đó ở phòng khách còn có ông Khoa ngồi uống nước, cô Vân cũng đi ngang qua đó một lượt.",
     cuu_alibi: "Dạ, ngoài sân có thầy Cửu với bà con đứng cùng nhau thì ai cũng yên tâm, chỉ có dưới bếp một mình tôi lúc tối om là sợ đến cứng người...",
+    khoa_alibi: "Dạ, tôi ở dưới bếp nên không biết ông Khoa ra cổng gọi điện lúc nào, chỉ thấy hơn 23 giờ phòng khách không còn tiếng nói chuyện nữa.",
+    hanh_alone: "Dạ... tôi đã thưa thật hết rồi. Lúc điện tắt tối om tôi sợ quá cứ đứng nép bên mâm bát, mãi sau mới dám lần tay bật cầu dao. Thân phận làm thuê không có ai đứng cạnh làm chứng, anh đừng nghi oan cho tôi...",
     diary: "Ông chủ có chuyện gì giấu kín trong thư phòng thì phận giúp việc như tôi đâu dám tò mò... Tôi chỉ biết tối nào ông cũng uống hết chén trà tôi pha thôi.",
     photo: "Tấm ảnh cũ quá rồi, thưa anh... Thời đó con gái quê ai cũng để tóc dài mặc áo bà ba giống nhau, tôi nhìn không ra ai với ai cả.",
     costume: "Cái tủ ở bếp để đồ cũ của nhà chủ từ nhiều năm nay, ai tiện tay cất gì vào đó tôi cũng không kiểm hết được... Mà sao anh lại hỏi tôi về mấy thứ đồ diễn đó ạ?"
@@ -1998,7 +2053,7 @@ Object.assign(characters.van.a, {
 });
 Object.assign(characters.khoa.a, {
     drug: "Thuốc men? Tôi buôn đồ cổ chứ có phải bác sĩ đâu. Anh hỏi cô y tá đó.",
-    door: "Mã cửa thư phòng? Lão Thạc cẩn thận lắm, đến tôi cũng chưa từng được mời vào đó khi cửa khóa.",
+    door: "Mã cửa thư phòng? Lão Thạc cẩn thận lắm, đến tôi cũng chưa từng được mời vào đó khi cửa khóa. Chỉ biết lão hay khoe cái nhà xây đời Bảo Đại — tính từ năm Bảo Đại nguyên niên 1926.",
     well: "Cái giếng? Tôi thấy nó ngoài sân, cũ kỹ. Chuyện ma thì dân làng với thầy Cửu rành hơn.",
     ghost: "Ma với quỷ... làm nghề đồ cổ như tôi thấy nhiều đồ ma ám rồi, toàn chuyện bịa để bán giá cao. Nhưng tối nay thì ừ, rờn rợn.",
     fight: "Cãi nhau thì có, vụ đồ giả ấy, nhưng xong rồi. Chuyện nhà lão với thằng con thì tôi nghe đồn thôi.",
@@ -2059,7 +2114,7 @@ const rooms = {
     livingRoom: {
         name: "Phòng Khách", class: "bg-living", rain: false,
         items: [
-            { id: 'xa_ngang', icon: '📜', label: 'Xà Ngang Khắc Chữ', x: 50, y: 10, action: () => { markSpot('xa_ngang'); addClue("Xà ngang nhà có khắc chữ: 'Bảo Đại thập tứ niên' (Năm Bảo Đại thứ 14)."); } },
+            { id: 'xa_ngang', icon: '📜', label: 'Xà Ngang Khắc Chữ', x: 50, y: 10, action: () => { markSpot('xa_ngang'); addClue("Xà ngang nhà có khắc chữ: 'Bảo Đại thập tứ niên' (Năm Bảo Đại thứ 14). Bên cạnh còn đóng một tấm bảng gỗ nhỏ chú thích: 'Bảo Đại nguyên niên — 1926' (tức năm thứ 1 tính từ 1926)."); } },
             { id: 'khay_tra', icon: '🍵', label: 'Bàn Phòng Khách Để Khay Trà', x: 22, y: 40, action: () => { markSpot('khay_tra'); addClue(state.phase < 2 ? "Bàn phòng khách nơi chị Tư đặt khay trà của ông Thạc cho nguội bớt trước khi mang vào thư phòng lúc 21h30. Mặt bàn còn vòng nước của chiếc ấm." : "Bàn phòng khách nơi chị Tư để khay trà cho nguội mỗi tối. Mặt bàn còn vòng nước của chiếc ấm. Ngồi ghế bên cạnh thì với tay là tới khay, nhưng chưa rõ thuốc đã nằm sẵn trong chén hay bị bỏ thêm khi khay để ở đây."); } }
         ],
         showSuspects: true
@@ -2174,16 +2229,32 @@ function titleExit(next) {
     else { $('title-fade').style.opacity = 1; setTimeout(finish, 650); }
 }
 
-function enterFullscreenAndLandscape() {
+function canUseFullscreen() {
+    const el = document.documentElement;
+    return !!(el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen || document.body.requestFullscreen || document.body.webkitRequestFullscreen);
+}
+function enterFullscreenAndLandscape(fromUserBtn) {
     try {
         const el = document.documentElement;
-        const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-        const p = (!document.fullscreenElement && !document.webkitFullscreenElement && req) ? req.call(el) : Promise.resolve();
-        Promise.resolve(p).then(() => {
-            if (isTouch && screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {});
+        const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen || document.body.requestFullscreen || document.body.webkitRequestFullscreen;
+        const targetEl = (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen) ? el : document.body;
+        if (!req) {
+            if (fromUserBtn) {
+                const isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
+                showMsg(isIOS
+                    ? '📱 iPhone/iPad không cho web tự ẩn thanh địa chỉ. Để chơi full màn hình: bấm Chia sẻ (⬆️) → Thêm vào Màn hình chính, hoặc bấm AA → Ẩn thanh công cụ.'
+                    : '📱 Trình duyệt này không hỗ trợ tự bật toàn màn hình. Hãy dùng Chrome hoặc thêm trang ra Màn hình chính.', 7000);
             }
-        }).catch(() => {});
+            return;
+        }
+        let p;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            try { p = req.call(targetEl, { navigationUI: 'hide' }); }
+            catch (e) { p = req.call(targetEl); }
+        } else {
+            p = Promise.resolve();
+        }
+        Promise.resolve(p).catch(() => {});
     } catch (e) {}
 }
 function toggleFullscreen() {
@@ -2192,12 +2263,12 @@ function toggleFullscreen() {
             const ex = document.exitFullscreen || document.webkitExitFullscreen;
             if (ex) ex.call(document);
         } else {
-            enterFullscreenAndLandscape();
+            enterFullscreenAndLandscape(true);
         }
     } catch (e) {}
 }
 if ($('btn-fullscreen')) $('btn-fullscreen').onclick = toggleFullscreen;
-if ($('btn-rotate-fs')) $('btn-rotate-fs').onclick = enterFullscreenAndLandscape;
+if ($('btn-rotate-fs')) $('btn-rotate-fs').onclick = () => enterFullscreenAndLandscape(true);
 
 function startTitleMusic() {
     if (titleLeaving || (MUSIC.mode && MUSIC.mode !== 'off' && MUSIC.mode !== 'title')) return;
@@ -2266,8 +2337,24 @@ $('btn-start-game').onclick = () => {
     renderRoom('frontYard');
     addClue("22h00 (Ghi chép Trần Bảo): Thầy Cửu đang cúng một mình ngoài sân. Quân và ông Khoa ở phòng khách; Vân đang phụ chị Tư dọn mâm dưới bếp. Ông Thạc tự nhốt trong thư phòng cuối hành lang.", null, { inline: true });
     addClue("22h30 (Ghi chép Trần Bảo): Quân lên gõ cửa thư phòng xin tiền, hai cha con to tiếng cãi nhau qua cánh cửa vẫn khóa kín; lát sau Quân bực bội quay xuống phòng khách.", null, { inline: true });
-    document.querySelectorAll('.nav-btn')[1].classList.add('pulsate');
-    setTimeout(() => document.querySelectorAll('.nav-btn')[1].classList.remove('pulsate'), 5000);
+    // Luồng ưu tiên đầu ván mới: Hướng dẫn chơi -> Đọc lá thư -> Bắt đầu điều tra
+    const howtoBtn = $('modal-howto').querySelector('.close-modal');
+    const letterBtn = $('modal-letter').querySelector('.close-modal');
+    const howtoOld = howtoBtn ? howtoBtn.textContent : 'ĐÓNG';
+    const letterOld = letterBtn ? letterBtn.textContent : 'ĐÓNG';
+    if (howtoBtn) howtoBtn.textContent = 'TIẾP TỤC: ĐỌC LÁ THƯ ▸';
+    afterCloseCb = () => {
+        if (howtoBtn) howtoBtn.textContent = howtoOld;
+        if (letterBtn) letterBtn.textContent = 'BẮT ĐẦU ĐIỀU TRA ▸';
+        sfx('paper');
+        openModal('modal-letter');
+        afterCloseCb = () => {
+            if (letterBtn) letterBtn.textContent = letterOld;
+            document.querySelectorAll('.nav-btn')[1].classList.add('pulsate');
+            setTimeout(() => document.querySelectorAll('.nav-btn')[1].classList.remove('pulsate'), 5000);
+        };
+    };
+    openHowto();
 };
 
 document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -2324,6 +2411,14 @@ function renderRoom(roomId) {
 
     const container = $('stage');
     container.className = `relative overflow-hidden ${room.class}`;
+    const scroller = $('stage-scroll');
+    if (scroller && window.innerHeight > window.innerWidth) {
+        requestAnimationFrame(() => {
+            if (scroller.scrollWidth > scroller.clientWidth) {
+                scroller.scrollLeft = Math.round((scroller.scrollWidth - scroller.clientWidth) / 2);
+            }
+        });
+    }
     $('rain-effect').style.display = room.rain ? 'block' : 'none';
 
     const itemsLayer = $('items-layer');
@@ -2790,7 +2885,7 @@ function openInterrogation(charId) {
     $('suspect-bio').innerText = char.bio;
     renderChatHistory(char);
     $('chat-input').value = '';
-    $('ev-panel').classList.add('hidden-ui');
+    closeEvidencePanel();
     renderChips();
     openModal('modal-interrogation');
     showTip('firstChat', 'Gõ câu hỏi tự do, bấm chip gợi ý, hoặc bấm 📎 để đưa chứng cứ.');
@@ -2839,12 +2934,18 @@ function processChat(text, forcedIntent) {
     reply(char, v);
     setTimeout(updateObjective, 50);
 }
-function showEvidence(k) {
-    if (!activeCharacterId) return;
+function closeEvidencePanel() {
     $('ev-panel').classList.add('hidden-ui');
+    $('chat-chips').classList.remove('hidden-ui');
+}
+function showEvidence(k) {
+    if (!activeCharacterId || !EVID[k]) return;
+    closeEvidencePanel();
+    sfx('paper');
     bubbleU('Đưa ra: ' + EVID[k].n);
     const char = characters[activeCharacterId];
     reply(char, char.ev[k] || "Chuyện này tôi không nắm rõ, anh thử hỏi người khác xem.");
+    setTimeout(updateObjective, 50);
 }
 let activeEvTab = 'physical';
 
@@ -2872,7 +2973,7 @@ function renderEvidencePanel() {
         b.type = 'button';
         b.className = 'ev-tab' + (activeEvTab === id ? ' active' : '');
         b.textContent = label;
-        b.onclick = () => { sfx('click'); activeEvTab = id; renderEvidencePanel(); };
+        b.onclick = () => { sfx('click'); activeEvTab = id; renderEvidencePanel(); p.scrollTop = 0; };
         tabs.appendChild(b);
     });
     p.appendChild(tabs);
@@ -2899,9 +3000,12 @@ function renderEvidencePanel() {
 
 $('btn-evidence').onclick = () => {
     const p = $('ev-panel');
-    if (!p.classList.contains('hidden-ui')) { p.classList.add('hidden-ui'); return; }
+    if (!p.classList.contains('hidden-ui')) { closeEvidencePanel(); return; }
+    sfx('click');
     renderEvidencePanel();
+    $('chat-chips').classList.add('hidden-ui');
     p.classList.remove('hidden-ui');
+    p.scrollTop = 0;
 };
 
 $('btn-send-chat').onclick = () => processChat();
@@ -4071,7 +4175,7 @@ $('btn-accuse').onclick = () => {
         if (!activeCharacterId) return;
         var inp = $('chat-input'), q = (text || inp.value).trim(), char = characters[activeCharacterId];
         if (!q) return;
-        $('ev-panel').classList.add('hidden-ui'); bubbleU(q); inp.value = '';
+        closeEvidencePanel(); bubbleU(q); inp.value = '';
         reply(char, answer(char, C(char.id), q, forced));
         setTimeout(updateObjective, 50);
     };
